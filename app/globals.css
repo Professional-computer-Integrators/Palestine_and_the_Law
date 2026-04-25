@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-playfair: "Playfair Display", serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #faf8f4;
+  color: #1a1a1a;
+}
+
+/* Sidebar layout shift */
+@media (min-width: 768px) {
+  main {
+    transition: padding-left 0.3s ease;
+  }
+  body.sidebar-open main {
+    padding-left: 200px;
+  }
+}
+
+@layer components {
+  .section-heading {
+    @apply font-serif text-3xl md:text-4xl font-bold text-forest tracking-wide;
+  }
+  .gold-divider {
+    @apply w-16 h-1 bg-gold rounded-full my-4;
+  }
+  .btn-primary {
+    @apply inline-block bg-forest text-cream px-6 py-3 rounded-sm font-sans font-medium
+      tracking-widest uppercase text-sm hover:bg-forest-light transition-colors duration-200;
+  }
+  .btn-outline {
+    @apply inline-block border border-forest text-forest px-6 py-3 rounded-sm font-sans font-medium
+      tracking-widest uppercase text-sm hover:bg-forest hover:text-cream transition-colors duration-200;
+  }
+  .card {
+    @apply bg-white border border-cream-dark rounded-sm shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+}
