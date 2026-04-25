@@ -18,21 +18,6 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Text */}
             <div>
-              <p className="font-sans text-gold text-xs tracking-[0.3em] uppercase mb-4">
-                Professor Musa E. Mazzawi · 1997
-              </p>
-              <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-cream leading-tight mb-4">
-                Palestine
-                <br />
-                <span className="text-gold">and the Law</span>
-              </h1>
-              <p className="font-serif text-xl md:text-2xl text-cream/70 italic mb-8">
-                Guidelines for Resolution
-              </p>
-              <p className="font-sans text-base text-cream/60 leading-relaxed max-w-lg mb-10">
-                A comprehensive legal study of the Arab-Israel conflict and the
-                Palestinian question during the 20th century.
-              </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/contents" className="btn-primary bg-gold text-forest-dark hover:bg-gold-light">
                   Explore Chapters
