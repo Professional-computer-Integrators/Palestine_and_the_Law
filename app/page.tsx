@@ -15,35 +15,31 @@ export default function HomePage() {
         />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Text */}
-            <div>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/contents" className="btn-primary bg-gold text-forest-dark hover:bg-gold-light">
-                  Explore Chapters
-                </Link>
-                <Link href="#about-book" className="btn-outline border-cream/40 text-cream hover:bg-white/10 hover:text-cream">
-                  About the Book
-                </Link>
+          <div className="flex flex-col items-center gap-10">
+            {/* Book image */}
+            <div className="relative">
+              <div className="absolute -inset-4 bg-gold/70 rounded-sm blur-2xl animate-pulse" />
+              <div className="relative bg-forest-light border border-gold/30 rounded-sm p-4 shadow-2xl max-w-xs w-full">
+                <Image
+                  src="https://i0.wp.com/palestineandthelaw.org/wp-content/uploads/2025/10/bluebook4-1-2.jpg?w=407&ssl=1"
+                  alt="Palestine and the Law book cover"
+                  width={407}
+                  height={550}
+                  className="w-full h-auto object-cover rounded-sm"
+                  priority
+                  unoptimized
+                />
               </div>
             </div>
 
-            {/* Book image */}
-            <div className="flex justify-center">
-              <div className="relative">
-                <div className="absolute -inset-4 bg-gold/70 rounded-sm blur-2xl animate-pulse" />
-                <div className="relative bg-forest-light border border-gold/30 rounded-sm p-4 shadow-2xl max-w-xs w-full">
-                  <Image
-                    src="https://i0.wp.com/palestineandthelaw.org/wp-content/uploads/2025/10/bluebook4-1-2.jpg?w=407&ssl=1"
-                    alt="Palestine and the Law book cover"
-                    width={407}
-                    height={550}
-                    className="w-full h-auto object-cover rounded-sm"
-                    priority
-                    unoptimized
-                  />
-                </div>
-              </div>
+            {/* Buttons */}
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/contents" className="btn-primary bg-gold text-forest-dark hover:bg-gold-light">
+                Explore Chapters
+              </Link>
+              <Link href="#about-book" className="btn-outline border-cream/40 text-cream hover:bg-white/10 hover:text-cream">
+                About the Book
+              </Link>
             </div>
           </div>
         </div>
