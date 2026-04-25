@@ -40,11 +40,11 @@ export default function Navbar() {
           <Link href="/" className="group w-full text-center block">
             <div
               className="font-serif font-bold text-cream group-hover:text-gold transition-colors duration-200 leading-none tracking-wide whitespace-nowrap"
-              style={{ fontSize: "7.2vw" }}
+              style={{ fontSize: "clamp(2.2rem, 7.2vw, 9rem)" }}
             >
-              PALESTINE <span className="font-normal text-cream/70 group-hover:text-gold/70" style={{ fontSize: "3.2vw" }}>and the</span> LAW
+              PALESTINE <span className="font-normal text-cream/70 group-hover:text-gold/70" style={{ fontSize: "clamp(1rem, 3.2vw, 4rem)" }}>and the</span> LAW
             </div>
-            <div className="font-sans tracking-[0.2em] text-gold/80 uppercase mt-1" style={{ fontSize: "1.1vw" }}>
+            <div className="font-sans tracking-[0.2em] text-gold/80 uppercase mt-1" style={{ fontSize: "clamp(0.6rem, 1.1vw, 1.1rem)" }}>
               Guidelines for Resolution of the Arab-Israel Conflict
             </div>
           </Link>
