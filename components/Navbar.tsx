@@ -35,9 +35,9 @@ export default function Navbar() {
       <header className="bg-forest text-cream sticky top-0 z-50 shadow-lg">
         <div className="h-1 w-full bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
 
-        <div className="w-full py-4 flex items-center justify-between px-4 sm:px-6">
-          {/* Title — centred, full width */}
-          <Link href="/" className="group w-full text-center block">
+        {/* Title row */}
+        <div className="w-full py-4 px-4 sm:px-6 text-center">
+          <Link href="/" className="group block">
             <div
               className="font-serif font-bold text-cream group-hover:text-gold transition-colors duration-200 leading-none tracking-wide whitespace-nowrap"
               style={{ fontSize: "clamp(2.2rem, 7.2vw, 9rem)" }}
@@ -48,10 +48,12 @@ export default function Navbar() {
               Guidelines for Resolution of the Arab-Israel Conflict
             </div>
           </Link>
+        </div>
 
-          {/* Mobile hamburger */}
+        {/* Mobile hamburger — sits at the bottom of the header */}
+        <div className="md:hidden flex justify-center pb-3">
           <button
-            className="md:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-gold"
+            className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-gold"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle navigation"
           >
