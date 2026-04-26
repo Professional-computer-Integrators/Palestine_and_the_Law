@@ -14,8 +14,14 @@ export default function HomePage() {
           }}
         />
 
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-36">
-          <div className="flex flex-col items-center gap-10">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col items-center gap-4">
+            {/* Subtitle */}
+            <p className="font-sans text-base text-cream/60 leading-relaxed max-w-lg text-center">
+              A comprehensive legal study of the Arab-Israel conflict and the
+              Palestinian question during the 20th century.
+            </p>
+
             {/* Book image */}
             <div className="relative">
               <div className="absolute -inset-4 bg-gold/70 rounded-sm blur-2xl animate-pulse" />
@@ -44,12 +50,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* wave divider */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 60L60 50C120 40 240 20 360 15C480 10 600 20 720 25C840 30 960 30 1080 25C1200 20 1320 10 1380 5L1440 0V60H0Z" fill="#faf8f4" />
-          </svg>
-        </div>
       </section>
 
       {/* ── ABOUT THE BOOK ───────────────────────────────────── */}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -15,12 +15,27 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(80);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
+    };
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
       const s = window.scrollY > 56;
       setScrolled(s);
       document.body.classList.toggle("sidebar-open", s);
+      // Re-measure header height after nav bar collapses/expands (300ms transition)
+      setTimeout(() => {
+        if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
+      }, 310);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
@@ -31,8 +46,9 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── STICKY TITLE BAR (always visible) ───────────────── */}
-      <header className="bg-forest text-cream sticky top-0 z-50 shadow-lg">
+      {/* ── STICKY WRAPPER (title bar only) ── */}
+      <div className="sticky top-0 z-50" ref={headerRef}>
+      <header className="bg-forest text-cream shadow-lg">
         <div className="h-1 w-full bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
 
         {/* Title row */}
@@ -48,19 +64,6 @@ export default function Navbar() {
               Guidelines for Resolution of the Arab-Israel Conflict
             </div>
           </Link>
-        </div>
-
-        {/* Mobile hamburger — sits at the bottom of the header */}
-        <div className="md:hidden flex justify-center pb-3">
-          <button
-            className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-gold"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle navigation"
-          >
-            <span className="block w-6 h-0.5 bg-cream mb-1.5" />
-            <span className="block w-6 h-0.5 bg-cream mb-1.5" />
-            <span className="block w-6 h-0.5 bg-cream" />
-          </button>
         </div>
 
         {/* ── HORIZONTAL NAV BAR (below title, hides on scroll) ── */}
@@ -89,9 +92,27 @@ export default function Navbar() {
           </nav>
         </div>
 
+      </header>
+
+      </div>{/* end sticky wrapper */}
+
+      {/* ── MOBILE BURGER — fixed floating button ── */}
+      <div className="md:hidden fixed left-0 z-50" style={{ top: `${headerHeight}px` }}>
+        <div className="w-fit bg-transparent rounded-br-md">
+          <button
+            className="p-3 focus:outline-none focus:ring-2 focus:ring-gold"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle navigation"
+          >
+            <span className="block w-6 h-0.5 bg-black mb-1.5" />
+            <span className="block w-6 h-0.5 bg-black mb-1.5" />
+            <span className="block w-6 h-0.5 bg-black" />
+          </button>
+        </div>
+
         {/* Mobile dropdown */}
         {mobileOpen && (
-          <div className="md:hidden bg-forest-dark border-t border-white/10">
+          <div className="bg-forest-dark/60 backdrop-blur-sm border-t border-white/10 shadow-lg">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -108,14 +129,14 @@ export default function Navbar() {
             ))}
           </div>
         )}
-      </header>
+      </div>
 
       {/* ── FIXED LEFT SIDEBAR (slides in when scrolled) ─────── */}
       <aside
         className={`hidden md:flex fixed left-0 z-40 flex-col bg-forest shadow-2xl border-r border-white/10 transition-transform duration-300 ${
           scrolled ? "translate-x-0" : "-translate-x-full"
         }`}
-        style={{ top: "61px", width: "200px", height: "calc(100vh - 61px)" }}
+        style={{ top: `${headerHeight}px`, width: "200px", height: `calc(100vh - ${headerHeight}px)` }}
       >
         <div className="h-0.5 w-full bg-gradient-to-r from-gold to-transparent" />
         <nav className="flex flex-col py-2 flex-1 overflow-y-auto">
