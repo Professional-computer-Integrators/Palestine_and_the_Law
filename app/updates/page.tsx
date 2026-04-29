@@ -1,6 +1,7 @@
 "use client";
 
 import { useTheme } from "@/contexts/ThemeContext";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function UpdatesPage() {
   const { updates } = useTheme();
@@ -72,8 +73,8 @@ export default function UpdatesPage() {
           ) : (
             <div className="space-y-6">
               {updates.map((update, idx) => (
+                <ScrollReveal key={update.id} direction="up" delay={idx < 4 ? idx * 80 : 0}>
                 <article
-                  key={update.id}
                   className="bg-surface border border-cream-dark rounded-sm shadow-sm overflow-hidden"
                 >
                   <div className="h-1 w-full bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
@@ -103,6 +104,7 @@ export default function UpdatesPage() {
                     </p>
                   </div>
                 </article>
+                </ScrollReveal>
               ))}
             </div>
           )}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const acknowledgements = [
   {
@@ -93,6 +94,7 @@ export default function DedicationPage() {
       {/* Dedication */}
       <section className="py-20 bg-parchment">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal direction="up">
           <div className="relative bg-surface border border-cream-dark rounded-sm shadow-sm px-10 py-14 text-center">
             {/* decorative quote marks */}
             <span className="absolute top-4 left-8 font-serif text-7xl text-gold/20 leading-none select-none">
@@ -121,6 +123,7 @@ export default function DedicationPage() {
               — Professor Musa E. Mazzawi
             </p>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -136,7 +139,8 @@ export default function DedicationPage() {
 
           <div className="grid sm:grid-cols-2 gap-4">
             {acknowledgements.map((ack, i) => (
-              <div key={i} className="card p-5 flex gap-4 group hover:border-gold/30 transition-colors duration-200">
+              <ScrollReveal key={i} direction="up" delay={i < 6 ? i * 60 : 0}>
+              <div className="card p-5 flex gap-4 group hover:border-gold/30 transition-colors duration-200">
                 <div className="flex-shrink-0 w-1 rounded-full bg-gold/40 group-hover:bg-gold transition-colors duration-200" />
                 <div>
                   <h3 className="font-sans text-xs font-semibold text-gold uppercase tracking-wide mb-2">
@@ -147,6 +151,7 @@ export default function DedicationPage() {
                   </p>
                 </div>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>

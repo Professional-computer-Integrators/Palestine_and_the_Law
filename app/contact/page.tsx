@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -32,7 +33,7 @@ export default function ContactPage() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <ScrollReveal direction="up" className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="font-sans text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Palestine and the Law
           </p>
@@ -44,7 +45,7 @@ export default function ContactPage() {
             For enquiries about the book, permission requests, or any other
             matters relating to this work.
           </p>
-        </div>
+        </ScrollReveal>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 40L1440 40L1440 0C1440 0 1200 30 720 20C240 10 0 0 0 0L0 40Z" fill="#f4f8fc" />
@@ -55,6 +56,7 @@ export default function ContactPage() {
       {/* Contact form */}
       <section className="py-20 bg-parchment">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal direction="up">
           {submitted ? (
             <div className="bg-surface border border-cream-dark rounded-sm p-10 text-center shadow-sm">
               <div className="w-16 h-16 bg-forest/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -81,9 +83,6 @@ export default function ContactPage() {
             </div>
           ) : (
             <div className="bg-surface border border-cream-dark rounded-sm shadow-sm p-8 md:p-12">
-              <h2 className="font-serif text-2xl font-bold text-forest mb-2">
-                Get in Touch
-              </h2>
               <div className="gold-divider mb-8" />
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -194,6 +193,7 @@ export default function ContactPage() {
               reviewer who may quote brief passages in a review.
             </p>
           </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

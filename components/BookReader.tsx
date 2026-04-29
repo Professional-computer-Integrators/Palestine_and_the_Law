@@ -422,6 +422,67 @@ export function BookReader({
       onClick={(e) => e.target === e.currentTarget && onClose()}
       onWheel={(e) => e.preventDefault()}
     >
+      {/* ── Animated particle dots ── */}
+      <style>{`
+        @keyframes particle-rise {
+          0%   { transform: translateY(0) scale(1);   opacity: 0; }
+          10%  { opacity: 1; }
+          90%  { opacity: 0.6; }
+          100% { transform: translateY(-110vh) scale(0.4); opacity: 0; }
+        }
+        @keyframes particle-drift {
+          0%, 100% { margin-left: 0; }
+          50%       { margin-left: 30px; }
+        }
+        .br-particle {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+          animation: particle-rise linear infinite, particle-drift ease-in-out infinite;
+        }
+      `}</style>
+      {/* 24 floating dots scattered across the overlay */}
+      {[
+        { l:"5%",  s:4,  dur:9,  delay:0,   ddur:4,  c:"rgba(85,133,180,0.5)" },
+        { l:"10%", s:6,  dur:12, delay:2,   ddur:5,  c:"rgba(224,176,96,0.4)" },
+        { l:"18%", s:3,  dur:8,  delay:5,   ddur:3,  c:"rgba(85,133,180,0.35)" },
+        { l:"25%", s:5,  dur:14, delay:1,   ddur:6,  c:"rgba(255,255,255,0.15)" },
+        { l:"33%", s:7,  dur:10, delay:3.5, ddur:5,  c:"rgba(85,133,180,0.4)" },
+        { l:"42%", s:3,  dur:11, delay:0.5, ddur:4,  c:"rgba(224,176,96,0.3)" },
+        { l:"50%", s:5,  dur:13, delay:4,   ddur:6,  c:"rgba(255,255,255,0.12)" },
+        { l:"58%", s:4,  dur:9,  delay:1.5, ddur:3,  c:"rgba(85,133,180,0.45)" },
+        { l:"65%", s:8,  dur:15, delay:6,   ddur:7,  c:"rgba(224,176,96,0.25)" },
+        { l:"72%", s:3,  dur:10, delay:2.5, ddur:4,  c:"rgba(85,133,180,0.3)" },
+        { l:"80%", s:6,  dur:12, delay:0,   ddur:5,  c:"rgba(255,255,255,0.1)" },
+        { l:"88%", s:4,  dur:8,  delay:3,   ddur:3,  c:"rgba(85,133,180,0.5)" },
+        { l:"93%", s:5,  dur:11, delay:1,   ddur:6,  c:"rgba(224,176,96,0.35)" },
+        { l:"3%",  s:3,  dur:16, delay:7,   ddur:8,  c:"rgba(255,255,255,0.08)" },
+        { l:"15%", s:7,  dur:13, delay:4.5, ddur:5,  c:"rgba(85,133,180,0.3)" },
+        { l:"28%", s:4,  dur:9,  delay:2,   ddur:4,  c:"rgba(224,176,96,0.4)" },
+        { l:"38%", s:5,  dur:14, delay:5.5, ddur:6,  c:"rgba(85,133,180,0.35)" },
+        { l:"48%", s:3,  dur:10, delay:0.5, ddur:3,  c:"rgba(255,255,255,0.15)" },
+        { l:"55%", s:6,  dur:12, delay:3,   ddur:5,  c:"rgba(85,133,180,0.5)" },
+        { l:"63%", s:4,  dur:8,  delay:1.5, ddur:4,  c:"rgba(224,176,96,0.3)" },
+        { l:"75%", s:8,  dur:15, delay:6.5, ddur:7,  c:"rgba(255,255,255,0.1)" },
+        { l:"82%", s:3,  dur:11, delay:2,   ddur:4,  c:"rgba(85,133,180,0.4)" },
+        { l:"90%", s:5,  dur:9,  delay:4,   ddur:3,  c:"rgba(224,176,96,0.35)" },
+        { l:"97%", s:4,  dur:13, delay:0,   ddur:5,  c:"rgba(85,133,180,0.45)" },
+      ].map((p, i) => (
+        <span
+          key={i}
+          className="br-particle"
+          style={{
+            left: p.l,
+            bottom: "-10px",
+            width: p.s,
+            height: p.s,
+            background: p.c,
+            animationDuration: `${p.dur}s, ${p.ddur}s`,
+            animationDelay: `${p.delay}s, ${p.delay}s`,
+          }}
+        />
+      ))}
+
       {/* ── Book shell ── */}
       <div
         style={{
