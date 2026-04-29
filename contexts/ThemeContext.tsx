@@ -1,0 +1,230 @@
+"use client";
+
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { hexToRgb, lighten, darken } from "@/lib/colorUtils";
+
+export const DEFAULT_PRIMARY = "#3a6491";
+
+export const FONT_OPTIONS = [
+  // ── Serif heading + Sans body ──────────────────────────────────────
+  { id: "classic",    label: "Classic — Playfair Display + Inter",         headingVar: "--font-playfair",    bodyVar: "--font-inter" },
+  { id: "editorial",  label: "Editorial — Lora + Open Sans",               headingVar: "--font-lora",        bodyVar: "--font-opensans" },
+  { id: "scholarly",  label: "Scholarly — Crimson Text + Source Sans",     headingVar: "--font-crimson",     bodyVar: "--font-sourcesans" },
+  { id: "elegant",    label: "Elegant — EB Garamond + Raleway",            headingVar: "--font-garamond",    bodyVar: "--font-raleway" },
+  { id: "literary",   label: "Literary — Cormorant Garamond + Nunito",     headingVar: "--font-cormorant",   bodyVar: "--font-nunito" },
+  { id: "academic",   label: "Academic — Libre Baskerville + Libre Franklin", headingVar: "--font-baskerville", bodyVar: "--font-franklin" },
+  { id: "heritage",   label: "Heritage — Spectral + Karla",               headingVar: "--font-spectral",    bodyVar: "--font-karla" },
+  { id: "refined",    label: "Refined — Cardo + Cabin",                   headingVar: "--font-cardo",       bodyVar: "--font-cabin" },
+  { id: "classic2",   label: "Classic II — Libre Caslon + Mulish",        headingVar: "--font-caslon",      bodyVar: "--font-mulish" },
+  { id: "journal",    label: "Journal — Domine + Fira Sans",              headingVar: "--font-domine",      bodyVar: "--font-firasans" },
+  // ── Sans heading + Sans body ────────────────────────────────────────
+  { id: "modern",     label: "Modern — Merriweather + Roboto",            headingVar: "--font-merriweather", bodyVar: "--font-roboto" },
+  { id: "clean",      label: "Clean — Work Sans + DM Sans",               headingVar: "--font-worksans",    bodyVar: "--font-dmsans" },
+  { id: "geometric",  label: "Geometric — Josefin Sans + Jost",           headingVar: "--font-josefin",     bodyVar: "--font-jost" },
+  { id: "minimal",    label: "Minimal — Outfit + Manrope",                headingVar: "--font-outfit",      bodyVar: "--font-manrope" },
+  { id: "corporate",  label: "Corporate — Barlow + IBM Plex Sans",        headingVar: "--font-barlow",      bodyVar: "--font-ibmplexsans" },
+  // ── Display / expressive ────────────────────────────────────────────
+  { id: "bold",       label: "Bold — Syne + Space Grotesk",               headingVar: "--font-syne",        bodyVar: "--font-spacegrotesk" },
+  { id: "humanist",   label: "Humanist — Tenor Sans + Plus Jakarta Sans", headingVar: "--font-tenorsans",   bodyVar: "--font-jakarta" },
+  { id: "newspaper",  label: "Newspaper — Zilla Slab + PT Sans",          headingVar: "--font-zillaslab",   bodyVar: "--font-ptsans" },
+  { id: "academic2",  label: "Academic II — Fraunces + Nunito Sans",      headingVar: "--font-fraunces",    bodyVar: "--font-nunitosans" },
+  { id: "typewriter", label: "Typewriter — Roboto Slab + Roboto Mono",    headingVar: "--font-robotoslab",  bodyVar: "--font-robotomono" },
+] as const;
+
+export type FontOptionId = (typeof FONT_OPTIONS)[number]["id"];
+
+export interface SiteUpdate {
+  id: string;
+  title: string;
+  content: string;
+  date: string;
+}
+
+interface ThemeContextValue {
+  primaryColor: string;
+  applyColor: (hex: string) => void;
+  savedColors: string[];
+  saveColor: (hex: string) => void;
+  removeColor: (hex: string) => void;
+  fontOptionId: FontOptionId;
+  setFontOptionId: (id: FontOptionId) => void;
+  isAdmin: boolean;
+  login: (username: string, password: string) => boolean;
+  logout: () => void;
+  adminPassword: string;
+  setAdminPassword: (pw: string) => void;
+  updates: SiteUpdate[];
+  addUpdate: (title: string, content: string) => void;
+  deleteUpdate: (id: string) => void;
+}
+
+const ThemeContext = createContext<ThemeContextValue>({
+  primaryColor: DEFAULT_PRIMARY,
+  applyColor: () => {},
+  savedColors: [],
+  saveColor: () => {},
+  removeColor: () => {},
+  fontOptionId: "classic",
+  setFontOptionId: () => {},
+  isAdmin: false,
+  login: () => false,
+  logout: () => {},
+  adminPassword: "password",
+  setAdminPassword: () => {},
+  updates: [],
+  addUpdate: () => {},
+  deleteUpdate: () => {},
+});
+
+export function useTheme() {
+  return useContext(ThemeContext);
+}
+
+function applyPrimaryToDom(hex: string) {
+  const [r, g, b] = hexToRgb(hex);
+  const lightHex = lighten(hex, 0.22);
+  const darkHex = darken(hex, 0.22);
+  const [rl, gl, bl] = hexToRgb(lightHex);
+  const [rd, gd, bd] = hexToRgb(darkHex);
+  const root = document.documentElement;
+  root.style.setProperty("--color-primary", `${r} ${g} ${b}`);
+  root.style.setProperty("--color-primary-light", `${rl} ${gl} ${bl}`);
+  root.style.setProperty("--color-primary-dark", `${rd} ${gd} ${bd}`);
+}
+
+function applyFontToDom(id: FontOptionId) {
+  const opt = FONT_OPTIONS.find((f) => f.id === id) ?? FONT_OPTIONS[0];
+  const root = document.documentElement;
+  root.style.setProperty("--font-heading", `var(${opt.headingVar})`);
+  root.style.setProperty("--font-body", `var(${opt.bodyVar})`);
+}
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [primaryColor, setPrimaryColor] = useState(DEFAULT_PRIMARY);
+  const [savedColors, setSavedColors] = useState<string[]>([]);
+  const [fontOptionId, setFontState] = useState<FontOptionId>("classic");
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminPassword, setAdminPw] = useState("password");
+  const [updates, setUpdates] = useState<SiteUpdate[]>([]);
+
+  useEffect(() => {
+    // Load saved theme
+    const storedColor = localStorage.getItem("theme_primary_color") ?? DEFAULT_PRIMARY;
+    const storedSaved: string[] = JSON.parse(
+      localStorage.getItem("theme_saved_colors") ?? "[]"
+    );
+    const storedFont =
+      (localStorage.getItem("theme_font_option") as FontOptionId) ?? "classic";
+    const storedPw = localStorage.getItem("admin_password") ?? "password";
+    const storedUpdates: SiteUpdate[] = JSON.parse(
+      localStorage.getItem("site_updates") ?? "[]"
+    );
+
+    setPrimaryColor(storedColor);
+    applyPrimaryToDom(storedColor);
+    setSavedColors(storedSaved);
+    setFontState(storedFont);
+    applyFontToDom(storedFont);
+    setAdminPw(storedPw);
+    setUpdates(storedUpdates);
+
+    // Restore session auth
+    if (sessionStorage.getItem("admin_auth") === "1") {
+      setIsAdmin(true);
+    }
+  }, []);
+
+  const applyColor = (hex: string) => {
+    setPrimaryColor(hex);
+    applyPrimaryToDom(hex);
+    localStorage.setItem("theme_primary_color", hex);
+  };
+
+  const saveColor = (hex: string) => {
+    setSavedColors((prev) => {
+      const updated = prev.includes(hex) ? prev : [hex, ...prev].slice(0, 24);
+      localStorage.setItem("theme_saved_colors", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const removeColor = (hex: string) => {
+    setSavedColors((prev) => {
+      const updated = prev.filter((c) => c !== hex);
+      localStorage.setItem("theme_saved_colors", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const setFontOptionId = (id: FontOptionId) => {
+    setFontState(id);
+    applyFontToDom(id);
+    localStorage.setItem("theme_font_option", id);
+  };
+
+  const login = (username: string, password: string): boolean => {
+    const pw = localStorage.getItem("admin_password") ?? "password";
+    if (username === "master" && password === pw) {
+      setIsAdmin(true);
+      sessionStorage.setItem("admin_auth", "1");
+      return true;
+    }
+    return false;
+  };
+
+  const logout = () => {
+    setIsAdmin(false);
+    sessionStorage.removeItem("admin_auth");
+  };
+
+  const setAdminPassword = (pw: string) => {
+    setAdminPw(pw);
+    localStorage.setItem("admin_password", pw);
+  };
+
+  const addUpdate = (title: string, content: string) => {
+    const update: SiteUpdate = {
+      id: Date.now().toString(),
+      title,
+      content,
+      date: new Date().toISOString(),
+    };
+    setUpdates((prev) => {
+      const updated = [update, ...prev];
+      localStorage.setItem("site_updates", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  const deleteUpdate = (id: string) => {
+    setUpdates((prev) => {
+      const updated = prev.filter((u) => u.id !== id);
+      localStorage.setItem("site_updates", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  return (
+    <ThemeContext.Provider
+      value={{
+        primaryColor,
+        applyColor,
+        savedColors,
+        saveColor,
+        removeColor,
+        fontOptionId,
+        setFontOptionId,
+        isAdmin,
+        login,
+        logout,
+        adminPassword,
+        setAdminPassword,
+        updates,
+        addUpdate,
+        deleteUpdate,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
+}

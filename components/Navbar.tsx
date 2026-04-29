@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import AdminButton from "@/components/AdminButton";
 
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/contents", label: "Overview of Chapters" },
   { href: "/dedication", label: "Dedication & Acknowledgements" },
+  { href: "/updates", label: "Updates" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -32,10 +34,6 @@ export default function Navbar() {
       const s = window.scrollY > 56;
       setScrolled(s);
       document.body.classList.toggle("sidebar-open", s);
-      // Re-measure header height after nav bar collapses/expands (300ms transition)
-      setTimeout(() => {
-        if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
-      }, 310);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
@@ -52,7 +50,12 @@ export default function Navbar() {
         <div className="h-1 w-full bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
 
         {/* Title row */}
-        <div className="w-full py-4 px-4 sm:px-6 text-center">
+        <div className="relative w-full py-4 px-4 sm:px-6 text-center">
+          {/* Admin button — top right */}
+          <div className="absolute top-1/2 right-4 sm:right-6 -translate-y-1/2">
+            <AdminButton />
+          </div>
+
           <Link href="/" className="group block">
             <div
               className="font-serif font-bold text-cream group-hover:text-gold transition-colors duration-200 leading-none tracking-wide whitespace-nowrap"
@@ -66,11 +69,21 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* ── HORIZONTAL NAV BAR (below title, hides on scroll) ── */}
+        {/* ── HORIZONTAL NAV BAR — absolutely positioned so it never affects header height ── */}
         <div
-          className={`hidden md:block border-t border-white/10 bg-forest-dark overflow-hidden transition-all duration-300 ${
-            scrolled ? "max-h-0 opacity-0" : "max-h-16 opacity-100"
-          }`}
+          className="hidden md:block border-t border-white/10 bg-forest-dark"
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: "100%",
+            transformOrigin: "top",
+            transition: "opacity 420ms cubic-bezier(0.4,0,0.2,1), transform 420ms cubic-bezier(0.4,0,0.2,1)",
+            opacity: scrolled ? 0 : 1,
+            transform: scrolled ? "translateY(-6px) scaleY(0.97)" : "translateY(0) scaleY(1)",
+            pointerEvents: scrolled ? "none" : "auto",
+            zIndex: 49,
+          }}
         >
           <nav className="flex justify-center w-full">
             {navLinks.map((link) => (
@@ -133,10 +146,15 @@ export default function Navbar() {
 
       {/* ── FIXED LEFT SIDEBAR (slides in when scrolled) ─────── */}
       <aside
-        className={`hidden md:flex fixed left-0 z-40 flex-col bg-forest shadow-2xl border-r border-white/10 transition-transform duration-300 ${
-          scrolled ? "translate-x-0" : "-translate-x-full"
-        }`}
-        style={{ top: `${headerHeight}px`, width: "200px", height: `calc(100vh - ${headerHeight}px)` }}
+        className="hidden md:flex fixed left-0 z-40 flex-col bg-forest shadow-2xl border-r border-white/10"
+        style={{
+          top: `${headerHeight}px`,
+          width: "200px",
+          height: `calc(100vh - ${headerHeight}px)`,
+          transform: scrolled ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 480ms cubic-bezier(0.4,0,0.2,1)",
+          willChange: "transform",
+        }}
       >
         <div className="h-0.5 w-full bg-gradient-to-r from-gold to-transparent" />
         <nav className="flex flex-col py-2 flex-1 overflow-y-auto">

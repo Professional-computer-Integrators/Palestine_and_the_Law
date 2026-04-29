@@ -47,7 +47,7 @@ export default function ContactPage() {
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 40L1440 40L1440 0C1440 0 1200 30 720 20C240 10 0 0 0 0L0 40Z" fill="#faf8f4" />
+            <path d="M0 40L1440 40L1440 0C1440 0 1200 30 720 20C240 10 0 0 0 0L0 40Z" fill="#f4f8fc" />
           </svg>
         </div>
       </section>
@@ -56,7 +56,7 @@ export default function ContactPage() {
       <section className="py-20 bg-parchment">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {submitted ? (
-            <div className="bg-white border border-green-200 rounded-sm p-10 text-center shadow-sm">
+            <div className="bg-surface border border-cream-dark rounded-sm p-10 text-center shadow-sm">
               <div className="w-16 h-16 bg-forest/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-forest" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -65,7 +65,7 @@ export default function ContactPage() {
               <h2 className="font-serif text-2xl font-bold text-forest mb-2">
                 Message Sent
               </h2>
-              <p className="font-sans text-base text-gray-600">
+              <p className="font-sans text-base text-ink-muted">
                 Thank you for reaching out. We will endeavour to respond to your
                 enquiry as soon as possible.
               </p>
@@ -80,7 +80,7 @@ export default function ContactPage() {
               </button>
             </div>
           ) : (
-            <div className="bg-white border border-cream-dark rounded-sm shadow-sm p-8 md:p-12">
+            <div className="bg-surface border border-cream-dark rounded-sm shadow-sm p-8 md:p-12">
               <h2 className="font-serif text-2xl font-bold text-forest mb-2">
                 Get in Touch
               </h2>
@@ -91,7 +91,7 @@ export default function ContactPage() {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block font-sans text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2"
+                      className="block font-sans text-xs font-semibold text-ink-muted uppercase tracking-wide mb-2"
                     >
                       Full Name <span className="text-red-400">*</span>
                     </label>
@@ -102,14 +102,14 @@ export default function ContactPage() {
                       required
                       value={form.name}
                       onChange={handleChange}
-                      className="w-full border border-cream-dark rounded-sm px-4 py-3 font-sans text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest transition-colors"
+                      className="field"
                       placeholder="Your full name"
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="email"
-                      className="block font-sans text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2"
+                      className="block font-sans text-xs font-semibold text-ink-muted uppercase tracking-wide mb-2"
                     >
                       Email Address <span className="text-red-400">*</span>
                     </label>
@@ -120,7 +120,7 @@ export default function ContactPage() {
                       required
                       value={form.email}
                       onChange={handleChange}
-                      className="w-full border border-cream-dark rounded-sm px-4 py-3 font-sans text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest transition-colors"
+                      className="field"
                       placeholder="you@example.com"
                     />
                   </div>
@@ -129,7 +129,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="subject"
-                    className="block font-sans text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2"
+                      className="block font-sans text-xs font-semibold text-ink-muted uppercase tracking-wide mb-2"
                   >
                     Subject <span className="text-red-400">*</span>
                   </label>
@@ -139,7 +139,7 @@ export default function ContactPage() {
                     required
                     value={form.subject}
                     onChange={handleChange}
-                    className="w-full border border-cream-dark rounded-sm px-4 py-3 font-sans text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest transition-colors bg-white"
+                    className="field bg-surface"
                   >
                     <option value="">Select a subject…</option>
                     <option value="general">General Enquiry</option>
@@ -153,7 +153,7 @@ export default function ContactPage() {
                 <div>
                   <label
                     htmlFor="message"
-                    className="block font-sans text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2"
+                      className="block font-sans text-xs font-semibold text-ink-muted uppercase tracking-wide mb-2"
                   >
                     Message <span className="text-red-400">*</span>
                   </label>
@@ -164,13 +164,13 @@ export default function ContactPage() {
                     rows={6}
                     value={form.message}
                     onChange={handleChange}
-                    className="w-full border border-cream-dark rounded-sm px-4 py-3 font-sans text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest transition-colors resize-none"
+                    className="field resize-none"
                     placeholder="Please describe your enquiry…"
                   />
                 </div>
 
                 <div className="flex items-center justify-between pt-2">
-                  <p className="font-sans text-xs text-gray-400">
+                  <p className="font-sans text-xs text-ink-faint">
                     <span className="text-red-400">*</span> Required fields
                   </p>
                   <button type="submit" className="btn-primary">
@@ -186,7 +186,7 @@ export default function ContactPage() {
             <h3 className="font-serif text-base font-semibold text-forest mb-2">
               Copyright &amp; Permissions
             </h3>
-            <p className="font-sans text-sm text-gray-600 leading-relaxed">
+            <p className="font-sans text-sm text-ink-muted leading-relaxed">
               No part of this website or any part of the book contained in it
               may be reproduced in any form or by any electronic or mechanical
               means, including information storage and retrieval systems, without

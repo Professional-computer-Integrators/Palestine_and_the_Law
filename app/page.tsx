@@ -43,7 +43,7 @@ export default function HomePage() {
               <Link href="/contents" className="btn-primary bg-gold text-forest-dark hover:bg-gold-light">
                 Explore Chapters
               </Link>
-              <Link href="#about-book" className="btn-outline border-cream/40 text-cream hover:bg-white/10 hover:text-cream">
+              <Link href="#about-book" className="btn-outline border-cream/40 text-cream hover:bg-surface/10 hover:text-cream">
                 About the Book
               </Link>
             </div>
@@ -87,7 +87,7 @@ export default function HomePage() {
                 `Grounded in a rigorous analysis of the law, the book draws on detailed contemporaneous source material, including records, interpretations and policy emanating from the UK and US governments, members of the United Nations Security Council and the founders of the State of Israel.`,
                 `Palestine and the Law has drawn praise for its extensive analysis of, and adherence to, the legal position and its avoidance of political argumentation. It remains an invaluable resource for anyone seeking a deeper understanding of the legal dimensions of the Arab-Israel conflict.`,
               ].map((para, i) => (
-                <p key={i} className="font-sans text-base text-gray-700 leading-relaxed">
+                <p key={i} className="font-sans text-base text-ink leading-relaxed">
                   {para}
                 </p>
               ))}
@@ -148,7 +148,7 @@ export default function HomePage() {
                   {theme.title}
                 </h3>
                 <div className="w-8 h-0.5 bg-gold mb-3" />
-                <p className="font-sans text-sm text-gray-600 leading-relaxed">
+                <p className="font-sans text-sm text-ink-muted leading-relaxed">
                   {theme.desc}
                 </p>
               </div>
@@ -194,7 +194,7 @@ export default function HomePage() {
                   `He was the author of numerous publications on the issue in addition to "Palestine and the Law", and also on the question of Rhodesia. His views on the Middle East and the application of international law were frequently sought out in UK and international radio and television current affairs programmes.`,
                   `The publication of this study in 1997 reflected the author's fervent hope that the clarification of the relevant legal principles and the resort to the law for resolving the dispute would lead to a just and lasting peace in the Middle East.`,
                 ].map((para, i) => (
-                  <p key={i} className="font-sans text-base text-gray-700 leading-relaxed">
+                  <p key={i} className="font-sans text-base text-ink leading-relaxed">
                     {para}
                   </p>
                 ))}
@@ -229,7 +229,7 @@ export default function HomePage() {
             <Link href="/contents" className="btn-primary bg-gold text-forest-dark hover:bg-gold-light">
               View All Chapters
             </Link>
-            <Link href="/contact" className="btn-outline border-cream/40 text-cream hover:bg-white/10 hover:text-cream">
+            <Link href="/contact" className="btn-outline border-cream/40 text-cream hover:bg-surface/10 hover:text-cream">
               Get in Touch
             </Link>
           </div>

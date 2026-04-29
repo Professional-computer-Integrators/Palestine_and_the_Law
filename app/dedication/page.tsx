@@ -85,7 +85,7 @@ export default function DedicationPage() {
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 40L1440 40L1440 0C1440 0 1200 30 720 20C240 10 0 0 0 0L0 40Z" fill="#faf8f4" />
+            <path d="M0 40L1440 40L1440 0C1440 0 1200 30 720 20C240 10 0 0 0 0L0 40Z" fill="#f4f8fc" />
           </svg>
         </div>
       </section>
@@ -93,7 +93,7 @@ export default function DedicationPage() {
       {/* Dedication */}
       <section className="py-20 bg-parchment">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative bg-white border border-cream-dark rounded-sm shadow-sm px-10 py-14 text-center">
+          <div className="relative bg-surface border border-cream-dark rounded-sm shadow-sm px-10 py-14 text-center">
             {/* decorative quote marks */}
             <span className="absolute top-4 left-8 font-serif text-7xl text-gold/20 leading-none select-none">
               &ldquo;
@@ -111,13 +111,13 @@ export default function DedicationPage() {
               and my children{" "}
               <span className="font-semibold">Josephine, Elias and Carmen</span>,
             </p>
-            <p className="font-sans text-base text-gray-600 italic leading-relaxed">
+            <p className="font-sans text-base text-ink-muted italic leading-relaxed">
               without whose insistence and constant support this book would not
               have been written.
             </p>
 
             <div className="gold-divider mx-auto mt-8" />
-            <p className="font-sans text-sm text-gray-400 mt-4">
+            <p className="font-sans text-sm text-ink-faint mt-4">
               — Professor Musa E. Mazzawi
             </p>
           </div>
@@ -142,7 +142,7 @@ export default function DedicationPage() {
                   <h3 className="font-sans text-xs font-semibold text-gold uppercase tracking-wide mb-2">
                     {ack.source}
                   </h3>
-                  <p className="font-sans text-sm text-gray-600 leading-relaxed">
+                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
                     {ack.detail}
                   </p>
                 </div>

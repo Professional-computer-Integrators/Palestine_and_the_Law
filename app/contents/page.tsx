@@ -1,4 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
+import { BookReader } from "@/components/BookReader";
+
+const CHAPTER_1_API = "/api/chapter";
 
 const chapters = [
   {
@@ -142,8 +148,20 @@ const appendices = [
 ];
 
 export default function ContentsPage() {
+  const [openChapter, setOpenChapter] = useState<{
+    title: string;
+    url: string;
+  } | null>(null);
+
   return (
     <>
+      {openChapter && (
+        <BookReader
+          title={openChapter.title}
+          apiUrl={openChapter.url}
+          onClose={() => setOpenChapter(null)}
+        />
+      )}
       {/* Page header */}
       <section className="bg-forest py-20 relative overflow-hidden">
         <div
@@ -168,7 +186,7 @@ export default function ContentsPage() {
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 40L1440 40L1440 0C1440 0 1200 30 720 20C240 10 0 0 0 0L0 40Z" fill="#faf8f4" />
+            <path d="M0 40L1440 40L1440 0C1440 0 1200 30 720 20C240 10 0 0 0 0L0 40Z" fill="#f4f8fc" />
           </svg>
         </div>
       </section>
@@ -179,14 +197,27 @@ export default function ContentsPage() {
           <div className="flex items-center gap-4 mb-10">
             <h2 className="font-serif text-2xl font-bold text-forest">Chapters</h2>
             <div className="flex-1 h-px bg-cream-dark" />
-            <span className="font-sans text-sm text-gray-500">1 – 19</span>
+            <span className="font-sans text-sm text-ink-muted">1 – 19</span>
           </div>
 
           <div className="space-y-4">
-            {chapters.map((ch) => (
+            {chapters.map((ch) => {
+              const isClickable = ch.num === 1;
+              return (
               <div
                 key={ch.num}
-                className="card p-6 flex gap-6 group hover:border-gold/40 transition-colors duration-200"
+                onClick={
+                  isClickable
+                    ? () =>
+                        setOpenChapter({
+                          title: `Chapter 1 — ${ch.title}`,
+                          url: CHAPTER_1_API,
+                        })
+                    : undefined
+                }
+                className={`card p-6 flex gap-6 group hover:border-gold/40 transition-colors duration-200 ${
+                  isClickable ? "cursor-pointer hover:shadow-md" : ""
+                }`}
               >
                 {/* Chapter number */}
                 <div className="flex-shrink-0 w-12 h-12 rounded-sm bg-forest flex items-center justify-center group-hover:bg-gold transition-colors duration-200">
@@ -195,16 +226,34 @@ export default function ContentsPage() {
                   </span>
                 </div>
                 {/* Content */}
-                <div className="min-w-0">
-                  <h3 className="font-serif text-lg font-semibold text-forest mb-2 leading-tight">
-                    Chapter {ch.num} – {ch.title}
-                  </h3>
-                  <p className="font-sans text-sm text-gray-600 leading-relaxed">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="font-serif text-lg font-semibold text-forest mb-2 leading-tight">
+                      Chapter {ch.num} – {ch.title}
+                    </h3>
+                    {isClickable && (
+                      <span
+                        className="flex-shrink-0 flex items-center gap-1 font-sans text-[11px] font-semibold tracking-wide px-2.5 py-1 rounded-full mt-0.5"
+                        style={{
+                          background: "rgb(var(--color-primary) / 0.12)",
+                          color: "rgb(var(--color-primary))",
+                          border: "1px solid rgb(var(--color-primary) / 0.25)",
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                        </svg>
+                        Read Chapter
+                      </span>
+                    )}
+                  </div>
+                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
                     {ch.desc}
                   </p>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -215,7 +264,7 @@ export default function ContentsPage() {
           <div className="flex items-center gap-4 mb-10">
             <h2 className="font-serif text-2xl font-bold text-forest">Appendices</h2>
             <div className="flex-1 h-px bg-cream-dark" />
-            <span className="font-sans text-sm text-gray-500">I – VIII</span>
+            <span className="font-sans text-sm text-ink-muted">I – VIII</span>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">
@@ -233,8 +282,8 @@ export default function ContentsPage() {
                   <h3 className="font-serif text-base font-semibold text-forest mb-1 leading-tight">
                     Appendix {app.num}
                   </h3>
-                  <p className="font-sans text-sm font-medium text-gray-700 mb-1">{app.title}</p>
-                  <p className="font-sans text-xs text-gray-500 leading-relaxed">{app.desc}</p>
+                  <p className="font-sans text-sm font-medium text-ink mb-1">{app.title}</p>
+                  <p className="font-sans text-xs text-ink-muted leading-relaxed">{app.desc}</p>
                 </div>
               </div>
             ))}
