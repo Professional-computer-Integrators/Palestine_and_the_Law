@@ -1,106 +1,51 @@
 import type { Metadata } from "next";
-import {
-  Playfair_Display,
-  Inter,
-  Merriweather,
-  Roboto,
-  Lora,
-  Open_Sans,
-  Crimson_Text,
-  Source_Sans_3,
-  EB_Garamond,
-  Raleway,
-  Cormorant_Garamond,
-  Nunito,
-  Libre_Baskerville,
-  Libre_Franklin,
-  Spectral,
-  Karla,
-  Cardo,
-  Cabin,
-  Mulish,
-  Domine,
-  Fira_Sans,
-  Work_Sans,
-  DM_Sans,
-  Josefin_Sans,
-  Jost,
-  Outfit,
-  Manrope,
-  Barlow,
-  IBM_Plex_Sans,
-  Syne,
-  Space_Grotesk,
-  Tenor_Sans,
-  Plus_Jakarta_Sans,
-  Zilla_Slab,
-  PT_Sans,
-  Fraunces,
-  Nunito_Sans,
-  Roboto_Slab,
-  Roboto_Mono,
-} from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
-// ── Existing 5 ────────────────────────────────────────────────────────────────
-const playfair     = Playfair_Display({ variable: "--font-playfair",    subsets: ["latin"], weight: ["400","500","600","700","800"] });
-const inter        = Inter(            { variable: "--font-inter",       subsets: ["latin"], weight: ["300","400","500","600"] });
-const merriweather = Merriweather(     { variable: "--font-merriweather",subsets: ["latin"], weight: ["300","400","700"] });
-const roboto       = Roboto(           { variable: "--font-roboto",      subsets: ["latin"], weight: ["300","400","500","700"] });
-const lora         = Lora(             { variable: "--font-lora",        subsets: ["latin"], weight: ["400","500","600","700"] });
-const openSans     = Open_Sans(        { variable: "--font-opensans",    subsets: ["latin"], weight: ["300","400","600"] });
-const crimsonText  = Crimson_Text(     { variable: "--font-crimson",     subsets: ["latin"], weight: ["400","600"] });
-const sourceSans   = Source_Sans_3(    { variable: "--font-sourcesans",  subsets: ["latin"], weight: ["300","400","600"] });
-const ebGaramond   = EB_Garamond(      { variable: "--font-garamond",    subsets: ["latin"], weight: ["400","500","600","700"] });
-const raleway      = Raleway(          { variable: "--font-raleway",     subsets: ["latin"], weight: ["300","400","500","600"] });
-
-// ── New 15 ────────────────────────────────────────────────────────────────────
-const cormorant    = Cormorant_Garamond({ variable: "--font-cormorant",   subsets: ["latin"], weight: ["400","500","600","700"] });
-const nunito       = Nunito(            { variable: "--font-nunito",      subsets: ["latin"], weight: ["300","400","600","700"] });
-const baskerville  = Libre_Baskerville( { variable: "--font-baskerville", subsets: ["latin"], weight: ["400","700"] });
-const franklin     = Libre_Franklin(    { variable: "--font-franklin",    subsets: ["latin"], weight: ["300","400","600"] });
-const spectral     = Spectral(          { variable: "--font-spectral",    subsets: ["latin"], weight: ["400","500","600","700"] });
-const karla        = Karla(             { variable: "--font-karla",       subsets: ["latin"], weight: ["300","400","500","600"] });
-const cardo        = Cardo(             { variable: "--font-cardo",       subsets: ["latin"], weight: ["400","700"] });
-const cabin        = Cabin(             { variable: "--font-cabin",       subsets: ["latin"], weight: ["400","500","600","700"] });
-const mulish       = Mulish(            { variable: "--font-mulish",      subsets: ["latin"], weight: ["300","400","500","600"] });
-const domine       = Domine(            { variable: "--font-domine",      subsets: ["latin"], weight: ["400","500","600","700"] });
-const firaSans     = Fira_Sans(         { variable: "--font-firasans",    subsets: ["latin"], weight: ["300","400","500","600"] });
-const workSans     = Work_Sans(         { variable: "--font-worksans",    subsets: ["latin"], weight: ["300","400","500","600"] });
-const dmSans       = DM_Sans(           { variable: "--font-dmsans",      subsets: ["latin"], weight: ["300","400","500","600"] });
-const josefin      = Josefin_Sans(      { variable: "--font-josefin",     subsets: ["latin"], weight: ["300","400","600","700"] });
-const jost         = Jost(              { variable: "--font-jost",        subsets: ["latin"], weight: ["300","400","500","600"] });
-const outfit       = Outfit(            { variable: "--font-outfit",      subsets: ["latin"], weight: ["300","400","500","600"] });
-const manrope      = Manrope(           { variable: "--font-manrope",     subsets: ["latin"], weight: ["300","400","500","600"] });
-const barlow       = Barlow(            { variable: "--font-barlow",      subsets: ["latin"], weight: ["300","400","500","600"] });
-const ibmPlex      = IBM_Plex_Sans(     { variable: "--font-ibmplexsans", subsets: ["latin"], weight: ["300","400","500","600"] });
-const syne         = Syne(              { variable: "--font-syne",        subsets: ["latin"], weight: ["400","500","600","700"] });
-const spaceGrotesk = Space_Grotesk(     { variable: "--font-spacegrotesk",subsets: ["latin"], weight: ["300","400","500","600"] });
-const tenorSans    = Tenor_Sans(        { variable: "--font-tenorsans",   subsets: ["latin"], weight: ["400"] });
-const jakarta      = Plus_Jakarta_Sans( { variable: "--font-jakarta",     subsets: ["latin"], weight: ["300","400","500","600"] });
-const zillaSlab    = Zilla_Slab(        { variable: "--font-zillaslab",   subsets: ["latin"], weight: ["400","500","600","700"] });
-const ptSans       = PT_Sans(           { variable: "--font-ptsans",      subsets: ["latin"], weight: ["400","700"] });
-const fraunces     = Fraunces(          { variable: "--font-fraunces",    subsets: ["latin"], weight: ["400","500","600","700"] });
-const nunitoSans   = Nunito_Sans(       { variable: "--font-nunitosans",  subsets: ["latin"], weight: ["300","400","600"] });
-const robotoSlab   = Roboto_Slab(       { variable: "--font-robotoslab",  subsets: ["latin"], weight: ["300","400","600","700"] });
-const robotoMono   = Roboto_Mono(       { variable: "--font-robotomono",  subsets: ["latin"], weight: ["300","400","500"] });
-
-const allFontVars = [
-  playfair.variable, inter.variable, merriweather.variable, roboto.variable,
-  lora.variable, openSans.variable, crimsonText.variable, sourceSans.variable,
-  ebGaramond.variable, raleway.variable,
-  cormorant.variable, nunito.variable, baskerville.variable, franklin.variable,
-  spectral.variable, karla.variable, cardo.variable, cabin.variable,
-  mulish.variable, domine.variable, firaSans.variable,
-  workSans.variable, dmSans.variable, josefin.variable, jost.variable,
-  outfit.variable, manrope.variable, barlow.variable, ibmPlex.variable,
-  syne.variable, spaceGrotesk.variable, tenorSans.variable, jakarta.variable,
-  zillaSlab.variable, ptSans.variable, fraunces.variable, nunitoSans.variable,
-  robotoSlab.variable, robotoMono.variable,
-].join(" ");
+const GOOGLE_FONTS_URL =
+  "https://fonts.googleapis.com/css2?" +
+  "family=Playfair+Display:wght@400;500;600;700;800" +
+  "&family=Inter:wght@300;400;500;600" +
+  "&family=Merriweather:wght@300;400;700" +
+  "&family=Roboto:wght@300;400;500;700" +
+  "&family=Lora:wght@400;500;600;700" +
+  "&family=Open+Sans:wght@300;400;600" +
+  "&family=Crimson+Text:wght@400;600" +
+  "&family=Source+Sans+3:wght@300;400;600" +
+  "&family=EB+Garamond:wght@400;500;600;700" +
+  "&family=Raleway:wght@300;400;500;600" +
+  "&family=Cormorant+Garamond:wght@400;500;600;700" +
+  "&family=Nunito:wght@300;400;600;700" +
+  "&family=Libre+Baskerville:wght@400;700" +
+  "&family=Libre+Franklin:wght@300;400;600" +
+  "&family=Spectral:wght@400;500;600;700" +
+  "&family=Karla:wght@300;400;500;600" +
+  "&family=Cardo:wght@400;700" +
+  "&family=Cabin:wght@400;500;600;700" +
+  "&family=Mulish:wght@300;400;500;600" +
+  "&family=Domine:wght@400;500;600;700" +
+  "&family=Fira+Sans:wght@300;400;500;600" +
+  "&family=Work+Sans:wght@300;400;500;600" +
+  "&family=DM+Sans:wght@300;400;500;600" +
+  "&family=Josefin+Sans:wght@300;400;600;700" +
+  "&family=Jost:wght@300;400;500;600" +
+  "&family=Outfit:wght@300;400;500;600" +
+  "&family=Manrope:wght@300;400;500;600" +
+  "&family=Barlow:wght@300;400;500;600" +
+  "&family=IBM+Plex+Sans:wght@300;400;500;600" +
+  "&family=Syne:wght@400;500;600;700" +
+  "&family=Space+Grotesk:wght@300;400;500;600" +
+  "&family=Tenor+Sans:wght@400" +
+  "&family=Plus+Jakarta+Sans:wght@300;400;500;600" +
+  "&family=Zilla+Slab:wght@400;500;600;700" +
+  "&family=PT+Sans:wght@400;700" +
+  "&family=Fraunces:wght@400;500;600;700" +
+  "&family=Nunito+Sans:wght@300;400;600" +
+  "&family=Roboto+Slab:wght@300;400;600;700" +
+  "&family=Roboto+Mono:wght@300;400;500" +
+  "&display=swap";
 
 export const metadata: Metadata = {
   title: "Palestine and the Law | Guidelines for Resolution",
@@ -121,7 +66,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={allFontVars}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href={GOOGLE_FONTS_URL} rel="stylesheet" />
+      </head>
       <body className="min-h-screen flex flex-col antialiased">
         <ThemeProvider>
           <Navbar />
@@ -132,4 +82,3 @@ export default function RootLayout({
     </html>
   );
 }
-

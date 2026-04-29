@@ -8,6 +8,47 @@
   --color-primary-light: 85 133 180;   /* #5585b4 */
   --color-primary-dark:  36  74 111;   /* #244a6f */
 
+  /* Google Font family variables */
+  --font-playfair:     'Playfair Display', serif;
+  --font-inter:        'Inter', sans-serif;
+  --font-merriweather: 'Merriweather', serif;
+  --font-roboto:       'Roboto', sans-serif;
+  --font-lora:         'Lora', serif;
+  --font-opensans:     'Open Sans', sans-serif;
+  --font-crimson:      'Crimson Text', serif;
+  --font-sourcesans:   'Source Sans 3', sans-serif;
+  --font-garamond:     'EB Garamond', serif;
+  --font-raleway:      'Raleway', sans-serif;
+  --font-cormorant:    'Cormorant Garamond', serif;
+  --font-nunito:       'Nunito', sans-serif;
+  --font-baskerville:  'Libre Baskerville', serif;
+  --font-franklin:     'Libre Franklin', sans-serif;
+  --font-spectral:     'Spectral', serif;
+  --font-karla:        'Karla', sans-serif;
+  --font-cardo:        'Cardo', serif;
+  --font-cabin:        'Cabin', sans-serif;
+  --font-mulish:       'Mulish', sans-serif;
+  --font-domine:       'Domine', serif;
+  --font-firasans:     'Fira Sans', sans-serif;
+  --font-worksans:     'Work Sans', sans-serif;
+  --font-dmsans:       'DM Sans', sans-serif;
+  --font-josefin:      'Josefin Sans', sans-serif;
+  --font-jost:         'Jost', sans-serif;
+  --font-outfit:       'Outfit', sans-serif;
+  --font-manrope:      'Manrope', sans-serif;
+  --font-barlow:       'Barlow', sans-serif;
+  --font-ibmplexsans:  'IBM Plex Sans', sans-serif;
+  --font-syne:         'Syne', sans-serif;
+  --font-spacegrotesk: 'Space Grotesk', sans-serif;
+  --font-tenorsans:    'Tenor Sans', sans-serif;
+  --font-jakarta:      'Plus Jakarta Sans', sans-serif;
+  --font-zillaslab:    'Zilla Slab', serif;
+  --font-ptsans:       'PT Sans', sans-serif;
+  --font-fraunces:     'Fraunces', serif;
+  --font-nunitosans:   'Nunito Sans', sans-serif;
+  --font-robotoslab:   'Roboto Slab', serif;
+  --font-robotomono:   'Roboto Mono', monospace;
+
   /* Font heading/body — overridden by ThemeProvider */
   --font-heading: var(--font-playfair);
   --font-body:    var(--font-inter);
