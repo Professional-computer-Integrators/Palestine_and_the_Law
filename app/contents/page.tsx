@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { BookReader } from "@/components/BookReader";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const CHAPTER_1_API = "/api/chapter";
 
@@ -201,11 +202,11 @@ export default function ContentsPage() {
           </div>
 
           <div className="space-y-4">
-            {chapters.map((ch) => {
+            {chapters.map((ch, i) => {
               const isClickable = ch.num === 1;
               return (
+              <ScrollReveal key={ch.num} direction="up" delay={i < 5 ? i * 60 : 0}>
               <div
-                key={ch.num}
                 onClick={
                   isClickable
                     ? () =>
@@ -252,6 +253,7 @@ export default function ContentsPage() {
                   </p>
                 </div>
               </div>
+              </ScrollReveal>
               );
             })}
           </div>
@@ -268,9 +270,9 @@ export default function ContentsPage() {
           </div>
 
           <div className="grid sm:grid-cols-2 gap-4">
-            {appendices.map((app) => (
+            {appendices.map((app, i) => (
+              <ScrollReveal key={app.num} direction="up" delay={i * 60}>
               <div
-                key={app.num}
                 className="card p-5 flex gap-4 group hover:border-gold/40 transition-colors duration-200"
               >
                 <div className="flex-shrink-0 w-10 h-10 rounded-sm bg-gold/20 border border-gold/30 flex items-center justify-center group-hover:bg-gold group-hover:border-gold transition-colors duration-200">
@@ -286,6 +288,7 @@ export default function ContentsPage() {
                   <p className="font-sans text-xs text-ink-muted leading-relaxed">{app.desc}</p>
                 </div>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>

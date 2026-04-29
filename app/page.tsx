@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function HomePage() {
   return (
@@ -13,6 +14,9 @@ export default function HomePage() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
+
+        {/* Spacer for the absolutely-positioned horizontal nav bar (~44px tall) */}
+        <div className="hidden md:block h-11" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col items-center gap-4">
@@ -57,7 +61,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-5 gap-12 items-start">
             {/* Sticky label */}
-            <div className="md:col-span-2">
+            <ScrollReveal direction="left" className="md:col-span-2">
               <p className="font-sans text-gold text-xs tracking-[0.3em] uppercase mb-3">
                 The Work
               </p>
@@ -75,10 +79,10 @@ export default function HomePage() {
                   Read Chapter Overviews
                 </Link>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Body text */}
-            <div className="md:col-span-3 space-y-5">
+            <ScrollReveal direction="right" delay={150} className="md:col-span-3 space-y-5">
               {[
                 `Palestine and the Law is a comprehensive study of the international legal principles and framework concerning the question of Israel and Palestine. Written by the renowned public international lawyer, Professor Musa Mazzawi, and published in 1997, the book provides legal guidelines for the resolution of the conflict.`,
                 `It covers in detail the period from ancient times until the Oslo Accords of 1993, focusing on the origins of the conflict, the Mandate system for Palestine, the validity of the UN Partition Resolution and the continuing role and status of the United Nations in relation to Palestine.`,
@@ -91,7 +95,7 @@ export default function HomePage() {
                   {para}
                 </p>
               ))}
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -99,6 +103,7 @@ export default function HomePage() {
       {/* ── KEY THEMES ───────────────────────────────────────── */}
       <section className="py-20 bg-cream">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ScrollReveal direction="up">
           <div className="text-center mb-14">
             <p className="font-sans text-gold text-xs tracking-[0.3em] uppercase mb-3">
               Core Legal Questions
@@ -106,6 +111,7 @@ export default function HomePage() {
             <h2 className="section-heading inline-block">Key Themes</h2>
             <div className="gold-divider mx-auto" />
           </div>
+          </ScrollReveal>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
@@ -139,8 +145,9 @@ export default function HomePage() {
                 title: "UN Security Council Res. 242",
                 desc: "Requiring Israeli withdrawal from territories occupied in 1967 — a detailed analysis of contested interpretations.",
               },
-            ].map((theme) => (
-              <div key={theme.number} className="card p-6 group">
+            ].map((theme, i) => (
+              <ScrollReveal key={theme.number} direction="up" delay={i * 80}>
+              <div className="card p-6 group">
                 <span className="font-serif text-4xl font-bold text-forest/10 group-hover:text-gold/30 transition-colors duration-300">
                   {theme.number}
                 </span>
@@ -152,6 +159,7 @@ export default function HomePage() {
                   {theme.desc}
                 </p>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -162,7 +170,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-5 gap-12 items-start">
             {/* Author image */}
-            <div className="md:col-span-2 flex flex-col items-center md:items-start">
+            <ScrollReveal direction="left" className="md:col-span-2 flex flex-col items-center md:items-start">
               <div className="relative w-56 h-64 md:w-64 md:h-72 rounded-sm overflow-hidden border-4 border-gold/40 shadow-xl mb-6">
                 <Image
                   src="https://i0.wp.com/palestineandthelaw.org/wp-content/uploads/2025/08/cropped-MrM.jpg?w=1088&ssl=1"
@@ -178,10 +186,10 @@ export default function HomePage() {
               <p className="font-sans text-sm text-gold mt-1 text-center md:text-left">
                 LL.M, Ph.D (London)
               </p>
-            </div>
+            </ScrollReveal>
 
             {/* Bio text */}
-            <div className="md:col-span-3">
+            <ScrollReveal direction="right" delay={150} className="md:col-span-3">
               <p className="font-sans text-gold text-xs tracking-[0.3em] uppercase mb-3">
                 The Author
               </p>
@@ -199,7 +207,7 @@ export default function HomePage() {
                   </p>
                 ))}
               </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -212,7 +220,7 @@ export default function HomePage() {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }}
         />
-        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <ScrollReveal direction="up" className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="font-sans text-gold text-xs tracking-[0.3em] uppercase mb-4">
             19 Chapters · 8 Appendices
           </p>
@@ -233,7 +241,7 @@ export default function HomePage() {
               Get in Touch
             </Link>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
     </>
   );
