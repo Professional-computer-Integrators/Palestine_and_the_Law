@@ -48,6 +48,36 @@
   --font-nunitosans:   'Nunito Sans', sans-serif;
   --font-robotoslab:   'Roboto Slab', serif;
   --font-robotomono:   'Roboto Mono', monospace;
+  /* ── Additional sans-serif options ──────────────────────────────── */
+  --font-poppins:      'Poppins', sans-serif;
+  --font-montserrat:   'Montserrat', sans-serif;
+  --font-urbanist:     'Urbanist', sans-serif;
+  --font-lexend:       'Lexend', sans-serif;
+  --font-figtree:      'Figtree', sans-serif;
+  --font-hahmlet:      'Hahmlet', sans-serif;
+  --font-mplus1:       'M PLUS 1', sans-serif;
+  --font-ntr:          'NTR', sans-serif;
+  --font-redhat:       'Red Hat Display', sans-serif;
+  --font-epilogue:     'Epilogue', sans-serif;
+  /* ── New serif + sans combinations ──────────────────────────── */
+  --font-cinzel:       'Cinzel', serif;
+  --font-abrilfatface: 'Abril Fatface', cursive;
+  --font-bodonim:      'Bodoni Moda', serif;
+  --font-arvo:         'Arvo', serif;
+  --font-alegreya:     'Alegreya', serif;
+  --font-ptserif:      'PT Serif', serif;
+  --font-vollkorn:     'Vollkorn', serif;
+  --font-philosopher:  'Philosopher', serif;
+  --font-neuton:       'Neuton', serif;
+  --font-gilda:        'Gilda Display', serif;
+  --font-oldstandard:  'Old Standard TT', serif;
+  --font-lato:         'Lato', sans-serif;
+  --font-ubuntu:       'Ubuntu', sans-serif;
+  --font-quicksand:    'Quicksand', sans-serif;
+  --font-rubik:        'Rubik', sans-serif;
+  --font-titilliumweb: 'Titillium Web', sans-serif;
+  --font-asap:         'Asap', sans-serif;
+  --font-exo2:         'Exo 2', sans-serif;
 
   /* Font heading/body — overridden by ThemeProvider */
   --font-heading: var(--font-playfair);

@@ -50,23 +50,31 @@ export default function Navbar() {
         <div className="h-1 w-full bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
 
         {/* Title row */}
-        <div className="relative w-full py-4 px-4 sm:px-6 text-center">
-          {/* Admin button — top right */}
-          <div className="absolute top-1/2 right-4 sm:right-6 -translate-y-1/2">
-            <AdminButton />
+        <div className="w-full py-4 px-4 sm:px-6">
+          {/* On sm+: relative wrapper so admin button can be absolutely positioned */}
+          <div className="relative text-center">
+            {/* Admin button — top right on sm+ only */}
+            <div className="hidden sm:block absolute top-1/2 right-0 -translate-y-1/2">
+              <AdminButton />
+            </div>
+
+            <Link href="/" className="group block">
+              <div
+                className="font-serif font-bold text-cream group-hover:text-gold transition-colors duration-200 leading-none tracking-wide whitespace-nowrap"
+                style={{ fontSize: "clamp(2.2rem, 7.2vw, 9rem)" }}
+              >
+                PALESTINE <span className="font-normal text-cream/70 group-hover:text-gold/70" style={{ fontSize: "clamp(1rem, 3.2vw, 4rem)" }}>and the</span> LAW
+              </div>
+              <div className="font-sans tracking-[0.2em] text-gold/80 uppercase mt-1" style={{ fontSize: "clamp(0.6rem, 1.1vw, 1.1rem)" }}>
+                Guidelines for Resolution of the Arab-Israel Conflict
+              </div>
+            </Link>
           </div>
 
-          <Link href="/" className="group block">
-            <div
-              className="font-serif font-bold text-cream group-hover:text-gold transition-colors duration-200 leading-none tracking-wide whitespace-nowrap"
-              style={{ fontSize: "clamp(2.2rem, 7.2vw, 9rem)" }}
-            >
-              PALESTINE <span className="font-normal text-cream/70 group-hover:text-gold/70" style={{ fontSize: "clamp(1rem, 3.2vw, 4rem)" }}>and the</span> LAW
-            </div>
-            <div className="font-sans tracking-[0.2em] text-gold/80 uppercase mt-1" style={{ fontSize: "clamp(0.6rem, 1.1vw, 1.1rem)" }}>
-              Guidelines for Resolution of the Arab-Israel Conflict
-            </div>
-          </Link>
+          {/* Admin button — mobile only, below title */}
+          <div className="flex justify-end mt-2 sm:hidden">
+            <AdminButton />
+          </div>
         </div>
 
         {/* ── HORIZONTAL NAV BAR — absolutely positioned so it never affects header height ── */}

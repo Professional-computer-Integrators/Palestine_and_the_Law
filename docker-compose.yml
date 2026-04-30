@@ -7,4 +7,9 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=production
+    volumes:
+      - app_data:/app/data
     restart: unless-stopped
+
+volumes:
+  app_data:
