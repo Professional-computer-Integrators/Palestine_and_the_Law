@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { BookReader } from "@/components/BookReader";
 import ScrollReveal from "@/components/ScrollReveal";
+import EditableText from "@/components/EditableText";
 
 const CHAPTER_1_API = "/api/chapter";
 
@@ -179,11 +180,13 @@ export default function ContentsPage() {
             Overview of Chapters
           </h1>
           <div className="gold-divider mx-auto" />
-          <p className="font-sans text-base text-cream/60 mt-6 max-w-xl mx-auto leading-relaxed">
-            The book comprises 19 chapters covering the period from ancient
-            times to the Oslo Accords of 1993, together with 8 documentary
-            appendices.
-          </p>
+          <EditableText
+            id="contents.header.subtitle"
+            defaultText="The book comprises 19 chapters covering the period from ancient times to the Oslo Accords of 1993, together with 8 documentary appendices."
+            tag="p"
+            className="font-sans text-base text-cream/60 mt-6 max-w-xl mx-auto leading-relaxed"
+            label="Contents — page subtitle"
+          />
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -248,9 +251,13 @@ export default function ContentsPage() {
                       </span>
                     )}
                   </div>
-                  <p className="font-sans text-sm text-ink-muted leading-relaxed">
-                    {ch.desc}
-                  </p>
+                  <EditableText
+                    id={`chapter.${ch.num}.desc`}
+                    defaultText={ch.desc}
+                    tag="p"
+                    className="font-sans text-sm text-ink-muted leading-relaxed"
+                    label={`Chapter ${ch.num} — description`}
+                  />
                 </div>
               </div>
               </ScrollReveal>

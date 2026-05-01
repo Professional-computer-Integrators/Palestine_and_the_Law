@@ -88,6 +88,11 @@ interface ThemeContextValue {
   updates: SiteUpdate[];
   addUpdate: (title: string, content: string) => void;
   deleteUpdate: (id: string) => void;
+  editMode: boolean;
+  setEditMode: (v: boolean) => void;
+  pageTexts: Record<string, string>;
+  updatePageText: (id: string, text: string) => void;
+  resetPageText: (id: string) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
@@ -106,6 +111,11 @@ const ThemeContext = createContext<ThemeContextValue>({
   updates: [],
   addUpdate: () => {},
   deleteUpdate: () => {},
+  editMode: false,
+  setEditMode: () => {},
+  pageTexts: {},
+  updatePageText: () => {},
+  resetPageText: () => {},
 });
 
 export function useTheme() {
@@ -157,6 +167,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminPassword, setAdminPw] = useState("password");
   const [updates, setUpdates] = useState<SiteUpdate[]>([]);
+  const [editMode, setEditModeState] = useState(false);
+  const [pageTexts, setPageTexts] = useState<Record<string, string>>({});
 
   useEffect(() => {
     // Load per-admin localStorage prefs (saved palette, password)
@@ -186,6 +198,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }
         if (Array.isArray(data.updates)) {
           setUpdates(data.updates);
+        }
+        if (data.pageTexts && typeof data.pageTexts === "object") {
+          setPageTexts(data.pageTexts);
         }
       })
       .catch(() => {
@@ -248,7 +263,32 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     setIsAdmin(false);
+    setEditModeState(false);
     sessionStorage.removeItem("admin_auth");
+  };
+
+  const setEditMode = (v: boolean) => {
+    if (v && !isAdmin) return;
+    setEditModeState(v);
+  };
+
+  const updatePageText = (id: string, text: string) => {
+    setPageTexts((prev) => {
+      const updated = { ...prev, [id]: text };
+      const pw = localStorage.getItem("admin_password") ?? "password";
+      syncToServer({ pageTexts: updated }, pw);
+      return updated;
+    });
+  };
+
+  const resetPageText = (id: string) => {
+    setPageTexts((prev) => {
+      const updated = { ...prev };
+      delete updated[id];
+      const pw = localStorage.getItem("admin_password") ?? "password";
+      syncToServer({ pageTexts: updated }, pw);
+      return updated;
+    });
   };
 
   const setAdminPassword = (pw: string) => {
@@ -302,6 +342,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         updates,
         addUpdate,
         deleteUpdate,
+        editMode,
+        setEditMode,
+        pageTexts,
+        updatePageText,
+        resetPageText,
       }}
     >
       {children}

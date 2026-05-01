@@ -170,9 +170,10 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
     fontOptionId, setFontOptionId,
     logout, setAdminPassword,
     addUpdate, updates, deleteUpdate,
+    editMode, setEditMode, pageTexts, resetPageText,
   } = useTheme();
 
-  const [tab, setTab] = useState<"colour" | "font" | "updates" | "settings">("colour");
+  const [tab, setTab] = useState<"colour" | "font" | "updates" | "content" | "settings">("colour");
 
   // Colour state
   const [pickerHex, setPickerHex] = useState(primaryColor);
@@ -217,6 +218,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
     { id: "colour",   label: "Colour"   },
     { id: "font",     label: "Font"     },
     { id: "updates",  label: "Updates"  },
+    { id: "content",  label: "Content"  },
     { id: "settings", label: "Settings" },
   ] as const;
 
@@ -486,6 +488,90 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                         onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.12)")}
                         onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                       >Delete</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* ── CONTENT ── */}
+        {tab === "content" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            <div>
+              <SectionLabel>Page Content Editor</SectionLabel>
+              <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.48)", lineHeight: 1.65, marginBottom: 16 }}>
+                Toggle <span style={{ fontFamily: "monospace", color: "#e0b060" }}>Edit Mode</span> to highlight editable text sections on the page. Click any highlighted section to edit its content.
+              </p>
+
+              {/* Toggle button */}
+              <button
+                onClick={() => setEditMode(!editMode)}
+                style={{
+                  width: "100%", padding: "12px 16px", borderRadius: 8, cursor: "pointer",
+                  fontFamily: "inherit", fontSize: 13, fontWeight: 600, letterSpacing: "0.04em",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+                  transition: "background 0.15s, border-color 0.15s",
+                  background: editMode ? "rgba(34,197,94,0.15)" : "rgba(255,255,255,0.06)",
+                  border: `1px solid ${editMode ? "rgba(34,197,94,0.45)" : "rgba(255,255,255,0.15)"}`,
+                  color: editMode ? "#86efac" : "rgba(220,234,246,0.7)",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = editMode ? "rgba(34,197,94,0.25)" : "rgba(255,255,255,0.12)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = editMode ? "rgba(34,197,94,0.15)" : "rgba(255,255,255,0.06)"; }}
+              >
+                {/* Toggle indicator */}
+                <span style={{
+                  display: "inline-block", width: 36, height: 20, borderRadius: 10, position: "relative", flexShrink: 0,
+                  background: editMode ? "rgba(34,197,94,0.55)" : "rgba(255,255,255,0.15)",
+                  border: `1px solid ${editMode ? "rgba(34,197,94,0.7)" : "rgba(255,255,255,0.25)"}`,
+                  transition: "background 0.2s",
+                }}>
+                  <span style={{
+                    position: "absolute", top: 2, left: editMode ? 17 : 2, width: 14, height: 14,
+                    borderRadius: "50%", background: editMode ? "#86efac" : "rgba(255,255,255,0.6)",
+                    transition: "left 0.2s",
+                  }} />
+                </span>
+                {editMode ? "Edit Mode: ON — Click text to edit" : "Edit Mode: OFF"}
+              </button>
+
+              {editMode && (
+                <p style={{ fontFamily: "inherit", fontSize: 11, color: "rgba(134,239,172,0.65)", marginTop: 10, lineHeight: 1.55 }}>
+                  ✓ Navigate to any page and click on a dashed blue outlined text to edit it.
+                </p>
+              )}
+            </div>
+
+            {/* Overridden texts list */}
+            {Object.keys(pageTexts).length > 0 && (
+              <div>
+                <SectionLabel>Customised Text ({Object.keys(pageTexts).length})</SectionLabel>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {Object.entries(pageTexts).map(([id, text]) => (
+                    <div key={id}
+                      style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px 12px",
+                        borderRadius: 7, background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontFamily: "monospace", fontSize: 10, color: "#e0b060",
+                          whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: 3 }}>
+                          {id}
+                        </p>
+                        <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.55)",
+                          display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical",
+                          overflow: "hidden", lineHeight: 1.45 }}>
+                          {text}
+                        </p>
+                      </div>
+                      <button onClick={() => resetPageText(id)}
+                        style={{ flexShrink: 0, fontFamily: "inherit", fontSize: 11, padding: "4px 8px",
+                          borderRadius: 4, cursor: "pointer", background: "transparent",
+                          border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5", transition: "background 0.15s" }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.12)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                        title="Reset to default"
+                      >Reset</button>
                     </div>
                   ))}
                 </div>

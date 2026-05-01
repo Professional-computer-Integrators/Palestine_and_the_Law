@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ScrollReveal from "@/components/ScrollReveal";
+import EditableText from "@/components/EditableText";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -41,10 +42,13 @@ export default function ContactPage() {
             Contact Us
           </h1>
           <div className="gold-divider mx-auto" />
-          <p className="font-sans text-base text-cream/60 mt-6 max-w-xl mx-auto leading-relaxed">
-            For enquiries about the book, permission requests, or any other
-            matters relating to this work.
-          </p>
+          <EditableText
+            id="contact.header.subtitle"
+            defaultText="For enquiries about the book, permission requests, or any other matters relating to this work."
+            tag="p"
+            className="font-sans text-base text-cream/60 mt-6 max-w-xl mx-auto leading-relaxed"
+            label="Contact — page subtitle"
+          />
         </ScrollReveal>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 40" fill="none" xmlns="http://www.w3.org/2000/svg">

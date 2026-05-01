@@ -10,12 +10,14 @@ interface SharedSettings {
   updates: { id: string; title: string; content: string; date: string }[];
   primaryColor: string;
   fontOptionId: string;
+  pageTexts: Record<string, string>;
 }
 
 const DEFAULT_SETTINGS: SharedSettings = {
   updates: [],
   primaryColor: "#3a6491",
   fontOptionId: "classic",
+  pageTexts: {},
 };
 
 function ensureDataDir() {

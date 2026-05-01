@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
+import EditableText from "@/components/EditableText";
 
 export default function HomePage() {
   return (
@@ -21,10 +22,13 @@ export default function HomePage() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col items-center gap-4">
             {/* Subtitle */}
-            <p className="font-sans text-base text-cream/60 leading-relaxed max-w-lg text-center">
-              A comprehensive legal study of the Arab-Israel conflict and the
-              Palestinian question during the 20th century.
-            </p>
+            <EditableText
+              id="home.hero.subtitle"
+              defaultText="A comprehensive legal study of the Arab-Israel conflict and the Palestinian question during the 20th century."
+              tag="p"
+              className="font-sans text-base text-cream/60 leading-relaxed max-w-lg text-center"
+              label="Hero subtitle"
+            />
 
             {/* Book image */}
             <div className="relative">
@@ -83,18 +87,18 @@ export default function HomePage() {
 
             {/* Body text */}
             <ScrollReveal direction="right" delay={150} className="md:col-span-3 space-y-5">
-              {[
-                `Palestine and the Law is a comprehensive study of the international legal principles and framework concerning the question of Israel and Palestine. Written by the renowned public international lawyer, Professor Musa Mazzawi, and published in 1997, the book provides legal guidelines for the resolution of the conflict.`,
-                `It covers in detail the period from ancient times until the Oslo Accords of 1993, focusing on the origins of the conflict, the Mandate system for Palestine, the validity of the UN Partition Resolution and the continuing role and status of the United Nations in relation to Palestine.`,
-                `The book also considers the status of Jerusalem — designated by the UN in the Partition Resolution as a special international zone or corpus separatum — given its significance to three major world religions.`,
-                `The book makes the legal case for the continuing validity of the UN Partition Resolution; interpreting UN Resolution 242 to support Israel's withdrawal from the occupied territories; the Palestinians' right to self-determination; and the extent of the right of return for Palestinian refugees.`,
-                `Grounded in a rigorous analysis of the law, the book draws on detailed contemporaneous source material, including records, interpretations and policy emanating from the UK and US governments, members of the United Nations Security Council and the founders of the State of Israel.`,
-                `Palestine and the Law has drawn praise for its extensive analysis of, and adherence to, the legal position and its avoidance of political argumentation. It remains an invaluable resource for anyone seeking a deeper understanding of the legal dimensions of the Arab-Israel conflict.`,
-              ].map((para, i) => (
-                <p key={i} className="font-sans text-base text-ink leading-relaxed">
-                  {para}
-                </p>
-              ))}
+              <EditableText id="home.about.0" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Book — §1"
+                defaultText="Palestine and the Law is a comprehensive study of the international legal principles and framework concerning the question of Israel and Palestine. Written by the renowned public international lawyer, Professor Musa Mazzawi, and published in 1997, the book provides legal guidelines for the resolution of the conflict." />
+              <EditableText id="home.about.1" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Book — §2"
+                defaultText="It covers in detail the period from ancient times until the Oslo Accords of 1993, focusing on the origins of the conflict, the Mandate system for Palestine, the validity of the UN Partition Resolution and the continuing role and status of the United Nations in relation to Palestine." />
+              <EditableText id="home.about.2" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Book — §3"
+                defaultText="The book also considers the status of Jerusalem — designated by the UN in the Partition Resolution as a special international zone or corpus separatum — given its significance to three major world religions." />
+              <EditableText id="home.about.3" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Book — §4"
+                defaultText="The book makes the legal case for the continuing validity of the UN Partition Resolution; interpreting UN Resolution 242 to support Israel's withdrawal from the occupied territories; the Palestinians' right to self-determination; and the extent of the right of return for Palestinian refugees." />
+              <EditableText id="home.about.4" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Book — §5"
+                defaultText="Grounded in a rigorous analysis of the law, the book draws on detailed contemporaneous source material, including records, interpretations and policy emanating from the UK and US governments, members of the United Nations Security Council and the founders of the State of Israel." />
+              <EditableText id="home.about.5" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Book — §6"
+                defaultText="Palestine and the Law has drawn praise for its extensive analysis of, and adherence to, the legal position and its avoidance of political argumentation. It remains an invaluable resource for anyone seeking a deeper understanding of the legal dimensions of the Arab-Israel conflict." />
             </ScrollReveal>
           </div>
         </div>
@@ -196,16 +200,14 @@ export default function HomePage() {
               <h2 className="section-heading mb-4">About the Author</h2>
               <div className="gold-divider" />
               <div className="mt-6 space-y-4">
-                {[
-                  `Formerly Dean of the Faculty of Law at what is now the University of Westminster, Professor Mazzawi was widely recognised as one of the leading legal scholars on the topic of Israel-Palestine.`,
-                  `Professor Mazzawi was born in Palestine and came to the UK to study law, subsequently taking a PhD in international law and practising at the Bar as a member of Gray's Inn. He advised numerous governments and state institutions on issues relating to their constitutions, territorial rights and other public international law matters.`,
-                  `He was the author of numerous publications on the issue in addition to "Palestine and the Law", and also on the question of Rhodesia. His views on the Middle East and the application of international law were frequently sought out in UK and international radio and television current affairs programmes.`,
-                  `The publication of this study in 1997 reflected the author's fervent hope that the clarification of the relevant legal principles and the resort to the law for resolving the dispute would lead to a just and lasting peace in the Middle East.`,
-                ].map((para, i) => (
-                  <p key={i} className="font-sans text-base text-ink leading-relaxed">
-                    {para}
-                  </p>
-                ))}
+                <EditableText id="home.author.0" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Author — §1"
+                  defaultText="Formerly Dean of the Faculty of Law at what is now the University of Westminster, Professor Mazzawi was widely recognised as one of the leading legal scholars on the topic of Israel-Palestine." />
+                <EditableText id="home.author.1" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Author — §2"
+                  defaultText="Professor Mazzawi was born in Palestine and came to the UK to study law, subsequently taking a PhD in international law and practising at the Bar as a member of Gray's Inn. He advised numerous governments and state institutions on issues relating to their constitutions, territorial rights and other public international law matters." />
+                <EditableText id="home.author.2" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Author — §3"
+                  defaultText='He was the author of numerous publications on the issue in addition to "Palestine and the Law", and also on the question of Rhodesia. His views on the Middle East and the application of international law were frequently sought out in UK and international radio and television current affairs programmes.' />
+                <EditableText id="home.author.3" tag="p" className="font-sans text-base text-ink leading-relaxed" label="About the Author — §4"
+                  defaultText="The publication of this study in 1997 reflected the author's fervent hope that the clarification of the relevant legal principles and the resort to the law for resolving the dispute would lead to a just and lasting peace in the Middle East." />
               </div>
             </ScrollReveal>
           </div>
@@ -229,9 +231,11 @@ export default function HomePage() {
           </h2>
           <div className="gold-divider mx-auto" />
           <p className="font-sans text-base text-cream/60 mt-6 mb-10 leading-relaxed">
-            From ancient history through to the Oslo Accords of 1993 — each
-            chapter provides a rigorous analysis of the legal principles
-            governing the Israel-Palestine conflict.
+            <EditableText
+              id="home.cta.desc"
+              defaultText="From ancient history through to the Oslo Accords of 1993 — each chapter provides a rigorous analysis of the legal principles governing the Israel-Palestine conflict."
+              label="CTA description"
+            />
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/contents" className="btn-primary bg-gold text-forest-dark hover:bg-gold-light">

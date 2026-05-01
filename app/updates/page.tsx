@@ -2,6 +2,7 @@
 
 import { useTheme } from "@/contexts/ThemeContext";
 import ScrollReveal from "@/components/ScrollReveal";
+import EditableText from "@/components/EditableText";
 
 export default function UpdatesPage() {
   const { updates } = useTheme();
@@ -24,9 +25,13 @@ export default function UpdatesPage() {
             Updates
           </h1>
           <div className="gold-divider mx-auto" />
-          <p className="font-sans text-base text-cream/60 mt-6 max-w-xl mx-auto leading-relaxed">
-            Latest news, announcements, and updates from the team.
-          </p>
+          <EditableText
+            id="updates.header.subtitle"
+            defaultText="Latest news, announcements, and updates from the team."
+            tag="p"
+            className="font-sans text-base text-cream/60 mt-6 max-w-xl mx-auto leading-relaxed"
+            label="Updates — page subtitle"
+          />
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg

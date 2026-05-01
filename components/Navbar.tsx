@@ -66,7 +66,7 @@ export default function Navbar() {
                 PALESTINE <span className="font-normal text-cream/70 group-hover:text-gold/70" style={{ fontSize: "clamp(1rem, 3.2vw, 4rem)" }}>and the</span> LAW
               </div>
               <div className="font-sans tracking-[0.2em] text-gold/80 uppercase mt-1" style={{ fontSize: "clamp(0.6rem, 1.1vw, 1.1rem)" }}>
-                Guidelines for Resolution of the Arab-Israel Conflict
+                Guidelines for The Resolution of the Arab-Israel Conflict
               </div>
             </Link>
           </div>

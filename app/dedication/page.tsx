@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
+import EditableText from "@/components/EditableText";
 
 const acknowledgements = [
   {
@@ -109,19 +110,26 @@ export default function DedicationPage() {
             </p>
             <p className="font-serif text-xl md:text-2xl text-forest font-medium leading-relaxed mb-6">
               To my wife{" "}
-              <span className="text-gold font-semibold">Mai Yousef Sabbagh</span>{" "}
+              <span className="font-semibold">Mai Yousef Sabbagh</span>{" "}
               and my children{" "}
               <span className="font-semibold">Josephine, Elias and Carmen</span>,
             </p>
-            <p className="font-sans text-base text-ink-muted italic leading-relaxed">
-              without whose insistence and constant support this book would not
-              have been written.
-            </p>
+            <EditableText
+              id="dedication.support.line"
+              defaultText="without whose insistence and constant support this book would not have been written."
+              tag="p"
+              className="font-sans text-base text-ink-muted italic leading-relaxed"
+              label="Dedication — support line"
+            />
 
             <div className="gold-divider mx-auto mt-8" />
-            <p className="font-sans text-sm text-ink-faint mt-4">
-              — Professor Musa E. Mazzawi
-            </p>
+            <EditableText
+              id="dedication.author"
+              defaultText="— Professor Musa E. Mazzawi"
+              tag="p"
+              className="font-sans text-sm text-ink-faint mt-4"
+              label="Dedication — author attribution"
+            />
           </div>
           </ScrollReveal>
         </div>

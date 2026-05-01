@@ -219,44 +219,6 @@ function DocPageView({
         </div>
       )}
 
-      {/* ── Scroll buttons (right edge) ── */}
-      <div
-        style={{
-          position: "absolute",
-          right: 4,
-          top: "50%",
-          transform: "translateY(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-          zIndex: 20,
-        }}
-      >
-        {(["up", "down"] as const).map((dir) => (
-          <button
-            key={dir}
-            onClick={(e) => { e.stopPropagation(); doScroll(dir); }}
-            title={dir === "up" ? "Scroll up" : "Scroll down"}
-            style={{
-              width: 26,
-              height: 26,
-              borderRadius: 4,
-              border: "1px solid rgba(58,100,145,0.3)",
-              background: "rgba(244,248,252,0.92)",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "rgb(var(--color-primary))",
-              boxShadow: "0 1px 3px rgba(0,0,0,0.12)",
-            }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d={dir === "up" ? "M4.5 15.75l7.5-7.5 7.5 7.5" : "M19.5 8.25l-7.5 7.5-7.5-7.5"} />
-            </svg>
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
