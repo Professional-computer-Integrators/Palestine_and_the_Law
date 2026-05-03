@@ -120,13 +120,13 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`relative px-5 py-3 font-sans text-sm tracking-wide transition-colors duration-200
-                  after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:origin-left
-                  after:scale-x-0 after:bg-black after:transition-transform after:duration-200
+                className={`relative px-5 py-3 font-sans text-sm tracking-wide text-cream transition-colors duration-200
+                  after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-full after:-translate-x-1/2
+                  after:scale-x-0 after:bg-cream after:transition-transform after:duration-200
                   hover:after:scale-x-100 ${
                   pathname === link.href
-                    ? "text-black font-semibold after:scale-x-100 after:bg-black"
-                    : "text-cream/70 hover:text-cream"
+                    ? "font-semibold after:scale-x-100"
+                    : ""
                 }`}
               >
                 <NavLinkLabel id={link.id} defaultText={link.label} />
@@ -163,10 +163,10 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className={`block px-6 py-3 font-sans text-sm border-b border-white/10 transition-colors duration-200 ${
+                className={`block px-6 py-3 font-sans text-sm text-cream border-b border-white/10 transition-colors duration-200 ${
                   pathname === link.href
-                    ? "text-black font-semibold"
-                    : "text-cream/80 hover:text-cream hover:bg-white/10"
+                    ? "font-semibold"
+                    : "hover:bg-white/10"
                 }`}
               >
                 <NavLinkLabel id={link.id} defaultText={link.label} />

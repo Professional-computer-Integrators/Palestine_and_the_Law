@@ -49,7 +49,7 @@ export default function HomePage() {
 
             {/* Buttons */}
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/contents" className="btn-primary bg-gold text-forest-dark hover:bg-gold-light">
+              <Link href="/contents" className="btn-outline border-cream/40 text-cream hover:bg-surface/10 hover:text-cream">
                 Explore Chapters
               </Link>
               <Link href="#about-book" className="btn-outline border-cream/40 text-cream hover:bg-surface/10 hover:text-cream">
@@ -239,7 +239,7 @@ export default function HomePage() {
             />
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contents" className="btn-primary bg-gold text-forest-dark hover:bg-gold-light">
+            <Link href="/contents" className="btn-outline border-cream/40 text-cream hover:bg-surface/10 hover:text-cream">
               View All Chapters
             </Link>
             <Link href="/contact" className="btn-outline border-cream/40 text-cream hover:bg-surface/10 hover:text-cream">
