@@ -4,8 +4,9 @@ import { useTheme } from "@/contexts/ThemeContext";
 import ScrollReveal from "@/components/ScrollReveal";
 import EditableText from "@/components/EditableText";
 
-export default function UpdatesPage() {
-  const { updates } = useTheme();
+export default function InsightsPage() {
+  // Insights are stored under `updates` in shared settings — same data, new label.
+  const { updates: insights } = useTheme();
 
   return (
     <>
@@ -22,15 +23,15 @@ export default function UpdatesPage() {
             Palestine and the Law
           </p>
           <h1 className="font-serif text-4xl md:text-5xl font-bold text-cream mb-4">
-            Updates
+            Insights
           </h1>
           <div className="gold-divider mx-auto" />
           <EditableText
-            id="updates.header.subtitle"
-            defaultText="Latest news, announcements, and updates from the team."
+            id="insights.header.subtitle"
+            defaultText="Reflections, commentary, and analysis on the legal questions surrounding the Arab-Israel conflict."
             tag="p"
             className="font-sans text-base text-cream/60 mt-6 max-w-xl mx-auto leading-relaxed"
-            label="Updates — page subtitle"
+            label="Insights — page subtitle"
           />
         </div>
         <div className="absolute bottom-0 left-0 right-0">
@@ -47,10 +48,10 @@ export default function UpdatesPage() {
         </div>
       </section>
 
-      {/* Updates list */}
+      {/* Insights list */}
       <section className="py-20 bg-parchment">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          {updates.length === 0 ? (
+          {insights.length === 0 ? (
             <div className="text-center py-24">
               <div className="w-16 h-16 bg-forest/10 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg
@@ -69,46 +70,44 @@ export default function UpdatesPage() {
                 </svg>
               </div>
               <h2 className="font-serif text-2xl font-semibold text-forest mb-2">
-                No Updates Yet
+                No Insights Yet
               </h2>
               <p className="font-sans text-sm text-ink-muted">
-                Check back soon for news and announcements.
+                Check back soon for new commentary and analysis.
               </p>
             </div>
           ) : (
             <div className="space-y-6">
-              {updates.map((update, idx) => (
-                <ScrollReveal key={update.id} direction="up" delay={idx < 4 ? idx * 80 : 0}>
-                <article
-                  className="bg-surface border border-cream-dark rounded-sm shadow-sm overflow-hidden"
-                >
-                  <div className="h-1 w-full bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
-                  <div className="px-8 py-7">
-                    {/* Date badge */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="inline-block bg-forest/10 text-forest font-sans text-xs font-semibold px-3 py-1 rounded-sm tracking-wide">
-                        {new Date(update.date).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })}
-                      </span>
-                      <span className="font-sans text-xs text-ink-faint">
-                        Update #{updates.length - idx}
-                      </span>
+              {insights.map((insight, idx) => (
+                <ScrollReveal key={insight.id} direction="up" delay={idx < 4 ? idx * 80 : 0}>
+                  <article className="bg-surface border border-cream-dark rounded-sm shadow-sm overflow-hidden">
+                    <div className="h-1 w-full bg-gradient-to-r from-gold-dark via-gold to-gold-dark" />
+                    <div className="px-8 py-7">
+                      {/* Date badge */}
+                      <div className="flex items-center gap-3 mb-4">
+                        <span className="inline-block bg-forest/10 text-forest font-sans text-xs font-semibold px-3 py-1 rounded-sm tracking-wide">
+                          {new Date(insight.date).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </span>
+                        <span className="font-sans text-xs text-ink-faint">
+                          Insight #{insights.length - idx}
+                        </span>
+                      </div>
+
+                      <h2 className="font-serif text-2xl font-bold text-forest mb-3 leading-snug">
+                        {insight.title}
+                      </h2>
+
+                      <div className="gold-divider" />
+
+                      <p className="font-sans text-base text-ink-muted leading-relaxed mt-4 whitespace-pre-wrap">
+                        {insight.content}
+                      </p>
                     </div>
-
-                    <h2 className="font-serif text-2xl font-bold text-forest mb-3 leading-snug">
-                      {update.title}
-                    </h2>
-
-                    <div className="gold-divider" />
-
-                    <p className="font-sans text-base text-ink-muted leading-relaxed mt-4 whitespace-pre-wrap">
-                      {update.content}
-                    </p>
-                  </div>
-                </article>
+                  </article>
                 </ScrollReveal>
               ))}
             </div>

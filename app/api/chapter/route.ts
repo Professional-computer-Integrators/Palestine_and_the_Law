@@ -1,16 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
+import { CHAPTERS } from "@/lib/chapters";
 
-const DOC_PUB_URL =
-  "https://docs.google.com/document/d/e/2PACX-1vQFZZPPadgq_hkxCF_UM1wNVgAf0c8GfF346h_wUnmgU3D6noIRI9mZ62j8EPsjqwAY5BSK6LHFbA6L/pub";
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const numParam = searchParams.get("num");
+  const num = numParam ? parseInt(numParam, 10) : 1; // backwards compat
 
-export async function GET(_req: NextRequest) {
+  const ch = CHAPTERS.find((c) => c.num === num);
+  if (!ch) {
+    return NextResponse.json(
+      { error: `Unknown chapter: ${numParam}` },
+      { status: 404 }
+    );
+  }
+
   try {
-    const res = await fetch(DOC_PUB_URL, {
-      // Never cache so we always reflect the latest version of the doc
+    const res = await fetch(ch.docUrl, {
       cache: "no-store",
       headers: {
-        "User-Agent":
-          "Mozilla/5.0 (compatible; PalestineAndTheLaw/1.0)",
+        "User-Agent": "Mozilla/5.0 (compatible; PalestineAndTheLaw/1.0)",
       },
     });
 
@@ -26,14 +34,11 @@ export async function GET(_req: NextRequest) {
       status: 200,
       headers: {
         "Content-Type": "text/html; charset=utf-8",
-        // Allow the client to cache for 60 s so repeated flips are instant
-        "Cache-Control": "public, max-age=60, stale-while-revalidate=120",
+        // Allow the client to cache for 5 min so repeated visits are instant
+        "Cache-Control": "public, max-age=300, stale-while-revalidate=600",
       },
     });
   } catch (err) {
-    return NextResponse.json(
-      { error: String(err) },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

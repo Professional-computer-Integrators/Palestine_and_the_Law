@@ -131,6 +131,58 @@ html { scroll-behavior: smooth; }
   80%       { transform: translate(3px, -1px); }
 }
 
+/* ── Sandy ripple overlay (book-page texture) ────────────────────
+   A warm gold/sand wave pattern that drifts diagonally, evoking
+   weathered parchment / desert ripples. Tuned to be visible over
+   the dark forest header banners. Apply via `.sandy-ripple`. */
+@keyframes sandy-drift {
+  0%   { background-position:    0%   0%, 0 0,        100% 0; }
+  50%  { background-position:  100% 100%, 80px 60px, -80px 60px; }
+  100% { background-position:  200% 200%, 0 0,        100% 0; }
+}
+
+.sandy-ripple {
+  position: relative;
+  isolation: isolate;
+}
+.sandy-ripple::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+  mix-blend-mode: screen;
+  background-image:
+    /* long, low-frequency diagonal sand wave (≈35° axis) */
+    repeating-linear-gradient(
+      35deg,
+      rgba(224, 176,  96, 0.00)  0px,
+      rgba(224, 176,  96, 0.10) 22px,
+      rgba(200, 151,  63, 0.18) 44px,
+      rgba(224, 176,  96, 0.10) 66px,
+      rgba(224, 176,  96, 0.00) 88px
+    ),
+    /* fine cross-hatched grain for paper texture */
+    repeating-linear-gradient(
+      45deg,
+      rgba(224, 176,  96, 0.05) 0 2px,
+      transparent 2px 7px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(224, 176,  96, 0.05) 0 2px,
+      transparent 2px 7px
+    );
+  background-size: 240% 240%, 16px 16px, 16px 16px;
+  background-position: 0% 0%, 0 0, 100% 0;
+  animation: sandy-drift 75s ease-in-out infinite;
+}
+.sandy-ripple > * { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .sandy-ripple::before { animation: none; }
+}
+
 body {
   background-color: #e8f2fa;
   background-image:

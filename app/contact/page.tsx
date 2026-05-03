@@ -27,7 +27,7 @@ export default function ContactPage() {
   return (
     <>
       {/* Page header */}
-      <section className="bg-forest py-20 relative overflow-hidden">
+      <section className="bg-forest py-20 relative overflow-hidden sandy-ripple">
         <div
           className="absolute inset-0 opacity-5"
           style={{

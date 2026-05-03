@@ -11,6 +11,16 @@ interface SharedSettings {
   primaryColor: string;
   fontOptionId: string;
   pageTexts: Record<string, string>;
+  pageColors: Record<string, string>;
+  presets: Array<{
+    id: string;
+    name: string;
+    primaryColor: string;
+    fontOptionId: string;
+    pageTexts: Record<string, string>;
+    pageColors: Record<string, string>;
+    createdAt: string;
+  }>;
 }
 
 const DEFAULT_SETTINGS: SharedSettings = {
@@ -18,6 +28,8 @@ const DEFAULT_SETTINGS: SharedSettings = {
   primaryColor: "#3a6491",
   fontOptionId: "classic",
   pageTexts: {},
+  pageColors: {},
+  presets: [],
 };
 
 function ensureDataDir() {

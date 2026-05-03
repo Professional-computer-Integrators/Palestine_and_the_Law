@@ -72,6 +72,18 @@ export interface SiteUpdate {
   date: string;
 }
 
+/** A saved theme preset captures every customisation the admin can apply
+ *  to the site so it can be re-applied with a single click. */
+export interface ThemePreset {
+  id: string;
+  name: string;
+  primaryColor: string;
+  fontOptionId: string;
+  pageTexts: Record<string, string>;
+  pageColors: Record<string, string>;
+  createdAt: string;
+}
+
 interface ThemeContextValue {
   primaryColor: string;
   applyColor: (hex: string) => void;
@@ -93,6 +105,13 @@ interface ThemeContextValue {
   pageTexts: Record<string, string>;
   updatePageText: (id: string, text: string) => void;
   resetPageText: (id: string) => void;
+  pageColors: Record<string, string>;
+  updatePageColor: (id: string, color: string) => void;
+  resetPageColor: (id: string) => void;
+  presets: ThemePreset[];
+  savePreset: (name: string) => void;
+  applyPreset: (id: string) => void;
+  deletePreset: (id: string) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
@@ -116,6 +135,13 @@ const ThemeContext = createContext<ThemeContextValue>({
   pageTexts: {},
   updatePageText: () => {},
   resetPageText: () => {},
+  pageColors: {},
+  updatePageColor: () => {},
+  resetPageColor: () => {},
+  presets: [],
+  savePreset: () => {},
+  applyPreset: () => {},
+  deletePreset: () => {},
 });
 
 export function useTheme() {
@@ -169,6 +195,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [updates, setUpdates] = useState<SiteUpdate[]>([]);
   const [editMode, setEditModeState] = useState(false);
   const [pageTexts, setPageTexts] = useState<Record<string, string>>({});
+  const [pageColors, setPageColors] = useState<Record<string, string>>({});
+  const [presets, setPresets] = useState<ThemePreset[]>([]);
 
   useEffect(() => {
     // Load per-admin localStorage prefs (saved palette, password)
@@ -201,6 +229,12 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         }
         if (data.pageTexts && typeof data.pageTexts === "object") {
           setPageTexts(data.pageTexts);
+        }
+        if (data.pageColors && typeof data.pageColors === "object") {
+          setPageColors(data.pageColors);
+        }
+        if (Array.isArray(data.presets)) {
+          setPresets(data.presets);
         }
       })
       .catch(() => {
@@ -291,6 +325,78 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const updatePageColor = (id: string, color: string) => {
+    setPageColors((prev) => {
+      const updated = { ...prev, [id]: color };
+      const pw = localStorage.getItem("admin_password") ?? "password";
+      syncToServer({ pageColors: updated }, pw);
+      return updated;
+    });
+  };
+
+  const resetPageColor = (id: string) => {
+    setPageColors((prev) => {
+      const updated = { ...prev };
+      delete updated[id];
+      const pw = localStorage.getItem("admin_password") ?? "password";
+      syncToServer({ pageColors: updated }, pw);
+      return updated;
+    });
+  };
+
+  const savePreset = (name: string) => {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    const preset: ThemePreset = {
+      id: Date.now().toString(),
+      name: trimmed,
+      primaryColor,
+      fontOptionId,
+      pageTexts: { ...pageTexts },
+      pageColors: { ...pageColors },
+      createdAt: new Date().toISOString(),
+    };
+    setPresets((prev) => {
+      const updated = [preset, ...prev];
+      const pw = localStorage.getItem("admin_password") ?? "password";
+      syncToServer({ presets: updated }, pw);
+      return updated;
+    });
+  };
+
+  const applyPreset = (id: string) => {
+    const p = presets.find((x) => x.id === id);
+    if (!p) return;
+    // apply locally
+    setPrimaryColor(p.primaryColor);
+    applyPrimaryToDom(p.primaryColor);
+    setFontState(p.fontOptionId as FontOptionId);
+    applyFontToDom(p.fontOptionId as FontOptionId);
+    setPageTexts(p.pageTexts ?? {});
+    setPageColors(p.pageColors ?? {});
+    localStorage.setItem("theme_primary_color", p.primaryColor);
+    localStorage.setItem("theme_font_option", p.fontOptionId);
+    const pw = localStorage.getItem("admin_password") ?? "password";
+    syncToServer(
+      {
+        primaryColor: p.primaryColor,
+        fontOptionId: p.fontOptionId,
+        pageTexts: p.pageTexts ?? {},
+        pageColors: p.pageColors ?? {},
+      },
+      pw
+    );
+  };
+
+  const deletePreset = (id: string) => {
+    setPresets((prev) => {
+      const updated = prev.filter((p) => p.id !== id);
+      const pw = localStorage.getItem("admin_password") ?? "password";
+      syncToServer({ presets: updated }, pw);
+      return updated;
+    });
+  };
+
   const setAdminPassword = (pw: string) => {
     const oldPw = localStorage.getItem("admin_password") ?? "password";
     setAdminPw(pw);
@@ -347,6 +453,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         pageTexts,
         updatePageText,
         resetPageText,
+        pageColors,
+        updatePageColor,
+        resetPageColor,
+        presets,
+        savePreset,
+        applyPreset,
+        deletePreset,
       }}
     >
       {children}

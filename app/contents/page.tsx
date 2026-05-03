@@ -1,12 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { BookReader } from "@/components/BookReader";
 import ScrollReveal from "@/components/ScrollReveal";
 import EditableText from "@/components/EditableText";
-
-const CHAPTER_1_API = "/api/chapter";
 
 const chapters = [
   {
@@ -150,22 +146,10 @@ const appendices = [
 ];
 
 export default function ContentsPage() {
-  const [openChapter, setOpenChapter] = useState<{
-    title: string;
-    url: string;
-  } | null>(null);
-
   return (
     <>
-      {openChapter && (
-        <BookReader
-          title={openChapter.title}
-          apiUrl={openChapter.url}
-          onClose={() => setOpenChapter(null)}
-        />
-      )}
       {/* Page header */}
-      <section className="bg-forest py-20 relative overflow-hidden">
+      <section className="bg-forest py-20 relative overflow-hidden sandy-ripple">
         <div
           className="absolute inset-0 opacity-5"
           style={{
@@ -206,23 +190,12 @@ export default function ContentsPage() {
 
           <div className="space-y-4">
             {chapters.map((ch, i) => {
-              const isClickable = ch.num === 1;
-              return (
-              <ScrollReveal key={ch.num} direction="up" delay={i < 5 ? i * 60 : 0}>
-              <div
-                onClick={
-                  isClickable
-                    ? () =>
-                        setOpenChapter({
-                          title: `Chapter 1 — ${ch.title}`,
-                          url: CHAPTER_1_API,
-                        })
-                    : undefined
-                }
-                className={`card p-6 flex gap-6 group hover:border-gold/40 transition-colors duration-200 ${
-                  isClickable ? "cursor-pointer hover:shadow-md" : ""
-                }`}
-              >
+              const isClickable = true; // all 19 chapters are now available
+              const cardClasses = `card p-6 flex gap-6 group hover:border-gold/40 transition-colors duration-200 ${
+                isClickable ? "cursor-pointer hover:shadow-md" : ""
+              }`;
+              const cardInner = (
+              <div className={cardClasses}>
                 {/* Chapter number */}
                 <div className="flex-shrink-0 w-12 h-12 rounded-sm bg-forest flex items-center justify-center group-hover:bg-gold transition-colors duration-200">
                   <span className="font-serif text-sm font-bold text-cream">
@@ -260,6 +233,16 @@ export default function ContentsPage() {
                   />
                 </div>
               </div>
+              );
+              return (
+              <ScrollReveal key={ch.num} direction="up" delay={i < 5 ? i * 60 : 0}>
+                {isClickable ? (
+                  <Link href={`/chapter/${ch.num}`} className="block no-underline text-inherit">
+                    {cardInner}
+                  </Link>
+                ) : (
+                  cardInner
+                )}
               </ScrollReveal>
               );
             })}

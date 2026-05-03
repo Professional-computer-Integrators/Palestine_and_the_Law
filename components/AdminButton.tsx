@@ -72,6 +72,147 @@ function PrimaryBtn({ children, onClick, type = "button" }: { children: React.Re
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   PRESETS PANEL — save / apply / delete named theme snapshots
+═══════════════════════════════════════════════════════════════════ */
+function PresetsPanel({
+  presets,
+  savePreset,
+  applyPreset,
+  deletePreset,
+  primaryColor,
+  fontOptionId,
+  pageTextsCount,
+  pageColorsCount,
+}: {
+  presets: import("@/contexts/ThemeContext").ThemePreset[];
+  savePreset: (name: string) => void;
+  applyPreset: (id: string) => void;
+  deletePreset: (id: string) => void;
+  primaryColor: string;
+  fontOptionId: string;
+  pageTextsCount: number;
+  pageColorsCount: number;
+}) {
+  const [name, setName] = useState("");
+  const fontLabel = FONT_OPTIONS.find((f) => f.id === fontOptionId)?.label ?? fontOptionId;
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) return;
+    savePreset(name.trim());
+    setName("");
+  };
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+      <div>
+        <SectionLabel>Save Current Look</SectionLabel>
+        <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.48)", lineHeight: 1.6, marginBottom: 12 }}>
+          A preset captures the current colour, font, all text overrides and all
+          colour overrides as a named snapshot. Apply it later with one click.
+        </p>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, padding: "10px 12px",
+          background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: 7, marginBottom: 12, fontSize: 11, color: "rgba(200,220,238,0.6)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ width: 14, height: 14, borderRadius: 3, background: primaryColor, border: "1px solid rgba(255,255,255,0.18)" }} />
+            <span style={{ fontFamily: "monospace" }}>{primaryColor}</span>
+            <span style={{ marginLeft: "auto", color: "rgba(200,220,238,0.4)" }}>colour</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{fontLabel}</span>
+            <span style={{ color: "rgba(200,220,238,0.4)" }}>font</span>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <span>{pageTextsCount} text · {pageColorsCount} colour overrides</span>
+            <span style={{ color: "rgba(200,220,238,0.4)" }}>edits</span>
+          </div>
+        </div>
+
+        <form onSubmit={handleSave} style={{ display: "flex", gap: 8 }}>
+          <input
+            type="text"
+            placeholder="Preset name (e.g. Classic Forest)"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onFocus={focusOn}
+            onBlur={focusOff}
+            style={{ ...INPUT_STYLE, flex: 1 }}
+            required
+          />
+          <button type="submit"
+            style={{ flexShrink: 0, padding: "0 16px", borderRadius: 6, cursor: "pointer",
+              fontFamily: "inherit", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              background: "rgba(200,151,63,0.18)", border: "1px solid rgba(200,151,63,0.4)",
+              color: "#e0b060", transition: "background 0.15s" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(200,151,63,0.32)")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(200,151,63,0.18)")}
+          >Save</button>
+        </form>
+      </div>
+
+      <div>
+        <SectionLabel>Saved Presets ({presets.length})</SectionLabel>
+        {presets.length === 0 ? (
+          <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.4)", lineHeight: 1.55,
+            padding: "14px 12px", borderRadius: 7, background: "rgba(255,255,255,0.03)",
+            border: "1px dashed rgba(255,255,255,0.10)" }}>
+            No presets saved yet. Customise the site, then save a snapshot above.
+          </p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {presets.map((p) => {
+              const fontLabel2 = FONT_OPTIONS.find((f) => f.id === p.fontOptionId)?.label ?? p.fontOptionId;
+              return (
+                <div key={p.id}
+                  style={{ display: "flex", flexDirection: "column", gap: 8, padding: "12px 14px",
+                    borderRadius: 8, background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ width: 26, height: 26, borderRadius: 5, flexShrink: 0,
+                      background: p.primaryColor, border: "1px solid rgba(255,255,255,0.20)",
+                      boxShadow: "inset 0 1px 0 rgba(255,255,255,0.15)" }} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ fontFamily: "Georgia,serif", fontSize: 13, fontWeight: 600,
+                        color: "#deeaf6", lineHeight: 1.2 }}>{p.name}</p>
+                      <p style={{ fontFamily: "inherit", fontSize: 10, color: "rgba(200,220,238,0.4)",
+                        marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {fontLabel2} · {Object.keys(p.pageTexts ?? {}).length} text · {Object.keys(p.pageColors ?? {}).length} colour
+                      </p>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <button onClick={() => applyPreset(p.id)}
+                      style={{ flex: 1, padding: "7px 0", borderRadius: 5, border: "none",
+                        cursor: "pointer", background: "rgb(var(--color-primary))", color: "#fff",
+                        fontFamily: "inherit", fontSize: 11, fontWeight: 600,
+                        letterSpacing: "0.05em", transition: "background 0.15s" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "rgb(var(--color-primary-light))")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "rgb(var(--color-primary))")}
+                    >Apply</button>
+                    <button onClick={() => {
+                        if (window.confirm(`Delete preset "${p.name}"?`)) deletePreset(p.id);
+                      }}
+                      style={{ padding: "7px 12px", borderRadius: 5, cursor: "pointer",
+                        background: "transparent", border: "1px solid rgba(239,68,68,0.3)",
+                        color: "#fca5a5", fontFamily: "inherit", fontSize: 11, transition: "background 0.15s" }}
+                      onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.12)")}
+                      onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                    >Delete</button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    LOGIN MODAL
 ═══════════════════════════════════════════════════════════════════ */
 function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
@@ -171,16 +312,18 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
     logout, setAdminPassword,
     addUpdate, updates, deleteUpdate,
     editMode, setEditMode, pageTexts, resetPageText,
+    pageColors, resetPageColor,
+    presets, savePreset, applyPreset, deletePreset,
   } = useTheme();
 
-  const [tab, setTab] = useState<"colour" | "font" | "updates" | "content" | "settings">("colour");
+  const [tab, setTab] = useState<"colour" | "font" | "insights" | "content" | "presets" | "settings">("colour");
 
   // Colour state
   const [pickerHex, setPickerHex] = useState(primaryColor);
   const [hexInput,  setHexInput]  = useState(primaryColor);
   const [hexError,  setHexError]  = useState(false);
 
-  // Updates state
+  // Insights state
   const [uTitle, setUTitle]     = useState("");
   const [uContent, setUContent] = useState("");
 
@@ -217,8 +360,9 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
   const TABS = [
     { id: "colour",   label: "Colour"   },
     { id: "font",     label: "Font"     },
-    { id: "updates",  label: "Updates"  },
     { id: "content",  label: "Content"  },
+    { id: "presets",  label: "Presets"  },
+    { id: "insights", label: "Insights" },
     { id: "settings", label: "Settings" },
   ] as const;
 
@@ -446,21 +590,21 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
           </div>
         )}
 
-        {/* ── UPDATES ── */}
-        {tab === "updates" && (
+        {/* ── INSIGHTS ── */}
+        {tab === "insights" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div>
-              <SectionLabel>Post New Update</SectionLabel>
+              <SectionLabel>Post New Insight</SectionLabel>
               <form onSubmit={handlePostUpdate} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <input type="text" placeholder="Update title…" value={uTitle}
+                <input type="text" placeholder="Insight title…" value={uTitle}
                   onChange={(e) => setUTitle(e.target.value)}
                   onFocus={focusOn} onBlur={focusOff}
                   style={INPUT_STYLE} required />
-                <textarea placeholder="Update content…" value={uContent}
+                <textarea placeholder="Insight content…" value={uContent}
                   onChange={(e) => setUContent(e.target.value)}
                   onFocus={focusOn} onBlur={focusOff}
                   rows={4} style={{ ...INPUT_STYLE, resize: "none" }} required />
-                <PrimaryBtn type="submit">Publish Update</PrimaryBtn>
+                <PrimaryBtn type="submit">Publish Insight</PrimaryBtn>
               </form>
             </div>
 
@@ -577,8 +721,48 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                 </div>
               </div>
             )}
+
+            {Object.keys(pageColors).length > 0 && (
+              <div>
+                <SectionLabel>Customised Text Colours ({Object.keys(pageColors).length})</SectionLabel>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {Object.entries(pageColors).map(([id, c]) => (
+                    <div key={id}
+                      style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
+                        borderRadius: 7, background: "rgba(255,255,255,0.05)",
+                        border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <span style={{ width: 22, height: 22, borderRadius: 4, background: c, flexShrink: 0, border: "1px solid rgba(255,255,255,0.18)" }} />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ fontFamily: "monospace", fontSize: 10, color: "#e0b060",
+                          whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: 1 }}>{id}</p>
+                        <p style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(200,220,238,0.55)" }}>{c}</p>
+                      </div>
+                      <button onClick={() => resetPageColor(id)}
+                        style={{ flexShrink: 0, fontFamily: "inherit", fontSize: 11, padding: "4px 8px",
+                          borderRadius: 4, cursor: "pointer", background: "transparent",
+                          border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5", transition: "background 0.15s" }}
+                        onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(239,68,68,0.12)")}
+                        onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                      >Reset</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
+
+        {/* ── PRESETS ── */}
+        {tab === "presets" && <PresetsPanel
+          presets={presets}
+          savePreset={savePreset}
+          applyPreset={applyPreset}
+          deletePreset={deletePreset}
+          primaryColor={primaryColor}
+          fontOptionId={fontOptionId}
+          pageTextsCount={Object.keys(pageTexts).length}
+          pageColorsCount={Object.keys(pageColors).length}
+        />}
 
         {/* ── SETTINGS ── */}
         {tab === "settings" && (

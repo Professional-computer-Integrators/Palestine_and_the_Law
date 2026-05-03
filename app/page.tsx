@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="relative bg-forest overflow-hidden">
+      <section className="relative bg-forest overflow-hidden sandy-ripple">
         {/* decorative pattern */}
         <div
           className="absolute inset-0 opacity-5"
@@ -169,7 +169,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── ABOUT THE AUTHOR ─────────────────────────────────── */}
+      {/* ── ABOUT THE AUTHOR ────────────────────────────────── */}
       <section className="py-20 md:py-28 bg-parchment">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-5 gap-12 items-start">

@@ -23,22 +23,36 @@ export default function EditableText({
   className,
   label,
 }: EditableTextProps) {
-  const { isAdmin, editMode, pageTexts, updatePageText, resetPageText } =
-    useTheme();
+  const {
+    isAdmin,
+    editMode,
+    pageTexts,
+    updatePageText,
+    resetPageText,
+    pageColors,
+    updatePageColor,
+    resetPageColor,
+  } = useTheme();
 
   const text = pageTexts[id] ?? defaultText;
   const isOverridden = id in pageTexts;
+  const color = pageColors[id];
+  const isColorOverridden = id in pageColors;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [draft, setDraft] = useState(text);
+  const [colorDraft, setColorDraft] = useState(color ?? "");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  /* Keep draft in sync with external text when modal is closed */
+  /* Keep drafts in sync when modal is closed */
   useEffect(() => {
-    if (!modalOpen) setDraft(text);
-  }, [text, modalOpen]);
+    if (!modalOpen) {
+      setDraft(text);
+      setColorDraft(color ?? "");
+    }
+  }, [text, color, modalOpen]);
 
   /* Focus textarea when modal opens */
   useEffect(() => {
@@ -47,11 +61,18 @@ export default function EditableText({
 
   function handleSave() {
     updatePageText(id, draft.trim() || defaultText);
+    const c = colorDraft.trim();
+    if (c && /^#[0-9a-fA-F]{6}$/.test(c)) {
+      updatePageColor(id, c);
+    } else if (!c && isColorOverridden) {
+      resetPageColor(id);
+    }
     setModalOpen(false);
   }
 
   function handleReset() {
     resetPageText(id);
+    resetPageColor(id);
     setModalOpen(false);
   }
 
@@ -66,13 +87,21 @@ export default function EditableText({
       <>
         <Tag
           className={className}
-          onClick={() => { setDraft(text); setModalOpen(true); }}
+          onClick={(e: React.MouseEvent) => {
+            // Prevent navigation when wrapped in a <Link> / <a>
+            e.preventDefault();
+            e.stopPropagation();
+            setDraft(text);
+            setColorDraft(color ?? "");
+            setModalOpen(true);
+          }}
           style={{
             outline: "2px dashed rgba(58,100,200,0.55)",
             outlineOffset: "3px",
             cursor: "pointer",
             borderRadius: "2px",
             position: "relative",
+            ...(color ? { color } : {}),
           }}
           title={`Click to edit: ${label ?? id}`}
         >
@@ -182,6 +211,47 @@ export default function EditableText({
                     Ctrl+Enter to save · Esc to cancel
                   </p>
 
+                  {/* Color picker */}
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={{ display: "block", fontFamily: "inherit", fontSize: 10, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "rgba(200,220,238,0.5)", marginBottom: 8 }}>
+                      Text Colour
+                    </label>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <input
+                        type="color"
+                        value={colorDraft && /^#[0-9a-fA-F]{6}$/.test(colorDraft) ? colorDraft : "#000000"}
+                        onChange={(e) => setColorDraft(e.target.value)}
+                        style={{ width: 44, height: 36, border: "1px solid rgba(255,255,255,0.18)", borderRadius: 6, background: "transparent", cursor: "pointer", padding: 2 }}
+                      />
+                      <input
+                        type="text"
+                        value={colorDraft}
+                        onChange={(e) => setColorDraft(e.target.value)}
+                        placeholder="#000000 (leave blank for default)"
+                        style={{
+                          flex: 1,
+                          background: "rgba(255,255,255,0.055)",
+                          border: "1px solid rgba(255,255,255,0.12)",
+                          color: "#deeaf6",
+                          borderRadius: 6,
+                          padding: "8px 12px",
+                          fontFamily: "inherit",
+                          fontSize: 13,
+                          outline: "none",
+                        }}
+                      />
+                      {colorDraft && (
+                        <button
+                          onClick={() => setColorDraft("")}
+                          style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.14)", color: "rgba(220,234,246,0.65)", fontSize: 11, padding: "6px 10px", borderRadius: 6, cursor: "pointer" }}
+                          title="Clear colour override"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
                   {/* Actions */}
                   <div style={{ display: "flex", gap: 8 }}>
                     <button
@@ -217,5 +287,21 @@ export default function EditableText({
   }
 
   /* ── Normal render ─────────────────────────────────────────────── */
-  return <Tag className={className}>{text}</Tag>;
+  return (
+    <Tag className={className} style={color ? { color } : undefined}>
+      {text}
+    </Tag>
+  );
+}
+/**
+ * Light-weight read-only hook for places where wrapping in <EditableText>
+ * isn't practical (e.g. label text inside a Link or button). The text is
+ * still controlled by the admin via the Content tab (using its `id`).
+ */
+export function useEditableText(id: string, defaultText: string) {
+  const { pageTexts, pageColors } = useTheme();
+  return {
+    text: pageTexts[id] ?? defaultText,
+    color: pageColors[id],
+  };
 }

@@ -7,6 +7,7 @@ services:
       - "3001:3001"
     environment:
       - NODE_ENV=production
+      - TRUST_HOST=1
     volumes:
       - app_data:/app/data
     restart: unless-stopped
