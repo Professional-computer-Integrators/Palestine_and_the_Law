@@ -161,7 +161,7 @@ export default function EditableText({
                 }}
               >
                 {/* Gold bar */}
-                <div style={{ height: 3, background: "linear-gradient(90deg,#9e7530,#e0b060,#9e7530)" }} />
+                <div style={{ height: 3, background: "linear-gradient(90deg,#000000,#000000,#000000)" }} />
 
                 <div style={{ padding: "24px 28px 28px" }}>
                   {/* Header */}

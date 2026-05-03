@@ -529,7 +529,7 @@ export function BookReader({
         </div>
 
         {/* Gold accent */}
-        <div style={{ height: 3, flexShrink: 0, background: "linear-gradient(90deg,#9e7530,#e0b060,#c8973f,#e0b060,#9e7530)" }} />
+        <div style={{ height: 3, flexShrink: 0, background: "linear-gradient(90deg,#000000,#000000,#000000,#000000,#000000)" }} />
 
         {/* ── Page area ── */}
         <div style={{ flex: 1, minHeight: 0, overflow: "hidden", position: "relative", paddingLeft: "10px", paddingRight: "10px", paddingTop: "10px", paddingBottom: "10px", background: "#e8eef4" }}>

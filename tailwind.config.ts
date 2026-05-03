@@ -32,9 +32,9 @@ const config: Config = {
           faint:   "#7a96aa",   /* placeholder / caption */
         },
         gold: {
-          DEFAULT: "#c8973f",
-          light:   "#e0b060",
-          dark:    "#9e7530",
+          DEFAULT: "#000000",
+          light:   "#000000",
+          dark:    "#000000",
         },
       },
       fontFamily: {

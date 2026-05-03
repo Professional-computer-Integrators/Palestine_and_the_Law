@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useTheme, FONT_OPTIONS, FontOptionId, DEFAULT_PRIMARY } from "@/contexts/ThemeContext";
 
-/* ─── Portal helper ─────────────────────────────────────────────── */
+/* --- Portal helper ---------------------------------------------- */
 function Portal({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
@@ -12,11 +12,11 @@ function Portal({ children }: { children: React.ReactNode }) {
   return createPortal(children, document.body);
 }
 
-/* ─── helpers ──────────────────────────────────────────────────── */
+/* --- helpers ---------------------------------------------------- */
 const isValidHex = (h: string) => /^#[0-9a-fA-F]{6}$/.test(h);
 const normalise  = (v: string) => (v.startsWith("#") ? v : `#${v}`);
 
-/* ─── icons ─────────────────────────────────────────────────────── */
+/* --- icons ------------------------------------------------------ */
 const LockIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
@@ -33,7 +33,7 @@ const XIcon = () => (
   </svg>
 );
 
-/* ─── panel bg / shared css-in-js tokens ────────────────────────── */
+/* --- panel bg / shared css-in-js tokens ------------------------- */
 const PANEL_BG    = "linear-gradient(175deg,#1b3556 0%,#111e30 55%,#0d1926 100%)";
 const PANEL_BORDER = "1px solid rgba(255,255,255,0.09)";
 const INPUT_STYLE: React.CSSProperties = {
@@ -48,7 +48,7 @@ const focusOn  = (e: React.FocusEvent<HTMLInputElement|HTMLTextAreaElement>) =>
 const focusOff = (e: React.FocusEvent<HTMLInputElement|HTMLTextAreaElement>) =>
   (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)");
 
-/* ─── small helpers ─────────────────────────────────────────────── */
+/* --- small helpers --------------------------------------------- */
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <p style={{ fontFamily: "inherit", fontSize: "9px", fontWeight: 700, letterSpacing: "0.18em",
@@ -71,9 +71,9 @@ function PrimaryBtn({ children, onClick, type = "button" }: { children: React.Re
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   PRESETS PANEL — save / apply / delete named theme snapshots
-═══════════════════════════════════════════════════════════════════ */
+/* ===================================================================
+   PRESETS PANEL
+=================================================================== */
 function PresetsPanel({
   presets,
   savePreset,
@@ -125,7 +125,7 @@ function PresetsPanel({
             <span style={{ color: "rgba(200,220,238,0.4)" }}>font</span>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <span>{pageTextsCount} text · {pageColorsCount} colour overrides</span>
+            <span>{pageTextsCount} text - {pageColorsCount} colour overrides</span>
             <span style={{ color: "rgba(200,220,238,0.4)" }}>edits</span>
           </div>
         </div>
@@ -145,10 +145,10 @@ function PresetsPanel({
             style={{ flexShrink: 0, padding: "0 16px", borderRadius: 6, cursor: "pointer",
               fontFamily: "inherit", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em",
               textTransform: "uppercase",
-              background: "rgba(200,151,63,0.18)", border: "1px solid rgba(200,151,63,0.4)",
-              color: "#e0b060", transition: "background 0.15s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(200,151,63,0.32)")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(200,151,63,0.18)")}
+              background: "rgba(0,0,0,0.55)", border: "1px solid rgba(0,0,0,0.85)",
+              color: "#ffffff", transition: "background 0.15s" }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.78)")}
+            onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.55)")}
           >Save</button>
         </form>
       </div>
@@ -179,7 +179,7 @@ function PresetsPanel({
                         color: "#deeaf6", lineHeight: 1.2 }}>{p.name}</p>
                       <p style={{ fontFamily: "inherit", fontSize: 10, color: "rgba(200,220,238,0.4)",
                         marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                        {fontLabel2} · {Object.keys(p.pageTexts ?? {}).length} text · {Object.keys(p.pageColors ?? {}).length} colour
+                        {fontLabel2} - {Object.keys(p.pageTexts ?? {}).length} text - {Object.keys(p.pageColors ?? {}).length} colour
                       </p>
                     </div>
                   </div>
@@ -212,9 +212,9 @@ function PresetsPanel({
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    LOGIN MODAL
-═══════════════════════════════════════════════════════════════════ */
+=================================================================== */
 function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
   const { login } = useTheme();
   const [username, setUsername] = useState("");
@@ -237,8 +237,8 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
       <div style={{ width: "100%", maxWidth: "360px", borderRadius: "12px", overflow: "hidden",
         background: PANEL_BG, border: PANEL_BORDER, boxShadow: "0 24px 64px rgba(0,0,0,0.55)" }}>
 
-        {/* Gold bar */}
-        <div style={{ height: 3, background: "linear-gradient(90deg,#9e7530,#e0b060,#9e7530)" }} />
+        {/* Accent bar */}
+        <div style={{ height: 3, background: "linear-gradient(90deg,#000000,#000000,#000000)" }} />
 
         <div style={{ padding: "32px 32px 36px" }}>
           {/* Header row */}
@@ -302,9 +302,9 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    ADMIN PANEL (right sidebar)
-═══════════════════════════════════════════════════════════════════ */
+=================================================================== */
 function AdminPanel({ onClose }: { onClose: () => void }) {
   const {
     primaryColor, applyColor, savedColors, saveColor, removeColor,
@@ -328,7 +328,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
   const [uContent, setUContent] = useState("");
 
   // Settings state
-  const [newPw, setNewPw]                                       = useState("");
+  const [newPw, setNewPw] = useState("");
   const [pwMsg, setPwMsg] = useState<{ok:boolean;text:string}|null>(null);
 
   useEffect(() => { setPickerHex(primaryColor); setHexInput(primaryColor); }, [primaryColor]);
@@ -372,8 +372,8 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
       background: PANEL_BG, borderLeft: PANEL_BORDER,
       boxShadow: "-10px 0 50px rgba(0,0,0,0.5)" }}>
 
-      {/* Gold bar */}
-      <div style={{ height: 3, flexShrink: 0, background: "linear-gradient(90deg,#9e7530,#e0b060,#9e7530)" }} />
+      {/* Accent bar */}
+      <div style={{ height: 3, flexShrink: 0, background: "linear-gradient(90deg,#000000,#000000,#000000)" }} />
 
       {/* Header */}
       <div style={{ flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -418,8 +418,8 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
             <button key={t.id} onClick={() => setTab(t.id)}
               style={{ flex: 1, padding: "11px 0", fontFamily: "inherit", fontSize: 11, fontWeight: active ? 600 : 400,
                 letterSpacing: "0.06em", border: "none", cursor: "pointer", background: "transparent",
-                color: active ? "#c8973f" : "rgba(200,220,238,0.42)",
-                borderBottom: active ? "2px solid #c8973f" : "2px solid transparent",
+                color: active ? "#ffffff" : "rgba(200,220,238,0.42)",
+                borderBottom: active ? "2px solid #ffffff" : "2px solid transparent",
                 transition: "color 0.15s, border-color 0.15s" }}
             >{t.label}</button>
           );
@@ -430,13 +430,12 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
       <div style={{ flex: 1, overflowY: "auto", padding: "22px 20px",
         scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,0.1) transparent" }}>
 
-        {/* ── COLOUR ── */}
+        {/* COLOUR */}
         {tab === "colour" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div>
               <SectionLabel>Primary Colour</SectionLabel>
 
-              {/* Colour picker swatch (large clickable) */}
               <label style={{ display: "block", position: "relative", cursor: "pointer", borderRadius: 8,
                 overflow: "hidden", height: 88, marginBottom: 14,
                 border: "2px solid rgba(255,255,255,0.13)" }}
@@ -446,23 +445,19 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                   onChange={(e) => applyHex(e.target.value)}
                   style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0, cursor: "pointer" }}
                 />
-                {/* Gradient preview */}
                 <div style={{ position: "absolute", inset: 0, transition: "opacity 0.2s",
                   background: `linear-gradient(120deg, rgb(var(--color-primary-dark)), ${pickerHex}, rgb(var(--color-primary-light)))` }} />
-                {/* Hover hint */}
                 <div className="opacity-0 group-hover:opacity-100"
                   style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.22)",
                     display: "flex", alignItems: "center", justifyContent: "center", transition: "opacity 0.2s" }}>
                   <span style={{ fontFamily: "inherit", fontSize: 11, fontWeight: 600, color: "rgba(255,255,255,0.8)",
                     letterSpacing: "0.06em" }}>Click to open colour picker</span>
                 </div>
-                {/* Hex badge */}
                 <div style={{ position: "absolute", bottom: 8, right: 10, fontFamily: "monospace", fontSize: 12,
                   padding: "2px 8px", borderRadius: 4, background: "rgba(0,0,0,0.45)", color: "#fff",
                   backdropFilter: "blur(4px)", letterSpacing: "0.04em" }}>{pickerHex}</div>
               </label>
 
-              {/* Hex input + Save row */}
               <div style={{ display: "flex", gap: 8, marginBottom: hexError ? 6 : 0 }}>
                 <div style={{ flex: 1, position: "relative" }}>
                   <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)",
@@ -482,10 +477,10 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                   style={{ flexShrink: 0, padding: "0 16px", borderRadius: 6, cursor: "pointer",
                     fontFamily: "inherit", fontSize: 11, fontWeight: 700, letterSpacing: "0.1em",
                     textTransform: "uppercase", transition: "background 0.15s",
-                    background: "rgba(200,151,63,0.18)", border: "1px solid rgba(200,151,63,0.4)",
-                    color: "#e0b060" }}
-                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(200,151,63,0.32)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(200,151,63,0.18)")}
+                    background: "rgba(0,0,0,0.55)", border: "1px solid rgba(0,0,0,0.85)",
+                    color: "#ffffff" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.78)")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.55)")}
                   title="Save current colour to history"
                 >Save</button>
                 <button onClick={() => applyHex(DEFAULT_PRIMARY)}
@@ -504,7 +499,6 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                   Enter a valid 6-digit hex code</p>
               )}
 
-              {/* Shade strip */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 3, borderRadius: 6,
                 overflow: "hidden", border: "1px solid rgba(255,255,255,0.10)", marginTop: 12 }}>
                 {[
@@ -521,7 +515,6 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
               </div>
             </div>
 
-            {/* Colour history */}
             {savedColors.length > 0 && (
               <div>
                 <SectionLabel>Colour History ({savedColors.length})</SectionLabel>
@@ -532,7 +525,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                       <button onClick={() => applyHex(color)} title={`Apply ${color}`}
                         style={{ width: "100%", aspectRatio: "1/1", borderRadius: 6, cursor: "pointer",
                           background: color, border: color === primaryColor
-                            ? "2px solid #e0b060" : "1px solid rgba(255,255,255,0.18)",
+                            ? "2px solid #ffffff" : "1px solid rgba(255,255,255,0.18)",
                           boxShadow: "0 2px 6px rgba(0,0,0,0.35)", transition: "transform 0.1s, box-shadow 0.1s" }}
                         onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.08)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.5)"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.35)"; }}
@@ -547,7 +540,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                           borderRadius: "50%", border: "none", cursor: "pointer", display: "flex",
                           alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800,
                           background: "#ef4444", color: "#fff", lineHeight: 1, transition: "opacity 0.1s" }}
-                        title="Remove">×</button>
+                        title="Remove">x</button>
                     </div>
                   ))}
                 </div>
@@ -556,7 +549,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
           </div>
         )}
 
-        {/* ── FONT ── */}
+        {/* FONT */}
         {tab === "font" && (
           <div>
             <SectionLabel>Typography Preset</SectionLabel>
@@ -572,11 +565,10 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                     onMouseEnter={(e) => { if (!active) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
                     onMouseLeave={(e) => { if (!active) e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
                   >
-                    {/* Custom radio circle */}
                     <div style={{ width: 16, height: 16, borderRadius: "50%", flexShrink: 0,
-                      border: `2px solid ${active ? "#c8973f" : "rgba(255,255,255,0.28)"}`,
+                      border: `2px solid ${active ? "#ffffff" : "rgba(255,255,255,0.28)"}`,
                       display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      {active && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#c8973f" }} />}
+                      {active && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffffff" }} />}
                     </div>
                     <input type="radio" name="fontOpt" value={opt.id}
                       checked={active} onChange={() => setFontOptionId(opt.id as FontOptionId)}
@@ -590,17 +582,17 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
           </div>
         )}
 
-        {/* ── INSIGHTS ── */}
+        {/* INSIGHTS */}
         {tab === "insights" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div>
               <SectionLabel>Post New Insight</SectionLabel>
               <form onSubmit={handlePostUpdate} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <input type="text" placeholder="Insight title…" value={uTitle}
+                <input type="text" placeholder="Insight title..." value={uTitle}
                   onChange={(e) => setUTitle(e.target.value)}
                   onFocus={focusOn} onBlur={focusOff}
                   style={INPUT_STYLE} required />
-                <textarea placeholder="Insight content…" value={uContent}
+                <textarea placeholder="Insight content..." value={uContent}
                   onChange={(e) => setUContent(e.target.value)}
                   onFocus={focusOn} onBlur={focusOff}
                   rows={4} style={{ ...INPUT_STYLE, resize: "none" }} required />
@@ -640,16 +632,15 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
           </div>
         )}
 
-        {/* ── CONTENT ── */}
+        {/* CONTENT */}
         {tab === "content" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div>
               <SectionLabel>Page Content Editor</SectionLabel>
               <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.48)", lineHeight: 1.65, marginBottom: 16 }}>
-                Toggle <span style={{ fontFamily: "monospace", color: "#e0b060" }}>Edit Mode</span> to highlight editable text sections on the page. Click any highlighted section to edit its content.
+                Toggle <span style={{ fontFamily: "monospace", color: "#ffffff" }}>Edit Mode</span> to highlight editable text sections on the page. Click any highlighted section to edit its content.
               </p>
 
-              {/* Toggle button */}
               <button
                 onClick={() => setEditMode(!editMode)}
                 style={{
@@ -664,7 +655,6 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                 onMouseEnter={(e) => { e.currentTarget.style.background = editMode ? "rgba(34,197,94,0.25)" : "rgba(255,255,255,0.12)"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.background = editMode ? "rgba(34,197,94,0.15)" : "rgba(255,255,255,0.06)"; }}
               >
-                {/* Toggle indicator */}
                 <span style={{
                   display: "inline-block", width: 36, height: 20, borderRadius: 10, position: "relative", flexShrink: 0,
                   background: editMode ? "rgba(34,197,94,0.55)" : "rgba(255,255,255,0.15)",
@@ -677,17 +667,16 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                     transition: "left 0.2s",
                   }} />
                 </span>
-                {editMode ? "Edit Mode: ON — Click text to edit" : "Edit Mode: OFF"}
+                {editMode ? "Edit Mode: ON - Click text to edit" : "Edit Mode: OFF"}
               </button>
 
               {editMode && (
                 <p style={{ fontFamily: "inherit", fontSize: 11, color: "rgba(134,239,172,0.65)", marginTop: 10, lineHeight: 1.55 }}>
-                  ✓ Navigate to any page and click on a dashed blue outlined text to edit it.
+                  Navigate to any page and click on a dashed blue outlined text to edit it.
                 </p>
               )}
             </div>
 
-            {/* Overridden texts list */}
             {Object.keys(pageTexts).length > 0 && (
               <div>
                 <SectionLabel>Customised Text ({Object.keys(pageTexts).length})</SectionLabel>
@@ -698,7 +687,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                         borderRadius: 7, background: "rgba(255,255,255,0.05)",
                         border: "1px solid rgba(255,255,255,0.08)" }}>
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontFamily: "monospace", fontSize: 10, color: "#e0b060",
+                        <p style={{ fontFamily: "monospace", fontSize: 10, color: "#ffffff",
                           whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: 3 }}>
                           {id}
                         </p>
@@ -733,7 +722,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                         border: "1px solid rgba(255,255,255,0.08)" }}>
                       <span style={{ width: 22, height: 22, borderRadius: 4, background: c, flexShrink: 0, border: "1px solid rgba(255,255,255,0.18)" }} />
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontFamily: "monospace", fontSize: 10, color: "#e0b060",
+                        <p style={{ fontFamily: "monospace", fontSize: 10, color: "#ffffff",
                           whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", marginBottom: 1 }}>{id}</p>
                         <p style={{ fontFamily: "monospace", fontSize: 11, color: "rgba(200,220,238,0.55)" }}>{c}</p>
                       </div>
@@ -752,7 +741,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
           </div>
         )}
 
-        {/* ── PRESETS ── */}
+        {/* PRESETS */}
         {tab === "presets" && <PresetsPanel
           presets={presets}
           savePreset={savePreset}
@@ -764,17 +753,17 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
           pageColorsCount={Object.keys(pageColors).length}
         />}
 
-        {/* ── SETTINGS ── */}
+        {/* SETTINGS */}
         {tab === "settings" && (
           <div>
             <SectionLabel>Change Admin Password</SectionLabel>
             <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.48)",
               lineHeight: 1.65, marginBottom: 16 }}>
-              Username is always <span style={{ fontFamily: "monospace", color: "#e0b060" }}>master</span>.
+              Username is always <span style={{ fontFamily: "monospace", color: "#ffffff" }}>master</span>.
               Set a new login password below (min. 4 characters).
             </p>
             <form onSubmit={handleChangePw} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <input type="password" placeholder="New password…" value={newPw}
+              <input type="password" placeholder="New password..." value={newPw}
                 onChange={(e) => setNewPw(e.target.value)}
                 onFocus={focusOn} onBlur={focusOff}
                 style={INPUT_STYLE} autoComplete="new-password" required />
@@ -796,16 +785,16 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
       <div style={{ flexShrink: 0, padding: "10px 20px", borderTop: "1px solid rgba(255,255,255,0.07)",
         textAlign: "center" }}>
         <p style={{ fontFamily: "inherit", fontSize: 10, color: "rgba(200,220,238,0.2)", letterSpacing: "0.06em" }}>
-          Palestine and the Law — Site Administration
+          Palestine and the Law - Site Administration
         </p>
       </div>
     </div>
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    EXPORTED TRIGGER BUTTON
-═══════════════════════════════════════════════════════════════════ */
+=================================================================== */
 export default function AdminButton() {
   const { isAdmin } = useTheme();
   const [showLogin, setShowLogin] = useState(false);
@@ -826,15 +815,15 @@ export default function AdminButton() {
           display: "flex", alignItems: "center", gap: 6, padding: "6px 12px",
           borderRadius: 6, cursor: "pointer", fontFamily: "inherit", fontSize: 12,
           fontWeight: 500, transition: "background 0.15s",
-          background: isAdmin ? "rgba(200,151,63,0.18)" : "rgba(255,255,255,0.08)",
-          border: isAdmin ? "1px solid rgba(200,151,63,0.4)" : "1px solid rgba(255,255,255,0.16)",
-          color: isAdmin ? "#e0b060" : "rgba(232,241,248,0.65)",
+          background: isAdmin ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.08)",
+          border: isAdmin ? "1px solid rgba(0,0,0,0.85)" : "1px solid rgba(255,255,255,0.16)",
+          color: isAdmin ? "#ffffff" : "rgba(232,241,248,0.65)",
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.background = isAdmin ? "rgba(200,151,63,0.28)" : "rgba(255,255,255,0.14)";
+          e.currentTarget.style.background = isAdmin ? "rgba(0,0,0,0.78)" : "rgba(255,255,255,0.14)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.background = isAdmin ? "rgba(200,151,63,0.18)" : "rgba(255,255,255,0.08)";
+          e.currentTarget.style.background = isAdmin ? "rgba(0,0,0,0.55)" : "rgba(255,255,255,0.08)";
         }}
       >
         {isAdmin ? <ShieldIcon /> : <LockIcon />}

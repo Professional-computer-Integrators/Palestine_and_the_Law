@@ -33,13 +33,14 @@ export default function HomePage() {
             {/* Book image */}
             <div className="relative">
               <div className="absolute -inset-4 bg-gold/70 rounded-sm blur-2xl animate-pulse" />
-              <div className="relative bg-forest-light border border-gold/30 rounded-sm p-4 shadow-2xl max-w-xs w-full">
+              <div className="relative bg-forest-light border border-gold/30 rounded-sm p-4 shadow-2xl w-full max-w-md sm:max-w-lg md:max-w-xl">
                 <Image
                   src="https://i0.wp.com/palestineandthelaw.org/wp-content/uploads/2025/10/bluebook4-1-2.jpg?w=407&ssl=1"
                   alt="Palestine and the Law book cover"
                   width={407}
                   height={550}
-                  className="w-full h-auto object-cover rounded-sm"
+                  className="w-full h-auto rounded-sm"
+                  style={{ aspectRatio: "5 / 6", objectFit: "fill" }}
                   priority
                   unoptimized
                 />
