@@ -84,7 +84,10 @@
   --font-body:    var(--font-inter);
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
 
 /* ── Animated mesh-gradient background ─────────────────────────── */
 @keyframes mesh-shift {
@@ -129,6 +132,44 @@ html { scroll-behavior: smooth; }
   40%       { transform: translate(2px, -2px); }
   60%       { transform: translate(-1px, 3px); }
   80%       { transform: translate(3px, -1px); }
+}
+/* ── Sand background slow circular orbit ────────────────────────── */
+@keyframes sand-orbit {
+  0%   { transform: translate(  0%,    0%  ); }
+  25%  { transform: translate(  3%,   -2%  ); }
+  50%  { transform: translate(  0%,   -4%  ); }
+  75%  { transform: translate( -3%,   -2%  ); }
+  100% { transform: translate(  0%,    0%  ); }
+}
+
+.sand-orbit {
+  animation: sand-orbit 40s ease-in-out infinite;
+  will-change: transform;
+}
+/* ── Hero background light-sweep animation ──────────────────────
+   A slow diagonal highlight that drifts across the photo, giving
+   the illusion of shifting light without any tiling pattern.       */
+@keyframes hero-light-sweep {
+  0%   { opacity: 0;    transform: translateX(-60%) translateY(-20%) rotate(25deg); }
+  20%  { opacity: 0.55; }
+  50%  { opacity: 0.40; transform: translateX( 20%) translateY( 10%) rotate(25deg); }
+  80%  { opacity: 0.55; }
+  100% { opacity: 0;    transform: translateX( 80%) translateY( 35%) rotate(25deg); }
+}
+
+.hero-light-sweep {
+  pointer-events: none;
+  position: fixed;
+  inset: -100%;
+  background: radial-gradient(
+    ellipse 35% 80% at 50% 50%,
+    rgba(255, 248, 215, 0.55) 0%,
+    rgba(255, 245, 210, 0.30) 25%,
+    rgba(255, 242, 205, 0.12) 50%,
+    transparent 100%
+  );
+  animation: hero-light-sweep 12s ease-in-out infinite;
+  z-index: 1;
 }
 
 /* ── Sandy ripple overlay (book-page texture) ────────────────────
@@ -193,7 +234,7 @@ body {
   animation: mesh-shift 14s ease-in-out infinite;
   color: #1a2d3f;
   position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 /* Floating orb 1 — top-left */

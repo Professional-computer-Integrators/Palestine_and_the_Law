@@ -101,6 +101,19 @@ export default function RootLayout({
         <link href={GOOGLE_FONTS_URL} rel="stylesheet" />
       </head>
       <body className="min-h-screen flex flex-col antialiased">
+        {/* ── Global background: sand image + dark overlay + light sweep ── */}
+        <div
+          className="sand-orbit fixed -z-20"
+          style={{
+            inset: "-8%",
+            backgroundImage: `url("/hero-bg.jpg")`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.45,
+          }}
+        />
+        <div className="fixed inset-0 -z-20 bg-forest/80" />
+        <div className="hero-light-sweep fixed" style={{ zIndex: -10 }} />
         <ThemeProvider>
           <Navbar />
           <main className="flex-1 min-w-0">{children}</main>

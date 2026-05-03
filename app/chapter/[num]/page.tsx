@@ -22,7 +22,7 @@ export default async function ChapterPage({
   const startPage = await getChapterStartPage(ch.num);
 
   return (
-    <section className="bg-parchment min-h-screen">
+    <section className="relative min-h-screen">
       {/* Far-left chapter sidebar + the document, side by side. The site
           navbar (rendered by app/layout) stays sticky at the top. */}
       <div className="flex items-start gap-0">

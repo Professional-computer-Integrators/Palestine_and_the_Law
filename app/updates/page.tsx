@@ -10,7 +10,7 @@ export default function UpdatesPage() {
   return (
     <>
       {/* Page header */}
-      <section className="bg-forest py-20 relative overflow-hidden sandy-ripple">
+      <section className="py-20 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-5"
           style={{
@@ -48,7 +48,7 @@ export default function UpdatesPage() {
       </section>
 
       {/* Updates list */}
-      <section className="py-20 bg-parchment">
+      <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {updates.length === 0 ? (
             <div className="text-center py-24">

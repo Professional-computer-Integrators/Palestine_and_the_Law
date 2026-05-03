@@ -149,13 +149,8 @@ export default function ContentsPage() {
   return (
     <>
       {/* Page header */}
-      <section className="bg-forest py-20 relative overflow-hidden sandy-ripple">
-        <div
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
+      <section className="py-20 relative overflow-hidden">
+
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="font-sans text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Palestine and the Law
@@ -180,7 +175,7 @@ export default function ContentsPage() {
       </section>
 
       {/* Chapters */}
-      <section className="py-16 bg-parchment">
+      <section className="py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-10">
             <h2 className="font-serif text-2xl font-bold text-forest">Chapters</h2>
@@ -251,7 +246,7 @@ export default function ContentsPage() {
       </section>
 
       {/* Appendices */}
-      <section className="py-16 bg-cream">
+      <section className="py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-10">
             <h2 className="font-serif text-2xl font-bold text-forest">Appendices</h2>
@@ -285,7 +280,7 @@ export default function ContentsPage() {
       </section>
 
       {/* Back to home CTA */}
-      <div className="py-10 bg-parchment text-center">
+      <div className="py-10 text-center">
         <Link href="/" className="btn-outline">
           ← Back to Home
         </Link>

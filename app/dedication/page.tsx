@@ -69,13 +69,8 @@ export default function DedicationPage() {
   return (
     <>
       {/* Page header */}
-      <section className="bg-forest py-20 relative overflow-hidden sandy-ripple">
-        <div
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
+      <section className="py-20 relative overflow-hidden">
+
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="font-sans text-gold text-xs tracking-[0.3em] uppercase mb-4">
             Palestine and the Law
@@ -93,7 +88,7 @@ export default function DedicationPage() {
       </section>
 
       {/* Dedication */}
-      <section className="py-20 bg-parchment">
+      <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal direction="up">
           <div className="relative bg-surface border border-cream-dark rounded-sm shadow-sm px-10 py-14 text-center">
@@ -136,7 +131,7 @@ export default function DedicationPage() {
       </section>
 
       {/* Acknowledgements */}
-      <section className="py-16 bg-cream">
+      <section className="py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-10">
             <h2 className="font-serif text-2xl font-bold text-forest">
@@ -145,10 +140,10 @@ export default function DedicationPage() {
             <div className="flex-1 h-px bg-cream-dark" />
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-4 items-stretch">
             {acknowledgements.map((ack, i) => (
-              <ScrollReveal key={i} direction="up" delay={i < 6 ? i * 60 : 0}>
-              <div className="card p-5 flex gap-4 group hover:border-gold/30 transition-colors duration-200">
+              <ScrollReveal key={i} direction="up" delay={i < 6 ? i * 60 : 0} className="h-full">
+              <div className="card p-5 flex gap-4 h-full group hover:border-gold/30 transition-colors duration-200">
                 <div className="flex-shrink-0 w-1 rounded-full bg-gold/40 group-hover:bg-gold transition-colors duration-200" />
                 <div>
                   <h3 className="font-sans text-xs font-semibold text-gold uppercase tracking-wide mb-2">
