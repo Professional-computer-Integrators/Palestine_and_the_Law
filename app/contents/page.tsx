@@ -3,6 +3,7 @@
 import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 import EditableText from "@/components/EditableText";
+import { APPENDICES } from "@/lib/appendices";
 
 const chapters = [
   {
@@ -102,48 +103,7 @@ const chapters = [
   },
 ];
 
-const appendices = [
-  {
-    num: "I",
-    title: "Declaration of Principles on Interim Self-Government Arrangements",
-    desc: "By the Government of Israel and Palestine Liberation Organization — 13th September 1993.",
-  },
-  {
-    num: "II",
-    title: "Mandate from the League of Nations to the British Government",
-    desc: "For the administration of Palestine.",
-  },
-  {
-    num: "III",
-    title: "Amendment of Article 25 of the Palestinian Mandate",
-    desc: "Documenting the formal amendment to the terms of the Mandate.",
-  },
-  {
-    num: "IV",
-    title: "The UN Partition Resolution",
-    desc: "The full text of UN General Assembly Resolution 181 (II) — 29th November 1947.",
-  },
-  {
-    num: "V",
-    title: "UN Self-Determination for Peoples",
-    desc: "UN General Assembly Resolution — 14th December 1960.",
-  },
-  {
-    num: "VI",
-    title: "The Right of Return of the Palestinian People",
-    desc: "UN General Assembly Resolution 194 dated 11th December 1948 and subsequent UN resolutions.",
-  },
-  {
-    num: "VII",
-    title: "Jerusalem's Holy Places under the Mandate",
-    desc: "Order in Council — 19th May 1931.",
-  },
-  {
-    num: "VIII",
-    title: "Declaration of Independence of the State of Palestine",
-    desc: "The text of Palestine's Declaration of Independence.",
-  },
-];
+const appendices = APPENDICES;
 
 export default function ContentsPage() {
   return (
@@ -257,22 +217,40 @@ export default function ContentsPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             {appendices.map((app, i) => (
               <ScrollReveal key={app.num} direction="up" delay={i * 60}>
-              <div
-                className="card p-5 flex gap-4 group hover:border-gold/40 transition-colors duration-200"
-              >
-                <div className="flex-shrink-0 w-10 h-10 rounded-sm bg-gold/20 border border-gold/30 flex items-center justify-center group-hover:bg-gold group-hover:border-gold transition-colors duration-200">
-                  <span className="font-serif text-xs font-bold text-forest group-hover:text-forest-dark transition-colors duration-200">
-                    {app.num}
-                  </span>
-                </div>
-                <div>
-                  <h3 className="font-serif text-base font-semibold text-forest mb-1 leading-tight">
-                    Appendix {app.num}
-                  </h3>
-                  <p className="font-sans text-sm font-medium text-ink mb-1">{app.title}</p>
-                  <p className="font-sans text-xs text-ink-muted leading-relaxed">{app.desc}</p>
-                </div>
-              </div>
+                <Link
+                  href={`/appendix/${app.num}`}
+                  className="block no-underline text-inherit"
+                >
+                  <div className="card p-5 flex gap-4 group hover:border-gold/40 hover:shadow-md cursor-pointer transition-all duration-200">
+                    <div className="flex-shrink-0 w-10 h-10 rounded-sm bg-gold/20 border border-gold/30 flex items-center justify-center group-hover:bg-gold group-hover:border-gold transition-colors duration-200">
+                      <span className="font-serif text-xs font-bold text-forest group-hover:text-forest-dark transition-colors duration-200">
+                        {app.roman}
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="font-serif text-base font-semibold text-forest mb-1 leading-tight">
+                          Appendix {app.roman}
+                        </h3>
+                        <span
+                          className="flex-shrink-0 flex items-center gap-1 font-sans text-[11px] font-semibold tracking-wide px-2.5 py-1 rounded-full mt-0.5"
+                          style={{
+                            background: "rgb(var(--color-primary) / 0.12)",
+                            color: "rgb(var(--color-primary))",
+                            border: "1px solid rgb(var(--color-primary) / 0.25)",
+                          }}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                          </svg>
+                          Read Appendix
+                        </span>
+                      </div>
+                      <p className="font-sans text-sm font-medium text-ink mb-1">{app.title}</p>
+                      <p className="font-sans text-xs text-ink-muted leading-relaxed">{app.desc}</p>
+                    </div>
+                  </div>
+                </Link>
               </ScrollReveal>
             ))}
           </div>
