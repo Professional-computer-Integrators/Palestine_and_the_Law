@@ -103,7 +103,7 @@ export default function ChapterReader({ apiUrl, docUrl, startPage = 1 }: Props) 
     if (!q) return;
     const re = new RegExp(escapeRegex(q), "gi");
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode(node) {
+      acceptNode(node: Node) {
         if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
         const p = node.parentElement;
         if (!p) return NodeFilter.FILTER_REJECT;

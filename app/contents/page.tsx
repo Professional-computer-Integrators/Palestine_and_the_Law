@@ -57,12 +57,12 @@ const chapters = [
   },
   {
     num: 11,
-    title: "The General Assembly Resolved to Admit Israel to the UN on 11th May 1949",
+    title: "Israel's Application for Membership in the United Nations",
     desc: "The UN General Assembly resolved to admit Israel to the UN on 11th May 1949. The admission was based on Israel's unreserved acceptance of the obligations of the UN Charter, with assurances that Israel would abide by the Partition Resolution and that the displaced Palestinians had the right to return or be compensated.",
   },
   {
     num: 12,
-    title: "The History of the Principle of Self-Determination",
+    title: "The Palestinians' Right to Self-Determination",
     desc: "Describes the history of the principle of self-determination, early formulations of which were expressed by the US as the \"right of native races to dispose freely of themselves and of their hereditary soil\" — subsequently enshrined in the UN Charter, the Universal Declaration of Human Rights and several other UN resolutions.",
   },
   {
