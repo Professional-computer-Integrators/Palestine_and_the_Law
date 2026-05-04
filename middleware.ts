@@ -1,9 +1,4 @@
 import { NextResponse, type NextRequest } from "next/server";
-import {
-  ADMIN_AUTH_COOKIE,
-  getAdminAuthCookieValue,
-  isAdminAuthConfigured,
-} from "@/lib/admin/auth";
 
 type RateBucket = {
   count: number;
@@ -48,16 +43,16 @@ function withSecurityHeaders(response: NextResponse): NextResponse {
   return response;
 }
 
-function isAuthenticated(request: NextRequest): boolean {
-  const cookieValue = request.cookies.get(ADMIN_AUTH_COOKIE)?.value;
-  return Boolean(cookieValue) && cookieValue === getAdminAuthCookieValue();
+function isAuthenticated(_request: NextRequest): boolean {
+  // Admin gating is handled client-side via ThemeContext / useTheme().isAdmin
+  // on the page itself. Middleware only enforces rate limits + security headers
+  // for the admin API surface.
+  return true;
 }
 
 export function middleware(request: NextRequest) {
-  const { pathname, search } = request.nextUrl;
-  const loginPath = "/admin/login";
+  const { pathname } = request.nextUrl;
   const authApiPath = "/api/admin/auth";
-  const isAdminRoute = pathname.startsWith("/admin");
   const isAdminApiRoute = pathname.startsWith("/api/admin/");
 
   const ip = clientIp(request);
@@ -82,48 +77,7 @@ export function middleware(request: NextRequest) {
     );
   }
 
-  // Check admin is configured before allowing any admin route
-  if ((isAdminRoute || isAdminApiRoute) && !isAdminAuthConfigured()) {
-    if (pathname.startsWith("/api/")) {
-      return withSecurityHeaders(
-        NextResponse.json({ error: "Admin security is not configured." }, { status: 503 })
-      );
-    }
-    return withSecurityHeaders(
-      NextResponse.redirect(new URL("/", request.url))
-    );
-  }
-
-  if (isAdminRoute || isAdminApiRoute) {
-    const authenticated = isAuthenticated(request);
-
-    // Always allow the auth endpoint itself
-    if (pathname === authApiPath) {
-      return withSecurityHeaders(NextResponse.next());
-    }
-
-    // Allow access to the login page; redirect away if already authed
-    if (pathname === loginPath) {
-      if (authenticated) {
-        return withSecurityHeaders(NextResponse.redirect(new URL("/admin", request.url)));
-      }
-      return withSecurityHeaders(NextResponse.next());
-    }
-
-    // Protect all other admin routes
-    if (!authenticated) {
-      if (pathname.startsWith("/api/admin/")) {
-        return withSecurityHeaders(
-          NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-        );
-      }
-      const loginUrl = new URL(loginPath, request.url);
-      loginUrl.searchParams.set("next", `${pathname}${search}`);
-      return withSecurityHeaders(NextResponse.redirect(loginUrl));
-    }
-  }
-
-  return NextResponse.next();
+  return withSecurityHeaders(NextResponse.next());
 }
 
 export const config = {

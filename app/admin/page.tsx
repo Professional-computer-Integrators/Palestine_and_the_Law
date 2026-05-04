@@ -3,54 +3,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import RotatingGlobe from "./RotatingGlobe";
 import SessionsTable, { type TableSession } from "./SessionsTable";
 import type { VisitorSession } from "@/lib/admin/types";
+import { useTheme } from "@/contexts/ThemeContext";
 
-const geoDistribution = [
-  { label: "Europe", value: 31, visitors: 2_841, color: "#1b4332" },
-  { label: "North America", value: 24, visitors: 2_198, color: "#2d6a4f" },
-  { label: "Asia", value: 21, visitors: 1_923, color: "#40916c" },
-  { label: "South America", value: 11, visitors: 1_008, color: "#74c69d" },
-  { label: "Oceania", value: 8, visitors: 733, color: "#b7e4c7" },
-  { label: "Africa", value: 5, visitors: 458, color: "#d8f3dc" },
-];
+const geoDistribution: { label: string; value: number; visitors: number; color: string }[] = [];
 
 const visitSeries = {
-  hourly: {
-    labels: ["00", "04", "08", "12", "16", "20"],
-    values: [22, 31, 78, 93, 86, 59],
-  },
-  daily: {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    values: [129, 140, 162, 176, 201, 128, 116],
-  },
-  weekly: {
-    labels: ["W1", "W2", "W3", "W4", "W5", "W6"],
-    values: [824, 859, 912, 998, 944, 1030],
-  },
-  monthly: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    values: [3021, 3128, 3382, 3604, 3550, 3721, 3899, 3988, 4102, 4300, 4422, 4579],
-  },
-  annual: {
-    labels: ["2021", "2022", "2023", "2024", "2025", "2026"],
-    values: [21110, 30882, 41200, 50950, 62111, 68832],
-  },
-  "all-time": {
-    labels: ["Yr1", "Yr2", "Yr3", "Yr4", "Yr5", "Yr6", "Yr7", "Yr8"],
-    values: [7200, 14012, 22110, 33290, 45120, 58912, 68030, 78244],
-  },
+  hourly:     { labels: [] as string[], values: [] as number[] },
+  daily:      { labels: [] as string[], values: [] as number[] },
+  weekly:     { labels: [] as string[], values: [] as number[] },
+  monthly:    { labels: [] as string[], values: [] as number[] },
+  annual:     { labels: [] as string[], values: [] as number[] },
+  "all-time": { labels: [] as string[], values: [] as number[] },
 } as const;
 
-const sourceStats = [
-  { source: "Google Search", visitors: 3842, share: 42, trend: "+8.2%" },
-  { source: "Direct", visitors: 2013, share: 22, trend: "+3.0%" },
-  { source: "Bing", visitors: 1210, share: 13, trend: "+4.7%" },
-  { source: "LinkedIn", visitors: 872, share: 9, trend: "+12.3%" },
-  { source: "Google Ads", visitors: 663, share: 7, trend: "+2.2%" },
-  { source: "Referral", visitors: 572, share: 7, trend: "-1.1%" },
-];
+const sourceStats: { source: string; visitors: number; share: number; trend: string }[] = [];
 
 const ranges = ["hourly", "daily", "weekly", "monthly", "annual", "all-time"] as const;
 type Range = (typeof ranges)[number];
@@ -59,6 +29,8 @@ type ChartMode = "bar" | "line";
 const ARCHIVE_MONTHS = 12;
 
 export default function AdminPage() {
+  const router = useRouter();
+  const { isAdmin } = useTheme();
   const [sessions, setSessions] = useState<VisitorSession[]>([]);
   const [activeSessionId, setActiveSessionId] = useState("");
   const [range, setRange] = useState<Range>("monthly");
@@ -66,6 +38,19 @@ export default function AdminPage() {
   const [isLoadingSessions, setIsLoadingSessions] = useState(true);
   const [isArchiving, setIsArchiving] = useState(false);
   const [archiveMessage, setArchiveMessage] = useState("");
+
+  // Gate the dashboard to admin users only. ThemeContext hydrates `isAdmin`
+  // from sessionStorage on mount, so we wait one tick before redirecting.
+  const [authChecked, setAuthChecked] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setAuthChecked(true), 0);
+    return () => clearTimeout(t);
+  }, []);
+  useEffect(() => {
+    if (authChecked && !isAdmin) {
+      router.replace("/");
+    }
+  }, [authChecked, isAdmin, router]);
 
   const archiveCutoff = useMemo(() => {
     const cutoff = new Date();
@@ -165,6 +150,32 @@ export default function AdminPage() {
     }
   }
 
+  const [isClearing, setIsClearing] = useState(false);
+  const [clearMessage, setClearMessage] = useState("");
+  async function handleClearAllStats() {
+    const confirmed = window.confirm(
+      "This will permanently wipe ALL recorded visitor sessions and stats from the database. This action cannot be undone.\n\nAre you sure you want to continue?"
+    );
+    if (!confirmed) return;
+
+    setIsClearing(true);
+    setClearMessage("");
+    try {
+      const response = await fetch("/api/admin/clear", { method: "POST" });
+      if (!response.ok) throw new Error("Clear failed");
+      const data = (await response.json()) as { cleared?: number };
+      setClearMessage(
+        `Cleared ${data.cleared ?? 0} session${data.cleared === 1 ? "" : "s"}. The dashboard is now empty.`
+      );
+      await reloadSessions();
+      setActiveSessionId("");
+    } catch {
+      setClearMessage("Failed to clear stats. No data was removed.");
+    } finally {
+      setIsClearing(false);
+    }
+  }
+
   const pieBackground = useMemo(() => {
     const result = geoDistribution.reduce(
       (acc, segment) => {
@@ -243,6 +254,28 @@ export default function AdminPage() {
             Unified analytics for where visitors come from, how they move through the site, and
             how traffic trends evolve from hourly snapshots to all-time totals.
           </p>
+
+          <div className="mt-8 flex flex-col gap-3 rounded-xl border border-red-300/60 bg-red-50/60 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="text-sm text-red-900">
+              <p className="font-semibold">Clear all stats</p>
+              <p className="mt-1 text-red-800/80">
+                Reminder: clicking this will permanently wipe every recorded
+                visitor session and stat from the database. This action cannot be
+                undone.
+              </p>
+              {clearMessage && (
+                <p className="mt-2 text-xs uppercase tracking-[0.18em] text-red-900">{clearMessage}</p>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={handleClearAllStats}
+              disabled={isClearing}
+              className="flex-shrink-0 rounded-full border border-red-600 bg-red-600 px-5 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isClearing ? "Clearing..." : "Clear all stats"}
+            </button>
+          </div>
         </section>
 
         {/* Global Stats */}

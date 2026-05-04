@@ -36,6 +36,13 @@ export async function listSessions(): Promise<VisitorSession[]> {
   return db.sessions;
 }
 
+export async function clearAllSessions(): Promise<{ cleared: number }> {
+  const db = await readDb();
+  const cleared = db.sessions.length;
+  await writeDb({ sessions: [] });
+  return { cleared };
+}
+
 function monthsAgoDate(months: number): Date {
   const cutoff = new Date();
   cutoff.setMonth(cutoff.getMonth() - months);

@@ -9,10 +9,7 @@ export default function HomePage() {
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
 
-        {/* Spacer for the absolutely-positioned horizontal nav bar (~44px tall) */}
-        <div className="hidden md:block h-11" />
-
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-6">
           <div className="flex flex-col items-center gap-4">
             {/* Subtitle */}
             <EditableText
@@ -25,7 +22,7 @@ export default function HomePage() {
 
             {/* Book image */}
             <div className="relative">
-              <div className="absolute -inset-4 bg-gold/70 rounded-sm blur-2xl animate-pulse" />
+              <div className="absolute -inset-4 bg-gold/70 rounded-sm blur-2xl animate-pulse [animation-duration:6s]" />
               <div className="relative bg-forest-light border border-gold/30 rounded-sm p-4 shadow-2xl w-full max-w-md sm:max-w-lg md:max-w-xl">
                 <Image
                   src="https://i0.wp.com/palestineandthelaw.org/wp-content/uploads/2025/10/bluebook4-1-2.jpg?w=407&ssl=1"

@@ -33,7 +33,7 @@ export default function Footer() {
             />
             <EditableText
               id="footer.brand.kicker"
-              defaultText="Guidelines for Resolution"
+              defaultText="Guidelines for the Resolution of the Arab-Israel Conflict"
               tag="p"
               className="font-sans text-xs tracking-widest text-gold/80 uppercase mb-4"
               label="Footer brand kicker"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const GOOGLE_FONTS_URL =
@@ -118,6 +119,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1 min-w-0">{children}</main>
           <Footer />
+          <CookieBanner />
         </ThemeProvider>
       </body>
     </html>

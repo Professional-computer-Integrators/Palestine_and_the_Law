@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import AdminButton from "@/components/AdminButton";
 import SearchBar from "@/components/SearchBar";
 import EditableText, { useEditableText } from "@/components/EditableText";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const navLinks = [
   { href: "/", label: "Home", id: "nav.link.home" },
@@ -23,19 +24,11 @@ function NavLinkLabel({ id, defaultText }: { id: string; defaultText: string }) 
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { isAdmin } = useTheme();
 
   // Measure ONLY the sticky nav row's height so other components (e.g. the
   // chapter sidebar) can sit immediately beneath it via --navbar-height.
   const navRef = useRef<HTMLDivElement>(null);
-
-  // Check admin auth status for showing the Statistics link
-  useEffect(() => {
-    fetch("/api/admin/auth")
-      .then((r) => r.ok ? r.json() : { isAdmin: false })
-      .then((data: { isAdmin?: boolean }) => setIsAdmin(Boolean(data.isAdmin)))
-      .catch(() => setIsAdmin(false));
-  }, [pathname]);
 
   useEffect(() => {
     const update = () => {
@@ -124,7 +117,7 @@ export default function Navbar() {
         className="hidden md:block sticky top-0 z-50 border-y border-white/10 bg-forest-dark text-cream shadow-md"
       >
         <nav className="flex justify-center items-center w-full gap-3 px-4">
-          <div className="flex flex-1 justify-center">
+          <div className="mx-auto w-full max-w-6xl flex flex-1 justify-center ml-80">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
