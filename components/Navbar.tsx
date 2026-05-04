@@ -23,10 +23,19 @@ function NavLinkLabel({ id, defaultText }: { id: string; defaultText: string }) 
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // Measure ONLY the sticky nav row's height so other components (e.g. the
   // chapter sidebar) can sit immediately beneath it via --navbar-height.
   const navRef = useRef<HTMLDivElement>(null);
+
+  // Check admin auth status for showing the Statistics link
+  useEffect(() => {
+    fetch("/api/admin/auth")
+      .then((r) => r.ok ? r.json() : { isAdmin: false })
+      .then((data: { isAdmin?: boolean }) => setIsAdmin(Boolean(data.isAdmin)))
+      .catch(() => setIsAdmin(false));
+  }, [pathname]);
 
   useEffect(() => {
     const update = () => {
@@ -132,6 +141,21 @@ export default function Navbar() {
                 <NavLinkLabel id={link.id} defaultText={link.label} />
               </Link>
             ))}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className={`relative px-5 py-3 font-sans text-sm tracking-wide text-cream transition-colors duration-200
+                  after:absolute after:bottom-0 after:left-1/2 after:h-0.5 after:w-full after:-translate-x-1/2
+                  after:scale-x-0 after:bg-cream after:transition-transform after:duration-200
+                  hover:after:scale-x-100 ${
+                  pathname.startsWith("/admin")
+                    ? "font-semibold after:scale-x-100"
+                    : ""
+                }`}
+              >
+                Statistics
+              </Link>
+            )}
           </div>
           <div className="py-2 flex-shrink-0">
             <SearchBar variant="desktop" />
@@ -172,6 +196,19 @@ export default function Navbar() {
                 <NavLinkLabel id={link.id} defaultText={link.label} />
               </Link>
             ))}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                onClick={() => setMobileOpen(false)}
+                className={`block px-6 py-3 font-sans text-sm text-cream border-b border-white/10 transition-colors duration-200 ${
+                  pathname.startsWith("/admin")
+                    ? "font-semibold"
+                    : "hover:bg-white/10"
+                }`}
+              >
+                Statistics
+              </Link>
+            )}
           </div>
         )}
       </div>

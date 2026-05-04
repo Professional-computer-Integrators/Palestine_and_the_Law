@@ -214,14 +214,14 @@ export default function ContentsPage() {
             <span className="font-sans text-sm text-ink-muted">I – VIII</span>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-2 gap-4 items-stretch">
             {appendices.map((app, i) => (
-              <ScrollReveal key={app.num} direction="up" delay={i * 60}>
+              <ScrollReveal key={app.num} direction="up" delay={i * 60} className="h-full">
                 <Link
                   href={`/appendix/${app.num}`}
-                  className="block no-underline text-inherit"
+                  className="block no-underline text-inherit h-full"
                 >
-                  <div className="card p-5 flex gap-4 group hover:border-gold/40 hover:shadow-md cursor-pointer transition-all duration-200">
+                  <div className="card p-5 flex gap-4 h-full group hover:border-gold/40 hover:shadow-md cursor-pointer transition-all duration-200">
                     <div className="flex-shrink-0 w-10 h-10 rounded-sm bg-gold/20 border border-gold/30 flex items-center justify-center group-hover:bg-gold group-hover:border-gold transition-colors duration-200">
                       <span className="font-serif text-xs font-bold text-forest group-hover:text-forest-dark transition-colors duration-200">
                         {app.roman}
