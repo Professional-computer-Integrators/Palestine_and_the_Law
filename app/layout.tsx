@@ -87,6 +87,34 @@ export const metadata: Metadata = {
     "UN Partition Resolution",
     "Musa Mazzawi",
   ],
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any", type: "image/x-icon" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-48.png", sizes: "48x48", type: "image/png" },
+      { url: "/favicon-96.png", sizes: "96x96", type: "image/png" },
+      { url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  openGraph: {
+    title: "Palestine and the Law | Guidelines for Resolution",
+    description:
+      "A comprehensive legal study of the Arab-Israel conflict and the Palestinian question during the 20th century, by Professor Musa Mazzawi.",
+    images: [{ url: "/favicon-512.png", width: 512, height: 512 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Palestine and the Law | Guidelines for Resolution",
+    description:
+      "A comprehensive legal study of the Arab-Israel conflict and the Palestinian question during the 20th century, by Professor Musa Mazzawi.",
+    images: ["/favicon-512.png"],
+  },
 };
 
 export default function RootLayout({
@@ -97,6 +125,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Icons are emitted by the Next.js Metadata API above. */}
+        <meta name="theme-color" content="#1A202C" />
+        <meta name="msapplication-TileColor" content="#1A202C" />
+        <meta name="msapplication-TileImage" content="/favicon-192.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={GOOGLE_FONTS_URL} rel="stylesheet" />
