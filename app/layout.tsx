@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
+import VisitTracker from "@/components/VisitTracker";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const GOOGLE_FONTS_URL =
@@ -152,6 +153,7 @@ export default function RootLayout({
           <main className="flex-1 min-w-0">{children}</main>
           <Footer />
           <CookieBanner />
+          <VisitTracker />
         </ThemeProvider>
       </body>
     </html>

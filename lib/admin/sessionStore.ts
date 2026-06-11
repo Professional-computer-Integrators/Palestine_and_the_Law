@@ -36,6 +36,26 @@ export async function listSessions(): Promise<VisitorSession[]> {
   return db.sessions;
 }
 
+export async function findSession(id: string): Promise<VisitorSession | undefined> {
+  const db = await readDb();
+  return db.sessions.find((s) => s.id === id);
+}
+
+/**
+ * Insert a new session or replace the existing one with the same id.
+ * Newly inserted sessions are placed at the front (most-recent first).
+ */
+export async function upsertSession(session: VisitorSession): Promise<void> {
+  const db = await readDb();
+  const idx = db.sessions.findIndex((s) => s.id === session.id);
+  if (idx >= 0) {
+    db.sessions[idx] = session;
+  } else {
+    db.sessions.unshift(session);
+  }
+  await writeDb(db);
+}
+
 export async function clearAllSessions(): Promise<{ cleared: number }> {
   const db = await readDb();
   const cleared = db.sessions.length;

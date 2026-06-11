@@ -18,4 +18,6 @@ export type VisitorSession = {
   pages: number;
   coordinates: [number, number];
   journey: JourneyStep[];
+  /** Visitor IP address (or "local" for private/unresolved). Optional for older seed rows. */
+  ip?: string;
 };
