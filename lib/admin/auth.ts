@@ -15,3 +15,9 @@ export function isValidAdminPassword(input: string): boolean {
 export function getAdminAuthCookieValue(): string {
   return ADMIN_AUTH_TOKEN ?? "";
 }
+
+export function isAdminRequestAuthenticated(request: Request): boolean {
+  const cookie = request.headers.get("cookie") ?? "";
+  const match = cookie.match(new RegExp(`(?:^|;\\s*)${ADMIN_AUTH_COOKIE}=([^;]*)`));
+  return match?.[1] === getAdminAuthCookieValue() && Boolean(getAdminAuthCookieValue());
+}

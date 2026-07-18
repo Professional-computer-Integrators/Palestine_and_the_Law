@@ -1,3 +1,1272 @@
 {
-  "sessions": []
+    "sessions":  [
+                     {
+                         "id":  "S-WB-G01",
+                         "country":  "United States",
+                         "city":  "New York",
+                         "region":  "North America",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "14m 22s",
+                         "timestamp":  "2026-05-10T14:12:44.701Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             -74.006,
+                                             40.7128
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "14:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "14:15",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/us",
+                                             "label":  "US Cases",
+                                             "at":  "14:19",
+                                             "thumbnail":  "/us-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G02",
+                         "country":  "Canada",
+                         "city":  "Toronto",
+                         "region":  "North America",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Firefox 132",
+                         "device":  "Mobile",
+                         "duration":  "9m 11s",
+                         "timestamp":  "2026-05-11T09:44:22.301Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             -79.3832,
+                                             43.6532
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "09:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/about",
+                                             "label":  "About",
+                                             "at":  "09:47",
+                                             "thumbnail":  "/about-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G03",
+                         "country":  "Brazil",
+                         "city":  "SÃ£o Paulo",
+                         "region":  "South America",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Safari 17",
+                         "device":  "Mobile",
+                         "duration":  "6m 55s",
+                         "timestamp":  "2026-05-11T18:22:11.901Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             -46.6333,
+                                             -23.5505
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "18:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G04",
+                         "country":  "Argentina",
+                         "city":  "Buenos Aires",
+                         "region":  "South America",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "17m 40s",
+                         "timestamp":  "2026-05-12T12:12:44.701Z",
+                         "pages":  4,
+                         "coordinates":  [
+                                             -58.3816,
+                                             -34.6037
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "12:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "12:15",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal/international",
+                                             "label":  "International Law",
+                                             "at":  "12:20",
+                                             "thumbnail":  "/intl-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/contact",
+                                             "label":  "Contact",
+                                             "at":  "12:27",
+                                             "thumbnail":  "/contact-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G05",
+                         "country":  "Mexico",
+                         "city":  "Mexico City",
+                         "region":  "North America",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Edge 120",
+                         "device":  "Desktop",
+                         "duration":  "10m 33s",
+                         "timestamp":  "2026-05-12T19:44:55.301Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             -99.1332,
+                                             19.4326
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "19:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "19:47",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G06",
+                         "country":  "Japan",
+                         "city":  "Tokyo",
+                         "region":  "Asia",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Mobile",
+                         "duration":  "8m 22s",
+                         "timestamp":  "2026-05-13T08:12:11.701Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             139.6917,
+                                             35.6895
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "08:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G07",
+                         "country":  "South Korea",
+                         "city":  "Seoul",
+                         "region":  "Asia",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Firefox 132",
+                         "device":  "Desktop",
+                         "duration":  "15m 01s",
+                         "timestamp":  "2026-05-13T14:44:22.301Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             126.978,
+                                             37.5665
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "14:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "14:47",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal/asia",
+                                             "label":  "Asian Law",
+                                             "at":  "14:51",
+                                             "thumbnail":  "/asia-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G08",
+                         "country":  "China",
+                         "city":  "Shanghai",
+                         "region":  "Asia",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Safari 17",
+                         "device":  "Mobile",
+                         "duration":  "7m 44s",
+                         "timestamp":  "2026-05-14T10:22:33.701Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             121.4737,
+                                             31.2304
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "10:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G09",
+                         "country":  "India",
+                         "city":  "Mumbai",
+                         "region":  "Asia",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "18m 55s",
+                         "timestamp":  "2026-05-14T17:12:44.901Z",
+                         "pages":  4,
+                         "coordinates":  [
+                                             72.8777,
+                                             19.076
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "17:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "17:15",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/asia",
+                                             "label":  "Asia Cases",
+                                             "at":  "17:20",
+                                             "thumbnail":  "/asia-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/contact",
+                                             "label":  "Contact",
+                                             "at":  "17:28",
+                                             "thumbnail":  "/contact-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G10",
+                         "country":  "Australia",
+                         "city":  "Sydney",
+                         "region":  "Oceania",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Edge 120",
+                         "device":  "Desktop",
+                         "duration":  "11m 12s",
+                         "timestamp":  "2026-05-15T09:55:33.501Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             151.2093,
+                                             -33.8688
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "09:55",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "09:58",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G11",
+                         "country":  "New Zealand",
+                         "city":  "Auckland",
+                         "region":  "Oceania",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Mobile",
+                         "duration":  "6m 33s",
+                         "timestamp":  "2026-05-15T14:22:11.701Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             174.7633,
+                                             -36.8485
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "14:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G12",
+                         "country":  "South Africa",
+                         "city":  "Cape Town",
+                         "region":  "Africa",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Firefox 132",
+                         "device":  "Desktop",
+                         "duration":  "13m 22s",
+                         "timestamp":  "2026-05-16T11:44:22.301Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             18.4241,
+                                             -33.9249
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "11:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "11:47",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/africa",
+                                             "label":  "Africa Cases",
+                                             "at":  "11:51",
+                                             "thumbnail":  "/africa-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G13",
+                         "country":  "Egypt",
+                         "city":  "Cairo",
+                         "region":  "Africa",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Safari 17",
+                         "device":  "Mobile",
+                         "duration":  "7m 55s",
+                         "timestamp":  "2026-05-16T18:12:11.901Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             31.2357,
+                                             30.0444
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "18:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G14",
+                         "country":  "Kenya",
+                         "city":  "Nairobi",
+                         "region":  "Africa",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "16m 44s",
+                         "timestamp":  "2026-05-17T12:44:55.501Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             36.8219,
+                                             -1.2921
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "12:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "12:47",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal/human-rights",
+                                             "label":  "Human Rights",
+                                             "at":  "12:51",
+                                             "thumbnail":  "/rights-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G15",
+                         "country":  "Nigeria",
+                         "city":  "Lagos",
+                         "region":  "Africa",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Edge 120",
+                         "device":  "Desktop",
+                         "duration":  "10m 55s",
+                         "timestamp":  "2026-05-17T19:33:44.301Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             3.3792,
+                                             6.5244
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "19:33",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/about",
+                                             "label":  "About",
+                                             "at":  "19:36",
+                                             "thumbnail":  "/about-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G16",
+                         "country":  "Russia",
+                         "city":  "Moscow",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Mobile",
+                         "duration":  "8m 44s",
+                         "timestamp":  "2026-05-18T08:22:11.701Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             37.6173,
+                                             55.7558
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "08:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G17",
+                         "country":  "Germany",
+                         "city":  "Berlin",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Firefox 132",
+                         "device":  "Desktop",
+                         "duration":  "15m 33s",
+                         "timestamp":  "2026-05-18T14:44:22.301Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             13.405,
+                                             52.52
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "14:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "14:47",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/europe",
+                                             "label":  "Europe Cases",
+                                             "at":  "14:51",
+                                             "thumbnail":  "/eu-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G18",
+                         "country":  "France",
+                         "city":  "Paris",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Safari 17",
+                         "device":  "Mobile",
+                         "duration":  "7m 22s",
+                         "timestamp":  "2026-05-19T10:22:33.701Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             2.3522,
+                                             48.8566
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "10:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G19",
+                         "country":  "Spain",
+                         "city":  "Madrid",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "18m 11s",
+                         "timestamp":  "2026-05-19T17:12:44.901Z",
+                         "pages":  4,
+                         "coordinates":  [
+                                             -3.7038,
+                                             40.4168
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "17:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "17:15",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal/international",
+                                             "label":  "International Law",
+                                             "at":  "17:20",
+                                             "thumbnail":  "/intl-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/contact",
+                                             "label":  "Contact",
+                                             "at":  "17:28",
+                                             "thumbnail":  "/contact-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-G20",
+                         "country":  "Italy",
+                         "city":  "Rome",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Edge 120",
+                         "device":  "Desktop",
+                         "duration":  "11m 44s",
+                         "timestamp":  "2026-05-20T09:55:33.501Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             12.4964,
+                                             41.9028
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "09:55",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "09:58",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-01",
+                         "country":  "United Kingdom",
+                         "city":  "Camden Town",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "12m 44s",
+                         "timestamp":  "2026-05-01T09:14:22.301Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             -0.142,
+                                             51.539
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "09:14",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "09:18",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-02",
+                         "country":  "United Kingdom",
+                         "city":  "Hackney",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Firefox 132",
+                         "device":  "Mobile",
+                         "duration":  "8m 03s",
+                         "timestamp":  "2026-05-01T13:47:55.901Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             -0.055,
+                                             51.545
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "13:47",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/about",
+                                             "label":  "About",
+                                             "at":  "13:49",
+                                             "thumbnail":  "/about-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "13:52",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-03",
+                         "country":  "United Kingdom",
+                         "city":  "Islington",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Safari 17",
+                         "device":  "Mobile",
+                         "duration":  "5m 55s",
+                         "timestamp":  "2026-05-02T10:22:11.101Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             -0.102,
+                                             51.538
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "10:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-04",
+                         "country":  "United Kingdom",
+                         "city":  "Stratford",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "19m 12s",
+                         "timestamp":  "2026-05-02T16:44:09.501Z",
+                         "pages":  4,
+                         "coordinates":  [
+                                             -0.003,
+                                             51.541
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "16:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "16:47",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/uk",
+                                             "label":  "UK Cases",
+                                             "at":  "16:52",
+                                             "thumbnail":  "/uk-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/contact",
+                                             "label":  "Contact",
+                                             "at":  "16:59",
+                                             "thumbnail":  "/contact-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-05",
+                         "country":  "United Kingdom",
+                         "city":  "Brixton",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Edge 120",
+                         "device":  "Desktop",
+                         "duration":  "11m 01s",
+                         "timestamp":  "2026-05-03T08:55:44.701Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             -0.115,
+                                             51.462
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "08:55",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "08:59",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-06",
+                         "country":  "United Kingdom",
+                         "city":  "Lewisham",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Mobile",
+                         "duration":  "7m 22s",
+                         "timestamp":  "2026-05-03T14:22:17.201Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             -0.014,
+                                             51.445
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "14:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-07",
+                         "country":  "United Kingdom",
+                         "city":  "Croydon",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Firefox 132",
+                         "device":  "Desktop",
+                         "duration":  "14m 33s",
+                         "timestamp":  "2026-05-04T11:12:44.901Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             -0.099,
+                                             51.372
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "11:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "11:15",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/europe",
+                                             "label":  "Europe Cases",
+                                             "at":  "11:19",
+                                             "thumbnail":  "/eu-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-08",
+                         "country":  "United Kingdom",
+                         "city":  "Reading",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "9m 18s",
+                         "timestamp":  "2026-05-04T17:44:55.301Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             -0.978,
+                                             51.454
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "17:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/about",
+                                             "label":  "About",
+                                             "at":  "17:47",
+                                             "thumbnail":  "/about-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-09",
+                         "country":  "United Kingdom",
+                         "city":  "Brighton",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Safari 17",
+                         "device":  "Mobile",
+                         "duration":  "6m 40s",
+                         "timestamp":  "2026-05-05T10:33:12.101Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             -0.137,
+                                             50.822
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "10:33",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-10",
+                         "country":  "United Kingdom",
+                         "city":  "Southampton",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "18m 21s",
+                         "timestamp":  "2026-05-05T15:12:44.701Z",
+                         "pages":  4,
+                         "coordinates":  [
+                                             -1.404,
+                                             50.909
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "15:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "15:15",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal/international",
+                                             "label":  "International Law",
+                                             "at":  "15:19",
+                                             "thumbnail":  "/intl-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/contact",
+                                             "label":  "Contact",
+                                             "at":  "15:26",
+                                             "thumbnail":  "/contact-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-11",
+                         "country":  "United Kingdom",
+                         "city":  "Portsmouth",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Edge 120",
+                         "device":  "Desktop",
+                         "duration":  "10m 12s",
+                         "timestamp":  "2026-05-06T09:55:33.501Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             -1.088,
+                                             50.805
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "09:55",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "09:58",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-12",
+                         "country":  "United Kingdom",
+                         "city":  "Guildford",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Mobile",
+                         "duration":  "7m 44s",
+                         "timestamp":  "2026-05-06T14:22:11.701Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             -0.577,
+                                             51.236
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "14:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-13",
+                         "country":  "United Kingdom",
+                         "city":  "Oxford",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Firefox 132",
+                         "device":  "Desktop",
+                         "duration":  "13m 55s",
+                         "timestamp":  "2026-05-07T11:44:22.301Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             -1.257,
+                                             51.752
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "11:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "11:47",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal/precedents",
+                                             "label":  "Precedents",
+                                             "at":  "11:51",
+                                             "thumbnail":  "/precedent-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-14",
+                         "country":  "United Kingdom",
+                         "city":  "Birmingham",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "20m 01s",
+                         "timestamp":  "2026-05-07T17:12:55.901Z",
+                         "pages":  4,
+                         "coordinates":  [
+                                             -1.899,
+                                             52.489
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "17:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "17:15",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/global",
+                                             "label":  "Global Cases",
+                                             "at":  "17:20",
+                                             "thumbnail":  "/global-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/contact",
+                                             "label":  "Contact",
+                                             "at":  "17:28",
+                                             "thumbnail":  "/contact-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-15",
+                         "country":  "United Kingdom",
+                         "city":  "Manchester",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Safari 17",
+                         "device":  "Mobile",
+                         "duration":  "9m 33s",
+                         "timestamp":  "2026-05-08T10:55:44.101Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             -2.244,
+                                             53.480
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "10:55",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/about",
+                                             "label":  "About",
+                                             "at":  "10:58",
+                                             "thumbnail":  "/about-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-16",
+                         "country":  "United Kingdom",
+                         "city":  "Liverpool",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "16m 12s",
+                         "timestamp":  "2026-05-08T16:22:33.701Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             -2.977,
+                                             53.408
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "16:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "16:25",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal/human-rights",
+                                             "label":  "Human Rights",
+                                             "at":  "16:29",
+                                             "thumbnail":  "/rights-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-17",
+                         "country":  "United Kingdom",
+                         "city":  "Leeds",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Firefox 132",
+                         "device":  "Desktop",
+                         "duration":  "14m 44s",
+                         "timestamp":  "2026-05-09T12:44:55.501Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             -1.548,
+                                             53.801
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "12:44",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "12:47",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/asia",
+                                             "label":  "Asia Cases",
+                                             "at":  "12:51",
+                                             "thumbnail":  "/asia-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-18",
+                         "country":  "United Kingdom",
+                         "city":  "Newcastle",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Mobile",
+                         "duration":  "6m 55s",
+                         "timestamp":  "2026-05-09T18:12:11.901Z",
+                         "pages":  1,
+                         "coordinates":  [
+                                             -1.617,
+                                             54.978
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "18:12",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-19",
+                         "country":  "United Kingdom",
+                         "city":  "Sunderland",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Edge 120",
+                         "device":  "Desktop",
+                         "duration":  "11m 22s",
+                         "timestamp":  "2026-05-10T09:33:44.301Z",
+                         "pages":  2,
+                         "coordinates":  [
+                                             -1.382,
+                                             54.906
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "09:33",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/legal",
+                                             "label":  "Legal Overview",
+                                             "at":  "09:36",
+                                             "thumbnail":  "/legal-thumb.jpg"
+                                         }
+                                     ]
+                     },
+                     {
+                         "id":  "S-WB-20",
+                         "country":  "United Kingdom",
+                         "city":  "York",
+                         "region":  "Europe",
+                         "source":  "palestinandthelaw.duckdns.org",
+                         "browser":  "Chrome 150",
+                         "device":  "Desktop",
+                         "duration":  "15m 01s",
+                         "timestamp":  "2026-05-10T14:22:55.901Z",
+                         "pages":  3,
+                         "coordinates":  [
+                                             -1.080,
+                                             53.959
+                                         ],
+                         "journey":  [
+                                         {
+                                             "path":  "/",
+                                             "label":  "Home",
+                                             "at":  "14:22",
+                                             "thumbnail":  "/hero-bg.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases",
+                                             "label":  "Case Studies",
+                                             "at":  "14:25",
+                                             "thumbnail":  "/cases-thumb.jpg"
+                                         },
+                                         {
+                                             "path":  "/cases/africa",
+                                             "label":  "Africa Cases",
+                                             "at":  "14:29",
+                                             "thumbnail":  "/africa-thumb.jpg"
+                                         }
+                                     ]
+                     }
+                 ],
+    "seeded":  true,
+    "seedVersion":  2
 }

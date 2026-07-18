@@ -93,10 +93,8 @@ interface ThemeContextValue {
   fontOptionId: FontOptionId;
   setFontOptionId: (id: FontOptionId) => void;
   isAdmin: boolean;
-  login: (username: string, password: string) => boolean;
+  login: (password: string) => Promise<boolean>;
   logout: () => void;
-  adminPassword: string;
-  setAdminPassword: (pw: string) => void;
   updates: SiteUpdate[];
   addUpdate: (title: string, content: string) => void;
   deleteUpdate: (id: string) => void;
@@ -123,10 +121,8 @@ const ThemeContext = createContext<ThemeContextValue>({
   fontOptionId: "classic",
   setFontOptionId: () => {},
   isAdmin: false,
-  login: () => false,
+  login: async () => false,
   logout: () => {},
-  adminPassword: "password",
-  setAdminPassword: () => {},
   updates: [],
   addUpdate: () => {},
   deleteUpdate: () => {},
@@ -169,15 +165,13 @@ function applyFontToDom(id: FontOptionId) {
 
 /* ─── helper to POST settings to server ────────────────────────── */
 async function syncToServer(
-  payload: Record<string, unknown>,
-  password: string
+  payload: Record<string, unknown>
 ) {
   try {
     await fetch("/api/settings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-admin-password": password,
       },
       body: JSON.stringify(payload),
     });
@@ -191,7 +185,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [savedColors, setSavedColors] = useState<string[]>([]);
   const [fontOptionId, setFontState] = useState<FontOptionId>("classic");
   const [isAdmin, setIsAdmin] = useState(false);
-  const [adminPassword, setAdminPw] = useState("password");
   const [updates, setUpdates] = useState<SiteUpdate[]>([]);
   const [editMode, setEditModeState] = useState(false);
   const [pageTexts, setPageTexts] = useState<Record<string, string>>({});
@@ -199,18 +192,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [presets, setPresets] = useState<ThemePreset[]>([]);
 
   useEffect(() => {
-    // Load per-admin localStorage prefs (saved palette, password)
+    // Load per-admin localStorage preferences.
     const storedSaved: string[] = JSON.parse(
       localStorage.getItem("theme_saved_colors") ?? "[]"
     );
-    const storedPw = localStorage.getItem("admin_password") ?? "password";
     setSavedColors(storedSaved);
-    setAdminPw(storedPw);
 
-    // Restore session auth
-    if (sessionStorage.getItem("admin_auth") === "1") {
-      setIsAdmin(true);
-    }
+    fetch("/api/admin/auth", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data: { isAdmin?: boolean }) => setIsAdmin(data.isAdmin === true))
+      .catch(() => setIsAdmin(false));
 
     // Fetch shared settings from server (source of truth for all users)
     fetch("/api/settings", { cache: "no-store" })
@@ -257,8 +248,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setPrimaryColor(hex);
     applyPrimaryToDom(hex);
     localStorage.setItem("theme_primary_color", hex);
-    const pw = localStorage.getItem("admin_password") ?? "password";
-    syncToServer({ primaryColor: hex }, pw);
+    syncToServer({ primaryColor: hex });
   };
 
   const saveColor = (hex: string) => {
@@ -281,24 +271,24 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setFontState(id);
     applyFontToDom(id);
     localStorage.setItem("theme_font_option", id);
-    const pw = localStorage.getItem("admin_password") ?? "password";
-    syncToServer({ fontOptionId: id }, pw);
+    syncToServer({ fontOptionId: id });
   };
 
-  const login = (username: string, password: string): boolean => {
-    const pw = localStorage.getItem("admin_password") ?? "password";
-    if (username === "master" && password === pw) {
-      setIsAdmin(true);
-      sessionStorage.setItem("admin_auth", "1");
-      return true;
-    }
-    return false;
+  const login = async (password: string): Promise<boolean> => {
+    const response = await fetch("/api/admin/auth", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+    if (!response.ok) return false;
+    setIsAdmin(true);
+    return true;
   };
 
   const logout = () => {
+    void fetch("/api/admin/auth", { method: "DELETE" });
     setIsAdmin(false);
     setEditModeState(false);
-    sessionStorage.removeItem("admin_auth");
   };
 
   const setEditMode = (v: boolean) => {
@@ -309,8 +299,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const updatePageText = (id: string, text: string) => {
     setPageTexts((prev) => {
       const updated = { ...prev, [id]: text };
-      const pw = localStorage.getItem("admin_password") ?? "password";
-      syncToServer({ pageTexts: updated }, pw);
+      syncToServer({ pageTexts: updated });
       return updated;
     });
   };
@@ -319,8 +308,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setPageTexts((prev) => {
       const updated = { ...prev };
       delete updated[id];
-      const pw = localStorage.getItem("admin_password") ?? "password";
-      syncToServer({ pageTexts: updated }, pw);
+      syncToServer({ pageTexts: updated });
       return updated;
     });
   };
@@ -328,8 +316,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const updatePageColor = (id: string, color: string) => {
     setPageColors((prev) => {
       const updated = { ...prev, [id]: color };
-      const pw = localStorage.getItem("admin_password") ?? "password";
-      syncToServer({ pageColors: updated }, pw);
+      syncToServer({ pageColors: updated });
       return updated;
     });
   };
@@ -338,8 +325,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setPageColors((prev) => {
       const updated = { ...prev };
       delete updated[id];
-      const pw = localStorage.getItem("admin_password") ?? "password";
-      syncToServer({ pageColors: updated }, pw);
+      syncToServer({ pageColors: updated });
       return updated;
     });
   };
@@ -358,8 +344,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     };
     setPresets((prev) => {
       const updated = [preset, ...prev];
-      const pw = localStorage.getItem("admin_password") ?? "password";
-      syncToServer({ presets: updated }, pw);
+      syncToServer({ presets: updated });
       return updated;
     });
   };
@@ -376,32 +361,22 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setPageColors(p.pageColors ?? {});
     localStorage.setItem("theme_primary_color", p.primaryColor);
     localStorage.setItem("theme_font_option", p.fontOptionId);
-    const pw = localStorage.getItem("admin_password") ?? "password";
     syncToServer(
       {
         primaryColor: p.primaryColor,
         fontOptionId: p.fontOptionId,
         pageTexts: p.pageTexts ?? {},
         pageColors: p.pageColors ?? {},
-      },
-      pw
+      }
     );
   };
 
   const deletePreset = (id: string) => {
     setPresets((prev) => {
       const updated = prev.filter((p) => p.id !== id);
-      const pw = localStorage.getItem("admin_password") ?? "password";
-      syncToServer({ presets: updated }, pw);
+      syncToServer({ presets: updated });
       return updated;
     });
-  };
-
-  const setAdminPassword = (pw: string) => {
-    const oldPw = localStorage.getItem("admin_password") ?? "password";
-    setAdminPw(pw);
-    localStorage.setItem("admin_password", pw);
-    syncToServer({ newAdminPassword: pw }, oldPw);
   };
 
   const addUpdate = (title: string, content: string) => {
@@ -414,8 +389,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setUpdates((prev) => {
       const updated = [update, ...prev];
       localStorage.setItem("site_updates", JSON.stringify(updated));
-      const pw = localStorage.getItem("admin_password") ?? "password";
-      syncToServer({ updates: updated }, pw);
+      syncToServer({ updates: updated });
       return updated;
     });
   };
@@ -424,8 +398,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setUpdates((prev) => {
       const updated = prev.filter((u) => u.id !== id);
       localStorage.setItem("site_updates", JSON.stringify(updated));
-      const pw = localStorage.getItem("admin_password") ?? "password";
-      syncToServer({ updates: updated }, pw);
+      syncToServer({ updates: updated });
       return updated;
     });
   };
@@ -443,8 +416,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         isAdmin,
         login,
         logout,
-        adminPassword,
-        setAdminPassword,
         updates,
         addUpdate,
         deleteUpdate,

@@ -3,6 +3,7 @@ import {
   ADMIN_AUTH_COOKIE,
   getAdminAuthCookieValue,
   isAdminAuthConfigured,
+  isAdminRequestAuthenticated,
   isValidAdminPassword,
 } from "@/lib/admin/auth";
 import {
@@ -28,12 +29,7 @@ export async function GET(request: Request) {
     return NextResponse.json({ isAdmin: false });
   }
 
-  const cookie = request.headers.get("cookie") ?? "";
-  const match = cookie.match(new RegExp(`(?:^|;\\s*)${ADMIN_AUTH_COOKIE}=([^;]*)`));
-  const cookieValue = match?.[1] ?? "";
-
-  const isAdmin = cookieValue === getAdminAuthCookieValue() && Boolean(getAdminAuthCookieValue());
-  return NextResponse.json({ isAdmin });
+  return NextResponse.json({ isAdmin: isAdminRequestAuthenticated(request) });
 }
 
 export async function POST(request: Request) {

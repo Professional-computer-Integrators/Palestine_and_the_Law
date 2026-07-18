@@ -1,5 +1,4 @@
 import type { VisitorSession } from "./types";
 
-// Visitor sessions DB starts empty. Real sessions will be appended as visitors
-// are tracked. Add entries here only if you want sample/demo data.
+// The session database begins empty apart from genuine recorded visits.
 export const seedSessions: VisitorSession[] = [];

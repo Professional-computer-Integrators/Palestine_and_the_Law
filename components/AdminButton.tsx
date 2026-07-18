@@ -217,14 +217,24 @@ function PresetsPanel({
 =================================================================== */
 function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: () => void }) {
   const { login } = useTheme();
-  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (login(username, password)) { onClose(); onSuccess(); }
-    else { setError("Incorrect username or password."); }
+    setError("");
+    setIsSubmitting(true);
+    try {
+      if (await login(password)) {
+        onClose();
+        onSuccess();
+      } else {
+        setError("Incorrect password.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -256,14 +266,6 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: 14 }}>
-              <label style={{ display: "block", fontFamily: "inherit", fontSize: 10, fontWeight: 700,
-                letterSpacing: "0.14em", textTransform: "uppercase" as const, color: "rgba(200,220,238,0.5)",
-                marginBottom: 6 }}>Username</label>
-              <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}
-                onFocus={focusOn} onBlur={focusOff}
-                style={INPUT_STYLE} placeholder="Enter username" autoComplete="username" required />
-            </div>
             <div style={{ marginBottom: 16 }}>
               <label style={{ display: "block", fontFamily: "inherit", fontSize: 10, fontWeight: 700,
                 textTransform: "uppercase", color: "rgba(200,220,238,0.5)", marginBottom: 6 }}>Password</label>
@@ -280,13 +282,13 @@ function LoginModal({ onClose, onSuccess }: { onClose: () => void; onSuccess: ()
             )}
 
             <div style={{ display: "flex", gap: 8 }}>
-              <button type="submit"
+              <button type="submit" disabled={isSubmitting}
                 style={{ flex: 1, padding: "10px 0", borderRadius: 6, border: "none", cursor: "pointer",
                   background: "rgb(var(--color-primary))", color: "#fff",
                   fontFamily: "inherit", fontSize: 13, fontWeight: 600 }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "rgb(var(--color-primary-light))")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "rgb(var(--color-primary))")}
-              >Sign in</button>
+              >{isSubmitting ? "Signing in..." : "Sign in"}</button>
               <button type="button" onClick={onClose}
                 style={{ flex: 1, padding: "10px 0", borderRadius: 6, cursor: "pointer",
                   background: "transparent", border: "1px solid rgba(255,255,255,0.14)",
@@ -309,7 +311,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
   const {
     primaryColor, applyColor, savedColors, saveColor, removeColor,
     fontOptionId, setFontOptionId,
-    logout, setAdminPassword,
+    logout,
     addUpdate, updates, deleteUpdate,
     editMode, setEditMode, pageTexts, resetPageText,
     pageColors, resetPageColor,
@@ -326,10 +328,6 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
   // Insights state
   const [uTitle, setUTitle]     = useState("");
   const [uContent, setUContent] = useState("");
-
-  // Settings state
-  const [newPw, setNewPw] = useState("");
-  const [pwMsg, setPwMsg] = useState<{ok:boolean;text:string}|null>(null);
 
   useEffect(() => { setPickerHex(primaryColor); setHexInput(primaryColor); }, [primaryColor]);
 
@@ -349,21 +347,12 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
     addUpdate(uTitle.trim(), uContent.trim());
     setUTitle(""); setUContent("");
   };
-  const handleChangePw = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newPw.length < 4) { setPwMsg({ ok: false, text: "Minimum 4 characters required." }); return; }
-    setAdminPassword(newPw); setNewPw("");
-    setPwMsg({ ok: true, text: "Password updated." });
-    setTimeout(() => setPwMsg(null), 4000);
-  };
-
   const TABS = [
     { id: "colour",   label: "Colour"   },
     { id: "font",     label: "Font"     },
     { id: "content",  label: "Content"  },
     { id: "presets",  label: "Presets"  },
     { id: "insights", label: "Insights" },
-    { id: "settings", label: "Settings" },
   ] as const;
 
   return (
@@ -753,32 +742,6 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
           pageColorsCount={Object.keys(pageColors).length}
         />}
 
-        {/* SETTINGS */}
-        {tab === "settings" && (
-          <div>
-            <SectionLabel>Change Admin Password</SectionLabel>
-            <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.48)",
-              lineHeight: 1.65, marginBottom: 16 }}>
-              Username is always <span style={{ fontFamily: "monospace", color: "#ffffff" }}>master</span>.
-              Set a new login password below (min. 4 characters).
-            </p>
-            <form onSubmit={handleChangePw} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <input type="password" placeholder="New password..." value={newPw}
-                onChange={(e) => setNewPw(e.target.value)}
-                onFocus={focusOn} onBlur={focusOff}
-                style={INPUT_STYLE} autoComplete="new-password" required />
-              {pwMsg && (
-                <p style={{ fontFamily: "inherit", fontSize: 12, padding: "8px 12px", borderRadius: 6,
-                  color: pwMsg.ok ? "#86efac" : "#fca5a5",
-                  background: pwMsg.ok ? "rgba(34,197,94,0.10)" : "rgba(239,68,68,0.10)",
-                  border: `1px solid ${pwMsg.ok ? "rgba(34,197,94,0.28)" : "rgba(239,68,68,0.28)"}` }}>
-                  {pwMsg.text}
-                </p>
-              )}
-              <PrimaryBtn type="submit">Update Password</PrimaryBtn>
-            </form>
-          </div>
-        )}
       </div>
 
       {/* Footer */}

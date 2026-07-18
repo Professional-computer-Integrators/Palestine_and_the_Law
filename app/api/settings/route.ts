@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join } from "path";
+import { isAdminRequestAuthenticated } from "@/lib/admin/auth";
 
 const DATA_DIR = join(process.cwd(), "data");
 const SETTINGS_FILE = join(DATA_DIR, "settings.json");
-const ADMIN_FILE = join(DATA_DIR, "admin.json");
 
 interface SharedSettings {
   updates: { id: string; title: string; content: string; date: string }[];
@@ -48,24 +48,6 @@ function readSettings(): SharedSettings {
   }
 }
 
-function readAdminPassword(): string {
-  ensureDataDir();
-  if (existsSync(ADMIN_FILE)) {
-    try {
-      const data = JSON.parse(readFileSync(ADMIN_FILE, "utf-8"));
-      if (data.password) return data.password;
-    } catch {
-      // fall through
-    }
-  }
-  return process.env.ADMIN_PASSWORD ?? "password";
-}
-
-function writeAdminPassword(password: string) {
-  ensureDataDir();
-  writeFileSync(ADMIN_FILE, JSON.stringify({ password }), "utf-8");
-}
-
 // ── GET — public, returns shared settings ──────────────────────────
 export async function GET() {
   const settings = readSettings();
@@ -76,23 +58,13 @@ export async function GET() {
 
 // ── POST — admin only, updates shared settings ─────────────────────
 export async function POST(req: NextRequest) {
-  const providedPassword = req.headers.get("x-admin-password") ?? "";
-  const storedPassword = readAdminPassword();
-
-  if (!providedPassword || providedPassword !== storedPassword) {
+  if (!isAdminRequestAuthenticated(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
     const body = await req.json();
-    const { newAdminPassword, ...settingsPayload } = body as {
-      newAdminPassword?: string;
-    } & Partial<SharedSettings>;
-
-    // Update admin password if requested
-    if (newAdminPassword) {
-      writeAdminPassword(newAdminPassword);
-    }
+    const settingsPayload = body as Partial<SharedSettings>;
 
     // Merge and persist settings
     const current = readSettings();

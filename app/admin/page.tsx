@@ -9,18 +9,96 @@ import SessionsTable, { type TableSession } from "./SessionsTable";
 import type { VisitorSession } from "@/lib/admin/types";
 import { useTheme } from "@/contexts/ThemeContext";
 
-const geoDistribution: { label: string; value: number; visitors: number; color: string }[] = [];
+type GeoSegment = { label: string; value: number; visitors: number; color: string };
+type VisitSeries = { labels: string[]; values: number[] };
+type SourceStat = { source: string; visitors: number; share: number; trend: string };
 
-const visitSeries = {
-  hourly:     { labels: [] as string[], values: [] as number[] },
-  daily:      { labels: [] as string[], values: [] as number[] },
-  weekly:     { labels: [] as string[], values: [] as number[] },
-  monthly:    { labels: [] as string[], values: [] as number[] },
-  annual:     { labels: [] as string[], values: [] as number[] },
-  "all-time": { labels: [] as string[], values: [] as number[] },
-} as const;
+const GEO_COLORS = ["#315e77", "#b7791f", "#6b8e23", "#a3543f", "#765285", "#4f7c72"];
 
-const sourceStats: { source: string; visitors: number; share: number; trend: string }[] = [];
+function validSessions(sessions: VisitorSession[]): VisitorSession[] {
+  return sessions.filter((session) => !Number.isNaN(new Date(session.timestamp).getTime()));
+}
+
+function countBy<T>(items: T[], keyFor: (item: T) => string): Map<string, number> {
+  const counts = new Map<string, number>();
+  items.forEach((item) => {
+    const key = keyFor(item);
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  });
+  return counts;
+}
+
+function formatDay(date: Date): string {
+  return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", timeZone: "UTC" });
+}
+
+function weekKey(date: Date): string {
+  const start = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+  start.setUTCDate(start.getUTCDate() - ((start.getUTCDay() + 6) % 7));
+  return start.toISOString().slice(0, 10);
+}
+
+function buildVisitSeries(sessions: VisitorSession[], range: Range): VisitSeries {
+  const dated = validSessions(sessions);
+  const buckets = new Map<string, number>();
+  const labels = new Map<string, string>();
+
+  dated.forEach((session) => {
+    const date = new Date(session.timestamp);
+    let key: string;
+    let label: string;
+
+    if (range === "hourly") {
+      key = String(date.getUTCHours()).padStart(2, "0");
+      label = `${key}:00`;
+    } else if (range === "daily") {
+      key = date.toISOString().slice(0, 10);
+      label = formatDay(date);
+    } else if (range === "weekly") {
+      key = weekKey(date);
+      label = `Week of ${formatDay(new Date(`${key}T00:00:00Z`))}`;
+    } else if (range === "monthly") {
+      key = date.toISOString().slice(0, 7);
+      label = date.toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
+    } else {
+      key = String(date.getUTCFullYear());
+      label = key;
+    }
+
+    buckets.set(key, (buckets.get(key) ?? 0) + 1);
+    labels.set(key, label);
+  });
+
+  const keys = [...buckets.keys()].sort();
+  return {
+    labels: keys.map((key) => labels.get(key) ?? key),
+    values: keys.map((key) => buckets.get(key) ?? 0),
+  };
+}
+
+function buildGeoDistribution(sessions: VisitorSession[]): GeoSegment[] {
+  const counts = [...countBy(validSessions(sessions), (session) => session.country || "Unknown").entries()]
+    .sort(([, left], [, right]) => right - left);
+  const total = counts.reduce((sum, [, count]) => sum + count, 0);
+  return counts.slice(0, 6).map(([label, visitors], index) => ({
+    label,
+    visitors,
+    value: total === 0 ? 0 : Math.round((visitors / total) * 100),
+    color: GEO_COLORS[index],
+  }));
+}
+
+function buildSourceStats(sessions: VisitorSession[]): SourceStat[] {
+  const counts = [...countBy(validSessions(sessions), (session) => session.source || "Direct").entries()]
+    .sort(([, left], [, right]) => right - left);
+  const total = counts.reduce((sum, [, count]) => sum + count, 0);
+  return counts.map(([source, visitors]) => ({
+    source,
+    visitors,
+    share: total === 0 ? 0 : Math.round((visitors / total) * 100),
+    trend: "Recorded",
+  }));
+}
 
 const ranges = ["hourly", "daily", "weekly", "monthly", "annual", "all-time"] as const;
 type Range = (typeof ranges)[number];
@@ -176,6 +254,20 @@ export default function AdminPage() {
     }
   }
 
+  const geoDistribution = useMemo(() => buildGeoDistribution(sessions), [sessions]);
+  const sourceStats = useMemo(() => buildSourceStats(sessions), [sessions]);
+  const visitSeries = useMemo(
+    () => ({
+      hourly: buildVisitSeries(sessions, "hourly"),
+      daily: buildVisitSeries(sessions, "daily"),
+      weekly: buildVisitSeries(sessions, "weekly"),
+      monthly: buildVisitSeries(sessions, "monthly"),
+      annual: buildVisitSeries(sessions, "annual"),
+      "all-time": buildVisitSeries(sessions, "all-time"),
+    }),
+    [sessions]
+  );
+
   const pieBackground = useMemo(() => {
     const result = geoDistribution.reduce(
       (acc, segment) => {
@@ -189,7 +281,7 @@ export default function AdminPage() {
       { current: 0, stops: [] as string[] }
     );
     return `conic-gradient(${result.stops.join(",")})`;
-  }, []);
+  }, [geoDistribution]);
 
   const chartData = range === "all-time" ? visitSeries["all-time"] : visitSeries[range];
   const maxValue = Math.max(...chartData.values, 1);
@@ -578,9 +670,7 @@ export default function AdminPage() {
                     <span className="text-right text-ink-muted">{row.visitors.toLocaleString()}</span>
                     <span className="text-right text-ink-muted">{row.share}%</span>
                     <span
-                      className={`text-right font-medium ${
-                        row.trend.startsWith("-") ? "text-red-600" : "text-green-700"
-                      }`}
+                      className="text-right font-medium text-ink-muted"
                     >
                       {row.trend}
                     </span>
