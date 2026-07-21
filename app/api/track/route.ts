@@ -14,6 +14,22 @@ type TrackPayload = {
   label?: string;
 };
 
+const KNOWN_TRACK_PATHS = new Set([
+  "/",
+  "/contents",
+  "/contact",
+  "/dedication",
+  "/insights",
+  "/updates",
+]);
+
+function isKnownTrackPath(path: string): boolean {
+  if (KNOWN_TRACK_PATHS.has(path)) return true;
+  if (/^\/chapter\/\d+$/.test(path)) return true;
+  if (/^\/appendix\/\d+$/.test(path)) return true;
+  return false;
+}
+
 function clientIp(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
   if (forwarded) return forwarded.split(",")[0]?.trim() ?? "unknown";
@@ -41,6 +57,7 @@ function safePath(p: unknown): string | null {
   if (p.length > 256) return null;
   // Don't track admin / api routes.
   if (p.startsWith("/admin") || p.startsWith("/api/")) return null;
+  if (!isKnownTrackPath(p)) return null;
   return p;
 }
 

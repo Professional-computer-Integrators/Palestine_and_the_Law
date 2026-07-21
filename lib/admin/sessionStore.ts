@@ -157,6 +157,72 @@ export async function upsertSession(session: VisitorSession): Promise<void> {
   });
 }
 
+export async function updateSession(
+  id: string,
+  updates: Partial<VisitorSession>
+): Promise<VisitorSession | null> {
+  return withDbLock(async () => {
+    const db = await readDb();
+    const idx = db.sessions.findIndex((item) => item.id === id);
+    if (idx < 0) return null;
+
+    const existing = db.sessions[idx];
+    const updated: VisitorSession = {
+      ...existing,
+      ...updates,
+      id: existing.id,
+      coordinates: updates.coordinates ?? existing.coordinates,
+      journey: updates.journey ?? existing.journey,
+    };
+
+    db.sessions[idx] = updated;
+    await writeDb(db);
+    return updated;
+  });
+}
+
+export async function duplicateSessionById(
+  id: string,
+  count = 1
+): Promise<VisitorSession[] | null> {
+  return withDbLock(async () => {
+    const db = await readDb();
+    const source = db.sessions.find((session) => session.id === id);
+    if (!source) return null;
+
+    const safeCount = Math.max(1, Math.min(200, Math.floor(count)));
+    const duplicates: VisitorSession[] = [];
+
+    for (let index = 0; index < safeCount; index += 1) {
+      duplicates.push({
+        ...source,
+        id: `S-DUP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`,
+        timestamp: new Date().toISOString(),
+        coordinates: [source.coordinates[0], source.coordinates[1]],
+        journey: source.journey.map((step) => ({ ...step })),
+      });
+    }
+
+    db.sessions.unshift(...duplicates);
+    await writeDb(db);
+    return duplicates;
+  });
+}
+
+export async function deleteSessionById(id: string): Promise<boolean> {
+  return withDbLock(async () => {
+    const db = await readDb();
+    const nextSessions = db.sessions.filter((session) => session.id !== id);
+    if (nextSessions.length === db.sessions.length) return false;
+
+    await writeDb({
+      ...db,
+      sessions: nextSessions,
+    });
+    return true;
+  });
+}
+
 export async function clearAllSessions(): Promise<{ cleared: number }> {
   return withDbLock(async () => {
     const db = await readDb();

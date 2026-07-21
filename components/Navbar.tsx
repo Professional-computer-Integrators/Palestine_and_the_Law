@@ -116,8 +116,9 @@ export default function Navbar() {
         ref={navRef}
         className="hidden md:block sticky top-0 z-50 border-y border-white/10 bg-forest-dark text-cream shadow-md"
       >
-        <nav className="flex justify-center items-center w-full gap-3 px-4">
-          <div className="mx-auto w-full max-w-6xl flex flex-1 justify-center ml-80">
+        <nav className="mx-auto grid w-full max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4">
+          <div aria-hidden="true" />
+          <div className="flex justify-center">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -150,7 +151,7 @@ export default function Navbar() {
               </Link>
             )}
           </div>
-          <div className="py-2 flex-shrink-0">
+          <div className="justify-self-end py-2">
             <SearchBar variant="desktop" />
           </div>
         </nav>

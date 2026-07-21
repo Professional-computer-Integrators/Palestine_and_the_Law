@@ -9,6 +9,7 @@ const SETTINGS_FILE = join(DATA_DIR, "settings.json");
 interface SharedSettings {
   updates: { id: string; title: string; content: string; date: string }[];
   primaryColor: string;
+  savedColors: string[];
   fontOptionId: string;
   pageTexts: Record<string, string>;
   pageColors: Record<string, string>;
@@ -26,6 +27,7 @@ interface SharedSettings {
 const DEFAULT_SETTINGS: SharedSettings = {
   updates: [],
   primaryColor: "#3a6491",
+  savedColors: [],
   fontOptionId: "classic",
   pageTexts: {},
   pageColors: {},

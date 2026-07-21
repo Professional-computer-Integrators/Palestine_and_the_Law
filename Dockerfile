@@ -22,6 +22,7 @@ ENV NODE_ENV=production
 ENV ADMIN_PASSWORD="C4rm3n2026!"
 ENV ADMIN_AUTH_TOKEN="patl_admin_7d4f98c2a1e64b3f"
 
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
@@ -30,7 +31,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Persistent data directory for server-side settings
-COPY --from=builder --chown=nextjs:nodejs /app/data ./data
+RUN mkdir -p /app/data && chown nextjs:nodejs /app/data
 
 USER nextjs
 

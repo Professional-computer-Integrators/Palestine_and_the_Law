@@ -225,13 +225,7 @@ html {
 }
 
 body {
-  background-color: #e8f2fa;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 20% 20%, rgba(58,100,145,0.18) 0%, transparent 70%),
-    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(36,74,111,0.14) 0%, transparent 70%),
-    radial-gradient(ellipse 70% 50% at 60% 10%, rgba(85,133,180,0.12) 0%, transparent 70%);
-  background-size: 200% 200%, 200% 200%, 200% 200%;
-  animation: mesh-shift 14s ease-in-out infinite;
+  background-color: transparent;
   color: #1a2d3f;
   position: relative;
   overflow-x: clip;

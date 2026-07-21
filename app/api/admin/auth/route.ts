@@ -18,6 +18,31 @@ type AuthPayload = {
   password?: string;
 };
 
+function parseHostName(rawHost: string | null): string {
+  if (!rawHost) return "";
+  return rawHost.split(",")[0]?.trim().split(":")[0]?.toLowerCase() ?? "";
+}
+
+function isTrustedOrigin(request: Request): boolean {
+  const origin = request.headers.get("origin");
+  if (!origin) return true;
+
+  let originHostName = "";
+  try {
+    originHostName = new URL(origin).hostname.toLowerCase();
+  } catch {
+    return false;
+  }
+
+  const directHostName = parseHostName(request.headers.get("host"));
+  const forwardedHostName = parseHostName(request.headers.get("x-forwarded-host"));
+
+  return (
+    originHostName !== "" &&
+    (originHostName === directHostName || originHostName === forwardedHostName)
+  );
+}
+
 function clientIp(request: Request): string {
   const forwarded = request.headers.get("x-forwarded-for");
   const firstForwarded = forwarded?.split(",")[0]?.trim();
@@ -47,9 +72,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const origin = request.headers.get("origin");
-  const host = request.headers.get("host");
-  if (origin && host && !origin.includes(host)) {
+  if (!isTrustedOrigin(request)) {
     return NextResponse.json({ ok: false, error: "Invalid origin." }, { status: 403 });
   }
 

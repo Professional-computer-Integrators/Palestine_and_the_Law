@@ -192,7 +192,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [presets, setPresets] = useState<ThemePreset[]>([]);
 
   useEffect(() => {
-    // Load per-admin localStorage preferences.
+    // Load per-admin localStorage preferences as a fallback until shared
+    // settings are fetched from /api/settings.
     const storedSaved: string[] = JSON.parse(
       localStorage.getItem("theme_saved_colors") ?? "[]"
     );
@@ -210,6 +211,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         if (data.primaryColor) {
           setPrimaryColor(data.primaryColor);
           applyPrimaryToDom(data.primaryColor);
+        }
+        if (Array.isArray(data.savedColors)) {
+          setSavedColors(data.savedColors);
+          localStorage.setItem("theme_saved_colors", JSON.stringify(data.savedColors));
         }
         if (data.fontOptionId) {
           setFontState(data.fontOptionId as FontOptionId);
@@ -255,6 +260,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setSavedColors((prev) => {
       const updated = prev.includes(hex) ? prev : [hex, ...prev].slice(0, 24);
       localStorage.setItem("theme_saved_colors", JSON.stringify(updated));
+      syncToServer({ savedColors: updated });
       return updated;
     });
   };
@@ -263,6 +269,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setSavedColors((prev) => {
       const updated = prev.filter((c) => c !== hex);
       localStorage.setItem("theme_saved_colors", JSON.stringify(updated));
+      syncToServer({ savedColors: updated });
       return updated;
     });
   };

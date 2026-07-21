@@ -9,8 +9,10 @@ services:
       - NODE_ENV=production
       - TRUST_HOST=1
     volumes:
-      - app_data:/app/data
+      # Persist analytics/session database outside the container lifecycle.
+      - palestine_and_the_law_app_data:/app/data
     restart: unless-stopped
 
 volumes:
-  app_data:
+  palestine_and_the_law_app_data:
+    name: palestine_and_the_law_app_data

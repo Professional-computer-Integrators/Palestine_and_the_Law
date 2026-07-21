@@ -9,7 +9,10 @@ export function isAdminAuthConfigured(): boolean {
 
 export function isValidAdminPassword(input: string): boolean {
   if (!ADMIN_PASSWORD) return false;
-  return input === ADMIN_PASSWORD;
+
+  // Exact match first; fallback allows copied values with stray whitespace.
+  if (input === ADMIN_PASSWORD) return true;
+  return input.trim() === ADMIN_PASSWORD.trim();
 }
 
 export function getAdminAuthCookieValue(): string {
