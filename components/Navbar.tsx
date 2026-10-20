@@ -56,10 +56,12 @@ export default function Navbar() {
             scrolls off the top of the page natively (no JS, no jank). */}
         <div className="w-full py-4 px-4 sm:px-6">
           <div className="relative text-center">
-            {/* Admin button - top right on sm+ only */}
-            <div className="hidden sm:block absolute top-1/2 right-0 -translate-y-1/2">
-              <AdminButton />
-            </div>
+            {/* Admin button - top right on sm+ only, shown once logged in via /admin */}
+            {isAdmin && (
+              <div className="hidden sm:block absolute top-1/2 right-0 -translate-y-1/2">
+                <AdminButton />
+              </div>
+            )}
 
             <Link href="/" className="group block">
               <div
@@ -103,10 +105,12 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Admin button - mobile only, below title */}
-          <div className="flex justify-end mt-2 sm:hidden">
-            <AdminButton />
-          </div>
+          {/* Admin button - mobile only, below title, shown once logged in */}
+          {isAdmin && (
+            <div className="flex justify-end mt-2 sm:hidden">
+              <AdminButton />
+            </div>
+          )}
         </div>
       </header>
 

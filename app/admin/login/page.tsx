@@ -3,6 +3,7 @@
 import { FormEvent, useMemo, useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTheme } from "@/contexts/ThemeContext";
 
 function normalizeNextPath(raw: string | null): string {
   if (!raw) return "/admin";
@@ -13,6 +14,7 @@ function normalizeNextPath(raw: string | null): string {
 
 function LoginForm() {
   const router = useRouter();
+  const { login } = useTheme();
   const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -29,15 +31,10 @@ function LoginForm() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/admin/auth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
-      });
-
-      if (!response.ok) {
-        const data = (await response.json()) as { error?: string };
-        setError(data.error ?? "Incorrect password.");
+      // Log in through ThemeContext so the shared isAdmin state updates and
+      // the navbar shows the admin panel button without a reload.
+      if (!(await login(password))) {
+        setError("Incorrect password.");
         return;
       }
 

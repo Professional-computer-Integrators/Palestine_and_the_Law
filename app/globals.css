@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 :root {
-  /* Default greyish-blue primary (RGB for Tailwind opacity support) */
-  --color-primary:       58 100 145;   /* #3a6491 */
-  --color-primary-light: 85 133 180;   /* #5585b4 */
-  --color-primary-dark:  36  74 111;   /* #244a6f */
+  /* Default dark green primary (matches the live site) (RGB for Tailwind opacity support) */
+  --color-primary:       58  84  63;   /* #3a543f */
+  --color-primary-light: 101 122 105;  /* #657a69 */
+  --color-primary-dark:  45  66  49;   /* #2d4231 */
 
   /* Google Font family variables */
   --font-playfair:     'Playfair Display', serif;
@@ -80,8 +80,8 @@
   --font-exo2:         'Exo 2', sans-serif;
 
   /* Font heading/body — overridden by ThemeProvider */
-  --font-heading: var(--font-playfair);
-  --font-body:    var(--font-inter);
+  --font-heading: var(--font-barlow);
+  --font-body:    var(--font-ibmplexsans);
 }
 
 html {

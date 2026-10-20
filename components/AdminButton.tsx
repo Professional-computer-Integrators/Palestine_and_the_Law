@@ -312,7 +312,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
     primaryColor, applyColor, savedColors, saveColor, removeColor,
     fontOptionId, setFontOptionId,
     logout,
-    addUpdate, updates, deleteUpdate,
+    addUpdate, editUpdate, updates, deleteUpdate,
     editMode, setEditMode, pageTexts, resetPageText,
     pageColors, resetPageColor,
     presets, savePreset, applyPreset, deletePreset,
@@ -328,6 +328,11 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
   // Insights state
   const [uTitle, setUTitle]     = useState("");
   const [uContent, setUContent] = useState("");
+  const [uSourceUrl, setUSourceUrl] = useState("");
+  const [uSource, setUSource]       = useState("");
+  const [uThumb, setUThumb]         = useState("");
+  const [editingId, setEditingId]   = useState<string | null>(null);
+  const [previewStatus, setPreviewStatus] = useState("");
 
   useEffect(() => { setPickerHex(primaryColor); setHexInput(primaryColor); }, [primaryColor]);
 
@@ -341,11 +346,43 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
   };
   const handleSaveColor = () => saveColor(isValidHex(hexInput) ? hexInput : pickerHex);
 
+  const resetInsightForm = () => {
+    setUTitle(""); setUContent(""); setUSourceUrl(""); setUSource(""); setUThumb("");
+    setEditingId(null); setPreviewStatus("");
+  };
   const handlePostUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     if (!uTitle.trim() || !uContent.trim()) return;
-    addUpdate(uTitle.trim(), uContent.trim());
-    setUTitle(""); setUContent("");
+    const extra = {
+      source: uSource.trim() || undefined,
+      sourceUrl: uSourceUrl.trim() || undefined,
+      thumbnail: uThumb.trim() || undefined,
+    };
+    if (editingId) editUpdate(editingId, { title: uTitle.trim(), content: uContent.trim(), ...extra });
+    else addUpdate(uTitle.trim(), uContent.trim(), extra);
+    resetInsightForm();
+  };
+  const startEditInsight = (id: string) => {
+    const u = updates.find((x) => x.id === id);
+    if (!u) return;
+    setEditingId(id); setUTitle(u.title); setUContent(u.content);
+    setUSourceUrl(u.sourceUrl ?? ""); setUSource(u.source ?? ""); setUThumb(u.thumbnail ?? "");
+    setPreviewStatus("");
+  };
+  // Look up the article's preview image + site name from its link.
+  const fetchLinkPreview = async () => {
+    if (!uSourceUrl.trim()) return;
+    setPreviewStatus("Fetching…");
+    try {
+      const res = await fetch(`/api/admin/link-preview?url=${encodeURIComponent(uSourceUrl.trim())}`);
+      const data = (await res.json()) as { thumbnail?: string; source?: string; error?: string };
+      if (!res.ok) { setPreviewStatus(data.error ?? "Couldn't fetch preview"); return; }
+      if (data.thumbnail) setUThumb(data.thumbnail);
+      if (data.source && !uSource.trim()) setUSource(data.source);
+      setPreviewStatus(data.thumbnail ? "Thumbnail found" : "No preview image on that page — paste an image link below");
+    } catch {
+      setPreviewStatus("Couldn't fetch preview");
+    }
   };
   const TABS = [
     { id: "colour",   label: "Colour"   },
@@ -575,7 +612,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
         {tab === "insights" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div>
-              <SectionLabel>Post New Insight</SectionLabel>
+              <SectionLabel>{editingId ? "Edit Insight" : "Post New Insight"}</SectionLabel>
               <form onSubmit={handlePostUpdate} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 <input type="text" placeholder="Insight title..." value={uTitle}
                   onChange={(e) => setUTitle(e.target.value)}
@@ -585,7 +622,48 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                   onChange={(e) => setUContent(e.target.value)}
                   onFocus={focusOn} onBlur={focusOff}
                   rows={4} style={{ ...INPUT_STYLE, resize: "none" }} required />
-                <PrimaryBtn type="submit">Publish Insight</PrimaryBtn>
+
+                <p style={{ fontSize: 11, color: "rgba(200,220,238,0.5)", marginTop: 4 }}>
+                  Source (optional) — paste the article link and press Fetch to grab its thumbnail
+                </p>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <input type="url" placeholder="https://… link to the original article" value={uSourceUrl}
+                    onChange={(e) => setUSourceUrl(e.target.value)}
+                    onFocus={focusOn} onBlur={focusOff}
+                    style={{ ...INPUT_STYLE, flex: 1, minWidth: 0 }} />
+                  <button type="button" onClick={fetchLinkPreview} disabled={!uSourceUrl.trim()}
+                    style={{ flexShrink: 0, fontFamily: "inherit", fontSize: 12, padding: "0 12px", borderRadius: 6,
+                      cursor: uSourceUrl.trim() ? "pointer" : "not-allowed", background: "rgba(255,255,255,0.08)",
+                      border: "1px solid rgba(255,255,255,0.16)", color: "#deeaf6", opacity: uSourceUrl.trim() ? 1 : 0.5 }}>
+                    Fetch
+                  </button>
+                </div>
+                {previewStatus && (
+                  <p style={{ fontSize: 11, color: "rgba(200,220,238,0.6)" }}>{previewStatus}</p>
+                )}
+                <input type="text" placeholder="Source name, e.g. BBC News" value={uSource}
+                  onChange={(e) => setUSource(e.target.value)}
+                  onFocus={focusOn} onBlur={focusOff}
+                  style={INPUT_STYLE} />
+                <input type="url" placeholder="Thumbnail image link (filled by Fetch)" value={uThumb}
+                  onChange={(e) => setUThumb(e.target.value)}
+                  onFocus={focusOn} onBlur={focusOff}
+                  style={INPUT_STYLE} />
+                {uThumb.trim() && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={uThumb.trim()} alt="Thumbnail preview"
+                    style={{ width: "100%", height: 120, objectFit: "cover", borderRadius: 6,
+                      border: "1px solid rgba(255,255,255,0.12)" }} />
+                )}
+
+                <PrimaryBtn type="submit">{editingId ? "Save Changes" : "Publish Insight"}</PrimaryBtn>
+                {editingId && (
+                  <button type="button" onClick={resetInsightForm}
+                    style={{ fontFamily: "inherit", fontSize: 12, padding: "8px", borderRadius: 6, cursor: "pointer",
+                      background: "transparent", border: "1px solid rgba(255,255,255,0.16)", color: "#deeaf6" }}>
+                    Cancel editing
+                  </button>
+                )}
               </form>
             </div>
 
@@ -606,7 +684,12 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                           {new Date(u.date).toLocaleDateString("en-GB",
                             { day: "numeric", month: "short", year: "numeric" })}</p>
                       </div>
-                      <button onClick={() => deleteUpdate(u.id)}
+                      <button onClick={() => startEditInsight(u.id)}
+                        style={{ flexShrink: 0, fontFamily: "inherit", fontSize: 11, padding: "4px 8px",
+                          borderRadius: 4, cursor: "pointer", background: "transparent",
+                          border: "1px solid rgba(255,255,255,0.2)", color: "#deeaf6" }}
+                      >Edit</button>
+                      <button onClick={() => { if (editingId === u.id) resetInsightForm(); deleteUpdate(u.id); }}
                         style={{ flexShrink: 0, fontFamily: "inherit", fontSize: 11, padding: "4px 8px",
                           borderRadius: 4, cursor: "pointer", background: "transparent",
                           border: "1px solid rgba(239,68,68,0.3)", color: "#fca5a5", transition: "background 0.15s" }}

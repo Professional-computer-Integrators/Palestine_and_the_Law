@@ -69,16 +69,19 @@ async function buildOffsets(): Promise<CacheEntry["data"]> {
 
 export async function getChapterOffsets(): Promise<CacheEntry["data"]> {
   if (cached && cached.expiresAt > Date.now()) return cached.data;
-  if (inflight) return inflight;
-  inflight = buildOffsets()
-    .then((data) => {
-      cached = { data, expiresAt: Date.now() + TTL_MS };
-      return data;
-    })
-    .finally(() => {
-      inflight = null;
-    });
-  return inflight;
+  if (!inflight) {
+    inflight = buildOffsets()
+      .then((data) => {
+        cached = { data, expiresAt: Date.now() + TTL_MS };
+        return data;
+      })
+      .finally(() => {
+        inflight = null;
+      });
+  }
+  // Once we have numbers, serve the stale ones while refreshing in the
+  // background so readers never wait on the Google Docs refetch.
+  return cached ? cached.data : inflight;
 }
 
 export async function getChapterStartPage(num: number): Promise<number> {

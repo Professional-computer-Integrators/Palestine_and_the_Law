@@ -1,76 +1,28 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { hexToRgb, lighten, darken } from "@/lib/colorUtils";
 
-export const DEFAULT_PRIMARY = "#3a6491";
+import { DEFAULT_PRIMARY, DEFAULT_FONT_OPTION, FONT_OPTIONS, primaryCssVars, fontCssVars, type FontOptionId } from "@/lib/themeOptions";
+import type { SharedSettings } from "@/lib/settings";
 
-export const FONT_OPTIONS = [
-  // ── Serif heading + Sans body ──────────────────────────────────────
-  { id: "classic",    label: "Classic — Playfair Display + Inter",         headingVar: "--font-playfair",    bodyVar: "--font-inter" },
-  { id: "editorial",  label: "Editorial — Lora + Open Sans",               headingVar: "--font-lora",        bodyVar: "--font-opensans" },
-  { id: "scholarly",  label: "Scholarly — Crimson Text + Source Sans",     headingVar: "--font-crimson",     bodyVar: "--font-sourcesans" },
-  { id: "elegant",    label: "Elegant — EB Garamond + Raleway",            headingVar: "--font-garamond",    bodyVar: "--font-raleway" },
-  { id: "literary",   label: "Literary — Cormorant Garamond + Nunito",     headingVar: "--font-cormorant",   bodyVar: "--font-nunito" },
-  { id: "academic",   label: "Academic — Libre Baskerville + Libre Franklin", headingVar: "--font-baskerville", bodyVar: "--font-franklin" },
-  { id: "heritage",   label: "Heritage — Spectral + Karla",               headingVar: "--font-spectral",    bodyVar: "--font-karla" },
-  { id: "refined",    label: "Refined — Cardo + Cabin",                   headingVar: "--font-cardo",       bodyVar: "--font-cabin" },
-  { id: "classic2",   label: "Classic II — Libre Caslon + Mulish",        headingVar: "--font-caslon",      bodyVar: "--font-mulish" },
-  { id: "journal",    label: "Journal — Domine + Fira Sans",              headingVar: "--font-domine",      bodyVar: "--font-firasans" },
-  // ── Sans heading + Sans body ────────────────────────────────────────
-  { id: "modern",     label: "Modern — Merriweather + Roboto",            headingVar: "--font-merriweather", bodyVar: "--font-roboto" },
-  { id: "clean",      label: "Clean — Work Sans + DM Sans",               headingVar: "--font-worksans",    bodyVar: "--font-dmsans" },
-  { id: "geometric",  label: "Geometric — Josefin Sans + Jost",           headingVar: "--font-josefin",     bodyVar: "--font-jost" },
-  { id: "minimal",    label: "Minimal — Outfit + Manrope",                headingVar: "--font-outfit",      bodyVar: "--font-manrope" },
-  { id: "corporate",  label: "Corporate — Barlow + IBM Plex Sans",        headingVar: "--font-barlow",      bodyVar: "--font-ibmplexsans" },
-  // ── Display / expressive ────────────────────────────────────────────
-  { id: "bold",       label: "Bold — Syne + Space Grotesk",               headingVar: "--font-syne",        bodyVar: "--font-spacegrotesk" },
-  { id: "humanist",   label: "Humanist — Tenor Sans + Plus Jakarta Sans", headingVar: "--font-tenorsans",   bodyVar: "--font-jakarta" },
-  { id: "newspaper",  label: "Newspaper — Zilla Slab + PT Sans",          headingVar: "--font-zillaslab",   bodyVar: "--font-ptsans" },
-  { id: "academic2",  label: "Academic II — Fraunces + Nunito Sans",      headingVar: "--font-fraunces",    bodyVar: "--font-nunitosans" },
-  { id: "typewriter", label: "Typewriter — Roboto Slab + Roboto Mono",    headingVar: "--font-robotoslab",  bodyVar: "--font-robotomono" },
-  // ── Extra sans-serif ────────────────────────────────────────────────
-  { id: "poppins",     label: "Poppins — Poppins + Poppins",               headingVar: "--font-poppins",     bodyVar: "--font-poppins" },
-  { id: "montserrat",  label: "Montserrat — Montserrat + Montserrat",       headingVar: "--font-montserrat",  bodyVar: "--font-montserrat" },
-  { id: "urbanist",    label: "Urbanist — Urbanist + Urbanist",             headingVar: "--font-urbanist",    bodyVar: "--font-urbanist" },
-  { id: "lexend",      label: "Lexend — Lexend + Lexend",                   headingVar: "--font-lexend",      bodyVar: "--font-lexend" },
-  { id: "figtree",     label: "Figtree — Figtree + Figtree",               headingVar: "--font-figtree",     bodyVar: "--font-figtree" },
-  { id: "redhat",      label: "Red Hat — Red Hat Display + Epilogue",       headingVar: "--font-redhat",      bodyVar: "--font-epilogue" },
-  { id: "epilogue",    label: "Epilogue — Epilogue + Epilogue",             headingVar: "--font-epilogue",    bodyVar: "--font-epilogue" },
-  { id: "hahmlet",     label: "Hahmlet — Hahmlet + Urbanist",              headingVar: "--font-hahmlet",     bodyVar: "--font-urbanist" },
-  { id: "mplus1",      label: "M PLUS 1 — M PLUS 1 + Lexend",             headingVar: "--font-mplus1",      bodyVar: "--font-lexend" },
-  { id: "ntr",         label: "NTR — NTR + Open Sans",                     headingVar: "--font-ntr",         bodyVar: "--font-opensans" },
-  // ── Serif + Sans combinations ────────────────────────────────────────
-  { id: "imperial",      label: "Imperial — Cinzel + Montserrat",              headingVar: "--font-cinzel",       bodyVar: "--font-montserrat" },
-  { id: "cinzeldm",      label: "Cinzel & DM Sans — Cinzel + DM Sans",         headingVar: "--font-cinzel",       bodyVar: "--font-dmsans" },
-  { id: "magazine",      label: "Magazine — Abril Fatface + Lato",             headingVar: "--font-abrilfatface", bodyVar: "--font-lato" },
-  { id: "bodoniurban",   label: "Bodoni & Urbanist — Bodoni Moda + Urbanist",  headingVar: "--font-bodonim",      bodyVar: "--font-urbanist" },
-  { id: "bodoniepi",     label: "Bodoni & Epilogue — Bodoni Moda + Epilogue",  headingVar: "--font-bodonim",      bodyVar: "--font-epilogue" },
-  { id: "arvointer",     label: "Arvo & Inter — Arvo + Inter",                 headingVar: "--font-arvo",         bodyVar: "--font-inter" },
-  { id: "arvorubik",     label: "Arvo & Rubik — Arvo + Rubik",                 headingVar: "--font-arvo",         bodyVar: "--font-rubik" },
-  { id: "alegreyaspace", label: "Alegreya & Space — Alegreya + Space Grotesk", headingVar: "--font-alegreya",     bodyVar: "--font-spacegrotesk" },
-  { id: "alegreyajkt",   label: "Alegreya & Jakarta — Alegreya + Jakarta",     headingVar: "--font-alegreya",     bodyVar: "--font-jakarta" },
-  { id: "ptsuite",       label: "PT Suite — PT Serif + Lato",                  headingVar: "--font-ptserif",      bodyVar: "--font-lato" },
-  { id: "ptrubik",       label: "PT & Rubik — PT Serif + Rubik",               headingVar: "--font-ptserif",      bodyVar: "--font-rubik" },
-  { id: "pttitillium",   label: "PT & Titillium — PT Serif + Titillium Web",   headingVar: "--font-ptserif",      bodyVar: "--font-titilliumweb" },
-  { id: "vollkornrubik", label: "Vollkorn & Rubik — Vollkorn + Rubik",         headingVar: "--font-vollkorn",     bodyVar: "--font-rubik" },
-  { id: "vollkornpop",   label: "Vollkorn & Poppins — Vollkorn + Poppins",     headingVar: "--font-vollkorn",     bodyVar: "--font-poppins" },
-  { id: "philosopher",   label: "Philosopher — Philosopher + Quicksand",       headingVar: "--font-philosopher",  bodyVar: "--font-quicksand" },
-  { id: "neutonubuntu",  label: "Neuton & Ubuntu — Neuton + Ubuntu",           headingVar: "--font-neuton",       bodyVar: "--font-ubuntu" },
-  { id: "neutonfigure",  label: "Neuton & Figtree — Neuton + Figtree",         headingVar: "--font-neuton",       bodyVar: "--font-figtree" },
-  { id: "gildaasap",     label: "Gilda & Asap — Gilda Display + Asap",         headingVar: "--font-gilda",        bodyVar: "--font-asap" },
-  { id: "gildamanrope",  label: "Gilda & Manrope — Gilda Display + Manrope",   headingVar: "--font-gilda",        bodyVar: "--font-manrope" },
-  { id: "oldstandard",   label: "Old Standard — Old Standard TT + Exo 2",      headingVar: "--font-oldstandard",  bodyVar: "--font-exo2" },
-] as const;
-
-export type FontOptionId = (typeof FONT_OPTIONS)[number]["id"];
+export { DEFAULT_PRIMARY, FONT_OPTIONS };
+export type { FontOptionId };
 
 export interface SiteUpdate {
   id: string;
   title: string;
   content: string;
   date: string;
+  /** Where the insight came from, e.g. "BBC News" */
+  source?: string;
+  /** Link to the original article */
+  sourceUrl?: string;
+  /** Thumbnail image URL shown alongside the insight */
+  thumbnail?: string;
 }
+
+/** Optional source details an admin can attach to an insight. */
+export type InsightSourceFields = Pick<SiteUpdate, "source" | "sourceUrl" | "thumbnail">;
 
 /** A saved theme preset captures every customisation the admin can apply
  *  to the site so it can be re-applied with a single click. */
@@ -96,7 +48,8 @@ interface ThemeContextValue {
   login: (password: string) => Promise<boolean>;
   logout: () => void;
   updates: SiteUpdate[];
-  addUpdate: (title: string, content: string) => void;
+  addUpdate: (title: string, content: string, extra?: InsightSourceFields) => void;
+  editUpdate: (id: string, changes: Partial<Omit<SiteUpdate, "id" | "date">>) => void;
   deleteUpdate: (id: string) => void;
   editMode: boolean;
   setEditMode: (v: boolean) => void;
@@ -118,13 +71,14 @@ const ThemeContext = createContext<ThemeContextValue>({
   savedColors: [],
   saveColor: () => {},
   removeColor: () => {},
-  fontOptionId: "classic",
+  fontOptionId: DEFAULT_FONT_OPTION,
   setFontOptionId: () => {},
   isAdmin: false,
   login: async () => false,
   logout: () => {},
   updates: [],
   addUpdate: () => {},
+  editUpdate: () => {},
   deleteUpdate: () => {},
   editMode: false,
   setEditMode: () => {},
@@ -144,24 +98,13 @@ export function useTheme() {
   return useContext(ThemeContext);
 }
 
-function applyPrimaryToDom(hex: string) {
-  const [r, g, b] = hexToRgb(hex);
-  const lightHex = lighten(hex, 0.22);
-  const darkHex = darken(hex, 0.22);
-  const [rl, gl, bl] = hexToRgb(lightHex);
-  const [rd, gd, bd] = hexToRgb(darkHex);
+function applyThemeVarsToDom(vars: Record<string, string>) {
   const root = document.documentElement;
-  root.style.setProperty("--color-primary", `${r} ${g} ${b}`);
-  root.style.setProperty("--color-primary-light", `${rl} ${gl} ${bl}`);
-  root.style.setProperty("--color-primary-dark", `${rd} ${gd} ${bd}`);
+  for (const [name, value] of Object.entries(vars)) root.style.setProperty(name, value);
 }
 
-function applyFontToDom(id: FontOptionId) {
-  const opt = FONT_OPTIONS.find((f) => f.id === id) ?? FONT_OPTIONS[0];
-  const root = document.documentElement;
-  root.style.setProperty("--font-heading", `var(${opt.headingVar})`);
-  root.style.setProperty("--font-body", `var(${opt.bodyVar})`);
-}
+const applyPrimaryToDom = (hex: string) => applyThemeVarsToDom(primaryCssVars(hex));
+const applyFontToDom = (id: FontOptionId) => applyThemeVarsToDom(fontCssVars(id));
 
 /* ─── helper to POST settings to server ────────────────────────── */
 async function syncToServer(
@@ -180,15 +123,30 @@ async function syncToServer(
   }
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [primaryColor, setPrimaryColor] = useState(DEFAULT_PRIMARY);
+/** Settings the server already rendered into the page (see app/layout.tsx),
+ *  used as the starting state so the first paint matches the saved theme. */
+export type InitialThemeSettings = Pick<
+  SharedSettings,
+  "primaryColor" | "fontOptionId" | "updates" | "pageTexts" | "pageColors"
+>;
+
+export function ThemeProvider({
+  children,
+  initialSettings,
+}: {
+  children: React.ReactNode;
+  initialSettings?: InitialThemeSettings;
+}) {
+  const [primaryColor, setPrimaryColor] = useState(initialSettings?.primaryColor ?? DEFAULT_PRIMARY);
   const [savedColors, setSavedColors] = useState<string[]>([]);
-  const [fontOptionId, setFontState] = useState<FontOptionId>("classic");
+  const [fontOptionId, setFontState] = useState<FontOptionId>(
+    (initialSettings?.fontOptionId as FontOptionId) ?? DEFAULT_FONT_OPTION
+  );
   const [isAdmin, setIsAdmin] = useState(false);
-  const [updates, setUpdates] = useState<SiteUpdate[]>([]);
+  const [updates, setUpdates] = useState<SiteUpdate[]>(initialSettings?.updates ?? []);
   const [editMode, setEditModeState] = useState(false);
-  const [pageTexts, setPageTexts] = useState<Record<string, string>>({});
-  const [pageColors, setPageColors] = useState<Record<string, string>>({});
+  const [pageTexts, setPageTexts] = useState<Record<string, string>>(initialSettings?.pageTexts ?? {});
+  const [pageColors, setPageColors] = useState<Record<string, string>>(initialSettings?.pageColors ?? {});
   const [presets, setPresets] = useState<ThemePreset[]>([]);
 
   useEffect(() => {
@@ -237,7 +195,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         // Fall back to localStorage if server unreachable
         const storedColor = localStorage.getItem("theme_primary_color") ?? DEFAULT_PRIMARY;
         const storedFont =
-          (localStorage.getItem("theme_font_option") as FontOptionId) ?? "classic";
+          (localStorage.getItem("theme_font_option") as FontOptionId) ?? DEFAULT_FONT_OPTION;
         const storedUpdates: SiteUpdate[] = JSON.parse(
           localStorage.getItem("site_updates") ?? "[]"
         );
@@ -386,15 +344,25 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const addUpdate = (title: string, content: string) => {
+  const addUpdate = (title: string, content: string, extra: InsightSourceFields = {}) => {
     const update: SiteUpdate = {
       id: Date.now().toString(),
       title,
       content,
       date: new Date().toISOString(),
+      ...extra,
     };
     setUpdates((prev) => {
       const updated = [update, ...prev];
+      localStorage.setItem("site_updates", JSON.stringify(updated));
+      syncToServer({ updates: updated });
+      return updated;
+    });
+  };
+
+  const editUpdate = (id: string, changes: Partial<Omit<SiteUpdate, "id" | "date">>) => {
+    setUpdates((prev) => {
+      const updated = prev.map((u) => (u.id === id ? { ...u, ...changes } : u));
       localStorage.setItem("site_updates", JSON.stringify(updated));
       syncToServer({ updates: updated });
       return updated;
@@ -425,6 +393,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         logout,
         updates,
         addUpdate,
+        editUpdate,
         deleteUpdate,
         editMode,
         setEditMode,

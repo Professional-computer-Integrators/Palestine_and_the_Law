@@ -5,6 +5,14 @@ import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
 import VisitTracker from "@/components/VisitTracker";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { readSettings } from "@/lib/settings";
+import { primaryCssVars, fontCssVars } from "@/lib/themeOptions";
+
+// Render per request so the saved theme (colour, font, text overrides) is
+// read from data/settings.json and baked into the HTML. Without this the
+// page paints the stylesheet defaults first and visibly switches once the
+// client fetches /api/settings.
+export const dynamic = "force-dynamic";
 
 const GOOGLE_FONTS_URL =
   "https://fonts.googleapis.com/css2?" +
@@ -77,8 +85,41 @@ const GOOGLE_FONTS_URL =
   "&family=Exo+2:wght@300;400;500;600;700" +
   "&display=swap";
 
+const SITE_URL = "https://palestineandthelaw.org";
+
+// Structured data telling search engines (Bing, Google) the site name and logo.
+const SITE_JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "Palestine and the Law",
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/favicon-512.png`,
+        width: 512,
+        height: 512,
+      },
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "Palestine and the Law",
+      url: SITE_URL,
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    },
+  ],
+};
+
 export const metadata: Metadata = {
-  title: "Palestine and the Law | Guidelines for Resolution",
+  // Makes og:image / twitter:image absolute links to the real domain (without
+  // it Next.js falls back to http://localhost:3001, which crawlers can't load).
+  metadataBase: new URL(SITE_URL),
+  // Bing Webmaster Tools site verification - keep this, Bing re-checks it.
+  verification: { other: { "msvalidate.01": "A50D344370F82F998DE22C1AD3FFAC71" } },
+  title: "Palestine and the Law | Guidelines",
   description:
     "A comprehensive legal study of the Arab-Israel conflict and the Palestinian question during the 20th century, by Professor Musa Mazzawi.",
   keywords: [
@@ -103,7 +144,7 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   openGraph: {
-    title: "Palestine and the Law | Guidelines for Resolution",
+    title: "Palestine and the Law | Guidelines",
     description:
       "A comprehensive legal study of the Arab-Israel conflict and the Palestinian question during the 20th century, by Professor Musa Mazzawi.",
     images: [{ url: "/favicon-512.png", width: 512, height: 512 }],
@@ -111,7 +152,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary",
-    title: "Palestine and the Law | Guidelines for Resolution",
+    title: "Palestine and the Law | Guidelines",
     description:
       "A comprehensive legal study of the Arab-Israel conflict and the Palestinian question during the 20th century, by Professor Musa Mazzawi.",
     images: ["/favicon-512.png"],
@@ -123,13 +164,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const settings = readSettings();
+  const themeVars = {
+    ...primaryCssVars(settings.primaryColor),
+    ...fontCssVars(settings.fontOptionId),
+  } as React.CSSProperties;
+
   return (
-    <html lang="en">
+    <html lang="en" style={themeVars}>
       <head>
         {/* Icons are emitted by the Next.js Metadata API above. */}
         <meta name="theme-color" content="#1A202C" />
         <meta name="msapplication-TileColor" content="#1A202C" />
         <meta name="msapplication-TileImage" content="/favicon-192.png" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(SITE_JSON_LD) }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={GOOGLE_FONTS_URL} rel="stylesheet" />
@@ -148,7 +199,15 @@ export default function RootLayout({
         />
         <div className="fixed inset-0 -z-20 bg-forest/80" />
         <div className="hero-light-sweep fixed" style={{ zIndex: -10 }} />
-        <ThemeProvider>
+        <ThemeProvider
+          initialSettings={{
+            primaryColor: settings.primaryColor,
+            fontOptionId: settings.fontOptionId,
+            updates: settings.updates,
+            pageTexts: settings.pageTexts,
+            pageColors: settings.pageColors,
+          }}
+        >
           <Navbar />
           <main className="flex-1 min-w-0">{children}</main>
           <Footer />

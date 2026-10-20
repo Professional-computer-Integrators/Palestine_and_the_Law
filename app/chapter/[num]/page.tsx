@@ -32,17 +32,9 @@ export default async function ChapterPage({
             className="mb-6 flex flex-wrap items-baseline gap-x-4 gap-y-1"
             style={{ scrollMarginTop: "calc(var(--navbar-height, 90px) + 16px)" }}
           >
-            <h1 className="font-serif text-2xl md:text-3xl font-bold text-forest">
+            <h1 className="font-serif text-2xl md:text-3xl font-extrabold text-forest-dark">
               Chapter {ch.num} – {ch.title}
             </h1>
-            <a
-              href={ch.docUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-sans text-xs text-ink-muted hover:text-forest transition-colors"
-            >
-              Open in Google Docs ↗
-            </a>
           </div>
           <ChapterReader
             apiUrl={`/api/chapter?num=${ch.num}`}

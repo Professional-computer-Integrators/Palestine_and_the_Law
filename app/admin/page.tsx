@@ -160,18 +160,24 @@ export default function AdminPage() {
   const [editingSessionId, setEditingSessionId] = useState("");
   const [isMutatingSessionId, setIsMutatingSessionId] = useState("");
 
-  // Gate the dashboard to admin users only. ThemeContext hydrates `isAdmin`
-  // from sessionStorage on mount, so we wait one tick before redirecting.
-  const [authChecked, setAuthChecked] = useState(false);
+  // Gate the dashboard to admin users only. ThemeContext's `isAdmin` starts
+  // false until its own fetch resolves, so ask the server directly and send
+  // anyone not logged in to the /admin/login page.
   useEffect(() => {
-    const t = setTimeout(() => setAuthChecked(true), 0);
-    return () => clearTimeout(t);
-  }, []);
-  useEffect(() => {
-    if (authChecked && !isAdmin) {
-      router.replace("/");
-    }
-  }, [authChecked, isAdmin, router]);
+    if (isAdmin) return;
+    let cancelled = false;
+    fetch("/api/admin/auth", { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data: { isAdmin?: boolean }) => {
+        if (!cancelled && data.isAdmin !== true) router.replace("/admin/login?next=/admin");
+      })
+      .catch(() => {
+        if (!cancelled) router.replace("/admin/login?next=/admin");
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [isAdmin, router]);
 
   const archiveCutoff = useMemo(() => {
     const cutoff = new Date();
