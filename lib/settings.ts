@@ -7,6 +7,10 @@ import { DEFAULT_PRIMARY, DEFAULT_FONT_OPTION } from "@/lib/themeOptions";
 import {
   sanitiseLinkedinBadge,
   sanitiseLinkedinBadgeHiddenOn,
+  sanitiseLinkedinBadgeFooter,
+  sanitiseLinkedinBadgeMode,
+  type LinkedinBadgeFooterPlacement,
+  type LinkedinBadgeMode,
   type LinkedinBadgePageKey,
   type LinkedinBadgePlacement,
 } from "@/lib/linkedinBadge";
@@ -34,6 +38,9 @@ export interface SharedSettings {
   linkedinBadge: LinkedinBadgePlacement | null;
   /** Pages the LinkedIn badge is hidden on; empty = shown everywhere. */
   linkedinBadgeHiddenOn: LinkedinBadgePageKey[];
+  /** Whether the badge floats on screen or sits in the footer. */
+  linkedinBadgeMode: LinkedinBadgeMode;
+  linkedinBadgeFooter: LinkedinBadgeFooterPlacement | null;
 }
 
 const DEFAULT_SETTINGS: SharedSettings = {
@@ -46,6 +53,8 @@ const DEFAULT_SETTINGS: SharedSettings = {
   presets: [],
   linkedinBadge: null,
   linkedinBadgeHiddenOn: [],
+  linkedinBadgeMode: "float",
+  linkedinBadgeFooter: null,
 };
 
 function ensureDataDir() {
@@ -63,6 +72,8 @@ export function readSettings(): SharedSettings {
       ...stored,
       linkedinBadge: sanitiseLinkedinBadge(stored.linkedinBadge),
       linkedinBadgeHiddenOn: sanitiseLinkedinBadgeHiddenOn(stored.linkedinBadgeHiddenOn),
+      linkedinBadgeMode: sanitiseLinkedinBadgeMode(stored.linkedinBadgeMode),
+      linkedinBadgeFooter: sanitiseLinkedinBadgeFooter(stored.linkedinBadgeFooter),
     };
   } catch {
     return { ...DEFAULT_SETTINGS };

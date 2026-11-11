@@ -318,6 +318,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
     pageColors, resetPageColor,
     presets, savePreset, applyPreset, deletePreset,
     linkedinBadge, setLinkedinBadge, linkedinBadgeHiddenOn, setLinkedinBadgeHiddenOn,
+    linkedinBadgeMode, setLinkedinBadgeMode, linkedinBadgeFooter, setLinkedinBadgeFooter,
   } = useTheme();
 
   const [tab, setTab] = useState<"colour" | "font" | "insights" | "content" | "presets" | "settings">("colour");
@@ -753,22 +754,49 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
 
             <div>
               <SectionLabel>LinkedIn Badge</SectionLabel>
-              <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.48)", lineHeight: 1.65, marginBottom: 12 }}>
-                With Edit Mode on, drag the &ldquo;Follow on LinkedIn&rdquo; badge to move it, and drag its corner handle to make it bigger or smaller. Changes save for all visitors.
+              <p style={{ fontFamily: "inherit", fontSize: 12, fontWeight: 600, color: "rgba(220,234,246,0.8)", marginBottom: 8 }}>
+                Where it shows:
               </p>
-              <button
-                onClick={() => setLinkedinBadge(null)}
-                disabled={!linkedinBadge}
-                style={{
-                  width: "100%", padding: "9px 12px", borderRadius: 6,
-                  cursor: linkedinBadge ? "pointer" : "default", opacity: linkedinBadge ? 1 : 0.45,
-                  fontFamily: "inherit", fontSize: 12, fontWeight: 600,
-                  background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
-                  color: "rgba(220,234,246,0.8)",
-                }}
-              >
-                {linkedinBadge ? "Reset badge position & size" : "Badge is in its default corner"}
-              </button>
+              <div role="radiogroup" aria-label="Where the LinkedIn badge shows" style={{ display: "flex", gap: 6, marginBottom: 12 }}>
+                {([["float", "Floating on the screen"], ["footer", "Only in the footer"]] as const).map(([mode, label]) => {
+                  const active = linkedinBadgeMode === mode;
+                  return (
+                    <button key={mode} role="radio" aria-checked={active} onClick={() => setLinkedinBadgeMode(mode)}
+                      style={{ flex: 1, padding: "9px 8px", borderRadius: 6, cursor: "pointer",
+                        fontFamily: "inherit", fontSize: 12, fontWeight: 600,
+                        background: active ? "rgba(85,133,180,0.35)" : "rgba(255,255,255,0.06)",
+                        border: `1px solid ${active ? "rgba(85,133,180,0.85)" : "rgba(255,255,255,0.15)"}`,
+                        color: active ? "#ffffff" : "rgba(220,234,246,0.7)" }}
+                    >{label}</button>
+                  );
+                })}
+              </div>
+              <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.48)", lineHeight: 1.65, marginBottom: 12 }}>
+                {linkedinBadgeMode === "footer"
+                  ? <>With Edit Mode on, use the Left / Centre / Right buttons above the badge in the footer, and drag its corner handle to make it bigger or smaller. Changes save for all visitors.</>
+                  : <>With Edit Mode on, drag the &ldquo;Follow on LinkedIn&rdquo; badge to move it, and drag its corner handle to make it bigger or smaller. Changes save for all visitors.</>}
+              </p>
+              {(() => {
+                const inFooter = linkedinBadgeMode === "footer";
+                const customised = inFooter ? linkedinBadgeFooter !== null : linkedinBadge !== null;
+                return (
+                  <button
+                    onClick={() => (inFooter ? setLinkedinBadgeFooter(null) : setLinkedinBadge(null))}
+                    disabled={!customised}
+                    style={{
+                      width: "100%", padding: "9px 12px", borderRadius: 6,
+                      cursor: customised ? "pointer" : "default", opacity: customised ? 1 : 0.45,
+                      fontFamily: "inherit", fontSize: 12, fontWeight: 600,
+                      background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
+                      color: "rgba(220,234,246,0.8)",
+                    }}
+                  >
+                    {inFooter
+                      ? customised ? "Reset badge size & alignment" : "Badge is centred at its normal size"
+                      : customised ? "Reset badge position & size" : "Badge is in its default corner"}
+                  </button>
+                );
+              })()}
 
               <div style={{ marginTop: 16 }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>

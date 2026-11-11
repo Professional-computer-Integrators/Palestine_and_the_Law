@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import EditableText, { useEditableText } from "@/components/EditableText";
+import LinkedInBadge from "@/components/LinkedInBadge";
 
 const footerLinks = [
   { href: "/", label: "Home", id: "footer.link.home" },
@@ -95,6 +96,9 @@ export default function Footer() {
             />
           </div>
         </div>
+
+        {/* Only shows when the admin has put the LinkedIn badge in the footer. */}
+        <LinkedInBadge variant="footer" />
 
         <div className="mt-10 pt-6 border-t border-white/10 text-center">
           <EditableText

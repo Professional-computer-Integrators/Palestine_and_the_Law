@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdminRequestAuthenticated } from "@/lib/admin/auth";
 import { readSettings, writeSettings, type SharedSettings } from "@/lib/settings";
-import { sanitiseLinkedinBadge, sanitiseLinkedinBadgeHiddenOn } from "@/lib/linkedinBadge";
+import {
+  sanitiseLinkedinBadge,
+  sanitiseLinkedinBadgeFooter,
+  sanitiseLinkedinBadgeHiddenOn,
+  sanitiseLinkedinBadgeMode,
+} from "@/lib/linkedinBadge";
 
 // ── GET — public, returns shared settings ──────────────────────────
 export async function GET() {
@@ -29,6 +34,12 @@ export async function POST(req: NextRequest) {
     }
     if ("linkedinBadgeHiddenOn" in settingsPayload) {
       merged.linkedinBadgeHiddenOn = sanitiseLinkedinBadgeHiddenOn(settingsPayload.linkedinBadgeHiddenOn);
+    }
+    if ("linkedinBadgeMode" in settingsPayload) {
+      merged.linkedinBadgeMode = sanitiseLinkedinBadgeMode(settingsPayload.linkedinBadgeMode);
+    }
+    if ("linkedinBadgeFooter" in settingsPayload) {
+      merged.linkedinBadgeFooter = sanitiseLinkedinBadgeFooter(settingsPayload.linkedinBadgeFooter);
     }
     writeSettings(merged);
 

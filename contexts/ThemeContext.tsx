@@ -7,6 +7,10 @@ import type { SharedSettings } from "@/lib/settings";
 import {
   sanitiseLinkedinBadge,
   sanitiseLinkedinBadgeHiddenOn,
+  sanitiseLinkedinBadgeFooter,
+  sanitiseLinkedinBadgeMode,
+  type LinkedinBadgeFooterPlacement,
+  type LinkedinBadgeMode,
   type LinkedinBadgePageKey,
   type LinkedinBadgePlacement,
 } from "@/lib/linkedinBadge";
@@ -73,6 +77,10 @@ interface ThemeContextValue {
   setLinkedinBadge: (placement: LinkedinBadgePlacement | null) => void;
   linkedinBadgeHiddenOn: LinkedinBadgePageKey[];
   setLinkedinBadgeHiddenOn: (keys: LinkedinBadgePageKey[]) => void;
+  linkedinBadgeMode: LinkedinBadgeMode;
+  setLinkedinBadgeMode: (mode: LinkedinBadgeMode) => void;
+  linkedinBadgeFooter: LinkedinBadgeFooterPlacement | null;
+  setLinkedinBadgeFooter: (placement: LinkedinBadgeFooterPlacement | null) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
@@ -106,6 +114,10 @@ const ThemeContext = createContext<ThemeContextValue>({
   setLinkedinBadge: () => {},
   linkedinBadgeHiddenOn: [],
   setLinkedinBadgeHiddenOn: () => {},
+  linkedinBadgeMode: "float",
+  setLinkedinBadgeMode: () => {},
+  linkedinBadgeFooter: null,
+  setLinkedinBadgeFooter: () => {},
 });
 
 export function useTheme() {
@@ -142,6 +154,7 @@ async function syncToServer(
 export type InitialThemeSettings = Pick<
   SharedSettings,
   "primaryColor" | "fontOptionId" | "updates" | "pageTexts" | "pageColors" | "linkedinBadge" | "linkedinBadgeHiddenOn"
+  | "linkedinBadgeMode" | "linkedinBadgeFooter"
 >;
 
 export function ThemeProvider({
@@ -167,6 +180,12 @@ export function ThemeProvider({
   );
   const [linkedinBadgeHiddenOn, setLinkedinBadgeHiddenOnState] = useState<LinkedinBadgePageKey[]>(
     initialSettings?.linkedinBadgeHiddenOn ?? []
+  );
+  const [linkedinBadgeMode, setLinkedinBadgeModeState] = useState<LinkedinBadgeMode>(
+    initialSettings?.linkedinBadgeMode ?? "float"
+  );
+  const [linkedinBadgeFooter, setLinkedinBadgeFooterState] = useState<LinkedinBadgeFooterPlacement | null>(
+    initialSettings?.linkedinBadgeFooter ?? null
   );
 
   useEffect(() => {
@@ -212,6 +231,12 @@ export function ThemeProvider({
         }
         if ("linkedinBadgeHiddenOn" in data) {
           setLinkedinBadgeHiddenOnState(sanitiseLinkedinBadgeHiddenOn(data.linkedinBadgeHiddenOn));
+        }
+        if ("linkedinBadgeMode" in data) {
+          setLinkedinBadgeModeState(sanitiseLinkedinBadgeMode(data.linkedinBadgeMode));
+        }
+        if ("linkedinBadgeFooter" in data) {
+          setLinkedinBadgeFooterState(sanitiseLinkedinBadgeFooter(data.linkedinBadgeFooter));
         }
         if (Array.isArray(data.presets)) {
           setPresets(data.presets);
@@ -373,6 +398,16 @@ export function ThemeProvider({
     syncToServer({ linkedinBadgeHiddenOn: clean });
   };
 
+  const setLinkedinBadgeMode = (mode: LinkedinBadgeMode) => {
+    setLinkedinBadgeModeState(mode);
+    syncToServer({ linkedinBadgeMode: mode });
+  };
+
+  const setLinkedinBadgeFooter = (placement: LinkedinBadgeFooterPlacement | null) => {
+    setLinkedinBadgeFooterState(placement);
+    syncToServer({ linkedinBadgeFooter: placement });
+  };
+
   const deletePreset = (id: string) => {
     setPresets((prev) => {
       const updated = prev.filter((p) => p.id !== id);
@@ -448,6 +483,10 @@ export function ThemeProvider({
         setLinkedinBadge,
         linkedinBadgeHiddenOn,
         setLinkedinBadgeHiddenOn,
+        linkedinBadgeMode,
+        setLinkedinBadgeMode,
+        linkedinBadgeFooter,
+        setLinkedinBadgeFooter,
       }}
     >
       {children}

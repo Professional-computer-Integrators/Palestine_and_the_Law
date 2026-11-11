@@ -58,3 +58,26 @@ export function linkedinBadgePageKey(pathname: string): LinkedinBadgePageKey | n
   }
   return null;
 }
+
+/** "float" = fixed on screen (the default); "footer" = part of the site footer instead. */
+export type LinkedinBadgeMode = "float" | "footer";
+
+export function sanitiseLinkedinBadgeMode(value: unknown): LinkedinBadgeMode {
+  return value === "footer" ? "footer" : "float";
+}
+
+export type LinkedinBadgeFooterAlign = "left" | "center" | "right";
+
+/** Alignment and size of the badge when it sits in the footer; null = centred at 100%. */
+export interface LinkedinBadgeFooterPlacement {
+  align: LinkedinBadgeFooterAlign;
+  scale: number;
+}
+
+export function sanitiseLinkedinBadgeFooter(value: unknown): LinkedinBadgeFooterPlacement | null {
+  if (!value || typeof value !== "object") return null;
+  const { align, scale } = value as Record<string, unknown>;
+  if (align !== "left" && align !== "center" && align !== "right") return null;
+  if (typeof scale !== "number" || !Number.isFinite(scale)) return null;
+  return { align, scale: clamp(scale, LINKEDIN_BADGE_SCALE_MIN, LINKEDIN_BADGE_SCALE_MAX) };
+}
