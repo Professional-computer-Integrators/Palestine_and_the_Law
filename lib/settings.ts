@@ -4,6 +4,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join } from "path";
 import { DEFAULT_PRIMARY, DEFAULT_FONT_OPTION } from "@/lib/themeOptions";
+import { sanitiseLinkedinBadge, type LinkedinBadgePlacement } from "@/lib/linkedinBadge";
 
 const DATA_DIR = join(process.cwd(), "data");
 const SETTINGS_FILE = join(DATA_DIR, "settings.json");
@@ -24,6 +25,8 @@ export interface SharedSettings {
     pageColors: Record<string, string>;
     createdAt: string;
   }>;
+  /** Where the admin placed the LinkedIn follow badge; null = default corner. */
+  linkedinBadge: LinkedinBadgePlacement | null;
 }
 
 const DEFAULT_SETTINGS: SharedSettings = {
@@ -34,6 +37,7 @@ const DEFAULT_SETTINGS: SharedSettings = {
   pageTexts: {},
   pageColors: {},
   presets: [],
+  linkedinBadge: null,
 };
 
 function ensureDataDir() {
@@ -46,7 +50,8 @@ export function readSettings(): SharedSettings {
   ensureDataDir();
   if (!existsSync(SETTINGS_FILE)) return { ...DEFAULT_SETTINGS };
   try {
-    return { ...DEFAULT_SETTINGS, ...JSON.parse(readFileSync(SETTINGS_FILE, "utf-8")) };
+    const stored = { ...DEFAULT_SETTINGS, ...JSON.parse(readFileSync(SETTINGS_FILE, "utf-8")) };
+    return { ...stored, linkedinBadge: sanitiseLinkedinBadge(stored.linkedinBadge) };
   } catch {
     return { ...DEFAULT_SETTINGS };
   }

@@ -316,6 +316,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
     editMode, setEditMode, pageTexts, resetPageText,
     pageColors, resetPageColor,
     presets, savePreset, applyPreset, deletePreset,
+    linkedinBadge, setLinkedinBadge,
   } = useTheme();
 
   const [tab, setTab] = useState<"colour" | "font" | "insights" | "content" | "presets" | "settings">("colour");
@@ -747,6 +748,26 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
                   Navigate to any page and click on a dashed blue outlined text to edit it.
                 </p>
               )}
+            </div>
+
+            <div>
+              <SectionLabel>LinkedIn Badge</SectionLabel>
+              <p style={{ fontFamily: "inherit", fontSize: 12, color: "rgba(200,220,238,0.48)", lineHeight: 1.65, marginBottom: 12 }}>
+                With Edit Mode on, drag the &ldquo;Follow on LinkedIn&rdquo; badge to move it, and drag its corner handle to make it bigger or smaller. Changes save for all visitors.
+              </p>
+              <button
+                onClick={() => setLinkedinBadge(null)}
+                disabled={!linkedinBadge}
+                style={{
+                  width: "100%", padding: "9px 12px", borderRadius: 6,
+                  cursor: linkedinBadge ? "pointer" : "default", opacity: linkedinBadge ? 1 : 0.45,
+                  fontFamily: "inherit", fontSize: 12, fontWeight: 600,
+                  background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
+                  color: "rgba(220,234,246,0.8)",
+                }}
+              >
+                {linkedinBadge ? "Reset badge position & size" : "Badge is in its default corner"}
+              </button>
             </div>
 
             {Object.keys(pageTexts).length > 0 && (

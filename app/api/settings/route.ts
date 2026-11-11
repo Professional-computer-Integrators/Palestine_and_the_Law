@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdminRequestAuthenticated } from "@/lib/admin/auth";
 import { readSettings, writeSettings, type SharedSettings } from "@/lib/settings";
+import { sanitiseLinkedinBadge } from "@/lib/linkedinBadge";
 
 // ── GET — public, returns shared settings ──────────────────────────
 export async function GET() {
@@ -23,6 +24,9 @@ export async function POST(req: NextRequest) {
     // Merge and persist settings
     const current = readSettings();
     const merged: SharedSettings = { ...current, ...settingsPayload };
+    if ("linkedinBadge" in settingsPayload) {
+      merged.linkedinBadge = sanitiseLinkedinBadge(settingsPayload.linkedinBadge);
+    }
     writeSettings(merged);
 
     return NextResponse.json({ ok: true });

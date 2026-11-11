@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CookieBanner from "@/components/CookieBanner";
+import LinkedInBadge from "@/components/LinkedInBadge";
 import VisitTracker from "@/components/VisitTracker";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { readSettings } from "@/lib/settings";
@@ -206,11 +207,13 @@ export default function RootLayout({
             updates: settings.updates,
             pageTexts: settings.pageTexts,
             pageColors: settings.pageColors,
+            linkedinBadge: settings.linkedinBadge,
           }}
         >
           <Navbar />
           <main className="flex-1 min-w-0">{children}</main>
           <Footer />
+          <LinkedInBadge />
           <CookieBanner />
           <VisitTracker />
         </ThemeProvider>

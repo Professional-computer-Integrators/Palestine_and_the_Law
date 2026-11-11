@@ -4,6 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { DEFAULT_PRIMARY, DEFAULT_FONT_OPTION, FONT_OPTIONS, primaryCssVars, fontCssVars, type FontOptionId } from "@/lib/themeOptions";
 import type { SharedSettings } from "@/lib/settings";
+import { sanitiseLinkedinBadge, type LinkedinBadgePlacement } from "@/lib/linkedinBadge";
 
 export { DEFAULT_PRIMARY, FONT_OPTIONS };
 export type { FontOptionId };
@@ -63,6 +64,8 @@ interface ThemeContextValue {
   savePreset: (name: string) => void;
   applyPreset: (id: string) => void;
   deletePreset: (id: string) => void;
+  linkedinBadge: LinkedinBadgePlacement | null;
+  setLinkedinBadge: (placement: LinkedinBadgePlacement | null) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
@@ -92,6 +95,8 @@ const ThemeContext = createContext<ThemeContextValue>({
   savePreset: () => {},
   applyPreset: () => {},
   deletePreset: () => {},
+  linkedinBadge: null,
+  setLinkedinBadge: () => {},
 });
 
 export function useTheme() {
@@ -127,7 +132,7 @@ async function syncToServer(
  *  used as the starting state so the first paint matches the saved theme. */
 export type InitialThemeSettings = Pick<
   SharedSettings,
-  "primaryColor" | "fontOptionId" | "updates" | "pageTexts" | "pageColors"
+  "primaryColor" | "fontOptionId" | "updates" | "pageTexts" | "pageColors" | "linkedinBadge"
 >;
 
 export function ThemeProvider({
@@ -148,6 +153,9 @@ export function ThemeProvider({
   const [pageTexts, setPageTexts] = useState<Record<string, string>>(initialSettings?.pageTexts ?? {});
   const [pageColors, setPageColors] = useState<Record<string, string>>(initialSettings?.pageColors ?? {});
   const [presets, setPresets] = useState<ThemePreset[]>([]);
+  const [linkedinBadge, setLinkedinBadgeState] = useState<LinkedinBadgePlacement | null>(
+    initialSettings?.linkedinBadge ?? null
+  );
 
   useEffect(() => {
     // Load per-admin localStorage preferences as a fallback until shared
@@ -186,6 +194,9 @@ export function ThemeProvider({
         }
         if (data.pageColors && typeof data.pageColors === "object") {
           setPageColors(data.pageColors);
+        }
+        if ("linkedinBadge" in data) {
+          setLinkedinBadgeState(sanitiseLinkedinBadge(data.linkedinBadge));
         }
         if (Array.isArray(data.presets)) {
           setPresets(data.presets);
@@ -336,6 +347,11 @@ export function ThemeProvider({
     );
   };
 
+  const setLinkedinBadge = (placement: LinkedinBadgePlacement | null) => {
+    setLinkedinBadgeState(placement);
+    syncToServer({ linkedinBadge: placement });
+  };
+
   const deletePreset = (id: string) => {
     setPresets((prev) => {
       const updated = prev.filter((p) => p.id !== id);
@@ -407,6 +423,8 @@ export function ThemeProvider({
         savePreset,
         applyPreset,
         deletePreset,
+        linkedinBadge,
+        setLinkedinBadge,
       }}
     >
       {children}
