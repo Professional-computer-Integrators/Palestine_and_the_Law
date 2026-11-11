@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { isAdminRequestAuthenticated } from "@/lib/admin/auth";
 import { readSettings, writeSettings, type SharedSettings } from "@/lib/settings";
-import { sanitiseLinkedinBadge } from "@/lib/linkedinBadge";
+import { sanitiseLinkedinBadge, sanitiseLinkedinBadgeHiddenOn } from "@/lib/linkedinBadge";
 
 // ── GET — public, returns shared settings ──────────────────────────
 export async function GET() {
@@ -26,6 +26,9 @@ export async function POST(req: NextRequest) {
     const merged: SharedSettings = { ...current, ...settingsPayload };
     if ("linkedinBadge" in settingsPayload) {
       merged.linkedinBadge = sanitiseLinkedinBadge(settingsPayload.linkedinBadge);
+    }
+    if ("linkedinBadgeHiddenOn" in settingsPayload) {
+      merged.linkedinBadgeHiddenOn = sanitiseLinkedinBadgeHiddenOn(settingsPayload.linkedinBadgeHiddenOn);
     }
     writeSettings(merged);
 

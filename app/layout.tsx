@@ -208,6 +208,7 @@ export default function RootLayout({
             pageTexts: settings.pageTexts,
             pageColors: settings.pageColors,
             linkedinBadge: settings.linkedinBadge,
+            linkedinBadgeHiddenOn: settings.linkedinBadgeHiddenOn,
           }}
         >
           <Navbar />

@@ -7,10 +7,17 @@ import {
   LINKEDIN_PROFILE_URL,
   LINKEDIN_BADGE_SCALE_MAX,
   LINKEDIN_BADGE_SCALE_MIN,
+  linkedinBadgePageKey,
   type LinkedinBadgePlacement,
 } from "@/lib/linkedinBadge";
 
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+
+const CONTROL_STYLE: React.CSSProperties = {
+  fontFamily: "inherit", fontSize: 11, lineHeight: 1, padding: "5px 9px",
+  borderRadius: 999, cursor: "pointer", whiteSpace: "nowrap",
+  background: "#1b3556", color: "#deeaf6", border: "1px solid rgba(255,255,255,0.2)",
+};
 
 /** Converts the badge's top-left corner (px) into a placement that keeps it on screen. */
 function toPlacement(left: number, top: number, width: number, height: number, scale: number): LinkedinBadgePlacement {
@@ -48,7 +55,11 @@ const LinkedInLogo = () => (
  */
 export default function LinkedInBadge() {
   const pathname = usePathname();
-  const { isAdmin, editMode, linkedinBadge, setLinkedinBadge } = useTheme();
+  const {
+    isAdmin, editMode,
+    linkedinBadge, setLinkedinBadge,
+    linkedinBadgeHiddenOn, setLinkedinBadgeHiddenOn,
+  } = useTheme();
   const badgeRef = useRef<HTMLDivElement>(null);
   const gesture = useRef<Gesture | null>(null);
   // Live placement while dragging/resizing; saved once the pointer is released.
@@ -57,6 +68,11 @@ export default function LinkedInBadge() {
   if (pathname?.startsWith("/admin")) return null;
 
   const editing = isAdmin && editMode;
+  const pageKey = linkedinBadgePageKey(pathname ?? "/");
+  const hiddenHere = pageKey !== null && linkedinBadgeHiddenOn.includes(pageKey);
+  // Visitors don't see it; in edit mode the admin sees it faded so it can be switched back on.
+  if (hiddenHere && !editing) return null;
+
   const placement = draft ?? linkedinBadge;
   const scale = placement?.scale ?? 100;
 
@@ -145,6 +161,7 @@ export default function LinkedInBadge() {
           gap: "0.55em",
           padding: "0.4em 0.95em 0.4em 0.45em",
           cursor: editing ? "move" : "pointer",
+          opacity: hiddenHere ? 0.45 : undefined,
         }}
       >
         <LinkedInLogo />
@@ -163,22 +180,44 @@ export default function LinkedInBadge() {
               cursor: "nwse-resize", touchAction: "none",
             }}
           />
-          {linkedinBadge && (
-            <button
-              type="button"
-              onPointerDown={(e) => e.stopPropagation()}
-              onClick={() => setLinkedinBadge(null)}
-              title="Put the badge back in its original corner at its original size"
-              style={{
-                position: "absolute", left: 0, bottom: "calc(100% + 8px)",
-                fontFamily: "inherit", fontSize: 11, lineHeight: 1, padding: "5px 9px",
-                borderRadius: 999, cursor: "pointer", whiteSpace: "nowrap",
-                background: "#1b3556", color: "#deeaf6", border: "1px solid rgba(255,255,255,0.2)",
-              }}
-            >
-              Reset position &amp; size
-            </button>
-          )}
+          <div
+            onPointerDown={(e) => e.stopPropagation()}
+            style={{
+              position: "absolute", left: 0, display: "flex", gap: 6,
+              // Keep the controls on screen: above the badge, or below it when it's near the top.
+              ...(placement && placement.y < 50 ? { top: "calc(100% + 10px)" } : { bottom: "calc(100% + 8px)" }),
+            }}
+          >
+            {pageKey && (
+              <button
+                type="button"
+                onClick={() =>
+                  setLinkedinBadgeHiddenOn(
+                    hiddenHere
+                      ? linkedinBadgeHiddenOn.filter((k) => k !== pageKey)
+                      : [...linkedinBadgeHiddenOn, pageKey]
+                  )
+                }
+                title={hiddenHere ? "Visitors can't see the badge on this page" : "Stop showing the badge on this page"}
+                style={{
+                  ...CONTROL_STYLE,
+                  ...(hiddenHere ? { background: "#7a2e2e", borderColor: "rgba(255,255,255,0.35)" } : {}),
+                }}
+              >
+                {hiddenHere ? "Hidden on this page — click to show" : "Hide on this page"}
+              </button>
+            )}
+            {linkedinBadge && (
+              <button
+                type="button"
+                onClick={() => setLinkedinBadge(null)}
+                title="Put the badge back in its original corner at its original size"
+                style={CONTROL_STYLE}
+              >
+                Reset position &amp; size
+              </button>
+            )}
+          </div>
         </>
       )}
     </div>

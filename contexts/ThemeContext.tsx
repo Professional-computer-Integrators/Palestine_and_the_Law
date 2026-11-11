@@ -4,7 +4,12 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { DEFAULT_PRIMARY, DEFAULT_FONT_OPTION, FONT_OPTIONS, primaryCssVars, fontCssVars, type FontOptionId } from "@/lib/themeOptions";
 import type { SharedSettings } from "@/lib/settings";
-import { sanitiseLinkedinBadge, type LinkedinBadgePlacement } from "@/lib/linkedinBadge";
+import {
+  sanitiseLinkedinBadge,
+  sanitiseLinkedinBadgeHiddenOn,
+  type LinkedinBadgePageKey,
+  type LinkedinBadgePlacement,
+} from "@/lib/linkedinBadge";
 
 export { DEFAULT_PRIMARY, FONT_OPTIONS };
 export type { FontOptionId };
@@ -66,6 +71,8 @@ interface ThemeContextValue {
   deletePreset: (id: string) => void;
   linkedinBadge: LinkedinBadgePlacement | null;
   setLinkedinBadge: (placement: LinkedinBadgePlacement | null) => void;
+  linkedinBadgeHiddenOn: LinkedinBadgePageKey[];
+  setLinkedinBadgeHiddenOn: (keys: LinkedinBadgePageKey[]) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
@@ -97,6 +104,8 @@ const ThemeContext = createContext<ThemeContextValue>({
   deletePreset: () => {},
   linkedinBadge: null,
   setLinkedinBadge: () => {},
+  linkedinBadgeHiddenOn: [],
+  setLinkedinBadgeHiddenOn: () => {},
 });
 
 export function useTheme() {
@@ -132,7 +141,7 @@ async function syncToServer(
  *  used as the starting state so the first paint matches the saved theme. */
 export type InitialThemeSettings = Pick<
   SharedSettings,
-  "primaryColor" | "fontOptionId" | "updates" | "pageTexts" | "pageColors" | "linkedinBadge"
+  "primaryColor" | "fontOptionId" | "updates" | "pageTexts" | "pageColors" | "linkedinBadge" | "linkedinBadgeHiddenOn"
 >;
 
 export function ThemeProvider({
@@ -155,6 +164,9 @@ export function ThemeProvider({
   const [presets, setPresets] = useState<ThemePreset[]>([]);
   const [linkedinBadge, setLinkedinBadgeState] = useState<LinkedinBadgePlacement | null>(
     initialSettings?.linkedinBadge ?? null
+  );
+  const [linkedinBadgeHiddenOn, setLinkedinBadgeHiddenOnState] = useState<LinkedinBadgePageKey[]>(
+    initialSettings?.linkedinBadgeHiddenOn ?? []
   );
 
   useEffect(() => {
@@ -197,6 +209,9 @@ export function ThemeProvider({
         }
         if ("linkedinBadge" in data) {
           setLinkedinBadgeState(sanitiseLinkedinBadge(data.linkedinBadge));
+        }
+        if ("linkedinBadgeHiddenOn" in data) {
+          setLinkedinBadgeHiddenOnState(sanitiseLinkedinBadgeHiddenOn(data.linkedinBadgeHiddenOn));
         }
         if (Array.isArray(data.presets)) {
           setPresets(data.presets);
@@ -352,6 +367,12 @@ export function ThemeProvider({
     syncToServer({ linkedinBadge: placement });
   };
 
+  const setLinkedinBadgeHiddenOn = (keys: LinkedinBadgePageKey[]) => {
+    const clean = sanitiseLinkedinBadgeHiddenOn(keys);
+    setLinkedinBadgeHiddenOnState(clean);
+    syncToServer({ linkedinBadgeHiddenOn: clean });
+  };
+
   const deletePreset = (id: string) => {
     setPresets((prev) => {
       const updated = prev.filter((p) => p.id !== id);
@@ -425,6 +446,8 @@ export function ThemeProvider({
         deletePreset,
         linkedinBadge,
         setLinkedinBadge,
+        linkedinBadgeHiddenOn,
+        setLinkedinBadgeHiddenOn,
       }}
     >
       {children}

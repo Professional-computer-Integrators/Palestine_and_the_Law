@@ -27,3 +27,34 @@ export function sanitiseLinkedinBadge(value: unknown): LinkedinBadgePlacement | 
     scale: clamp(scale as number, LINKEDIN_BADGE_SCALE_MIN, LINKEDIN_BADGE_SCALE_MAX),
   };
 }
+
+/** Public pages the admin can hide the badge on. A group covers every page under its path. */
+export const LINKEDIN_BADGE_PAGES = [
+  { key: "home", label: "Home", path: "/", group: false },
+  { key: "contents", label: "Overview of Chapters", path: "/contents", group: false },
+  { key: "chapters", label: "Chapters (all)", path: "/chapter", group: true },
+  { key: "appendices", label: "Appendices (all)", path: "/appendix", group: true },
+  { key: "dedication", label: "Dedication & Acknowledgements", path: "/dedication", group: false },
+  { key: "insights", label: "Insights", path: "/insights", group: false },
+  { key: "updates", label: "Updates", path: "/updates", group: false },
+  { key: "contact", label: "Contact", path: "/contact", group: false },
+] as const;
+
+export type LinkedinBadgePageKey = (typeof LINKEDIN_BADGE_PAGES)[number]["key"];
+
+const PAGE_KEYS = new Set<string>(LINKEDIN_BADGE_PAGES.map((p) => p.key));
+
+/** Keeps only known page keys, without duplicates. Anything else becomes []. */
+export function sanitiseLinkedinBadgeHiddenOn(value: unknown): LinkedinBadgePageKey[] {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter((k): k is LinkedinBadgePageKey => typeof k === "string" && PAGE_KEYS.has(k)))];
+}
+
+/** The page key for a pathname, or null for pages not in the list (always shown). */
+export function linkedinBadgePageKey(pathname: string): LinkedinBadgePageKey | null {
+  const path = pathname.replace(/\/+$/, "") || "/";
+  for (const page of LINKEDIN_BADGE_PAGES) {
+    if (path === page.path || (page.group && path.startsWith(page.path + "/"))) return page.key;
+  }
+  return null;
+}

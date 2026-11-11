@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useTheme, FONT_OPTIONS, FontOptionId, DEFAULT_PRIMARY } from "@/contexts/ThemeContext";
+import { LINKEDIN_BADGE_PAGES } from "@/lib/linkedinBadge";
 
 /* --- Portal helper ---------------------------------------------- */
 function Portal({ children }: { children: React.ReactNode }) {
@@ -316,7 +317,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
     editMode, setEditMode, pageTexts, resetPageText,
     pageColors, resetPageColor,
     presets, savePreset, applyPreset, deletePreset,
-    linkedinBadge, setLinkedinBadge,
+    linkedinBadge, setLinkedinBadge, linkedinBadgeHiddenOn, setLinkedinBadgeHiddenOn,
   } = useTheme();
 
   const [tab, setTab] = useState<"colour" | "font" | "insights" | "content" | "presets" | "settings">("colour");
@@ -768,6 +769,46 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
               >
                 {linkedinBadge ? "Reset badge position & size" : "Badge is in its default corner"}
               </button>
+
+              <div style={{ marginTop: 16 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                  <p style={{ fontFamily: "inherit", fontSize: 12, fontWeight: 600, color: "rgba(220,234,246,0.8)" }}>
+                    Show the badge on:
+                  </p>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    {([["All", []], ["None", LINKEDIN_BADGE_PAGES.map((p) => p.key)]] as const).map(([label, hidden]) => (
+                      <button key={label} onClick={() => setLinkedinBadgeHiddenOn([...hidden])}
+                        style={{ fontFamily: "inherit", fontSize: 11, padding: "3px 10px", borderRadius: 4, cursor: "pointer",
+                          background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)",
+                          color: "rgba(220,234,246,0.8)" }}
+                      >{label}</button>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  {LINKEDIN_BADGE_PAGES.map((page) => {
+                    const shown = !linkedinBadgeHiddenOn.includes(page.key);
+                    return (
+                      <label key={page.key}
+                        style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 8px", borderRadius: 5,
+                          cursor: "pointer", fontFamily: "inherit", fontSize: 12,
+                          color: shown ? "rgba(220,234,246,0.85)" : "rgba(200,220,238,0.45)" }}
+                      >
+                        <input type="checkbox" checked={shown}
+                          onChange={() => setLinkedinBadgeHiddenOn(
+                            shown ? [...linkedinBadgeHiddenOn, page.key] : linkedinBadgeHiddenOn.filter((k) => k !== page.key)
+                          )}
+                          style={{ width: 15, height: 15, accentColor: "#5585b4", cursor: "pointer" }}
+                        />
+                        {page.label}
+                      </label>
+                    );
+                  })}
+                </div>
+                <p style={{ fontFamily: "inherit", fontSize: 11, color: "rgba(200,220,238,0.4)", lineHeight: 1.55, marginTop: 6 }}>
+                  Changes save straight away for all visitors.
+                </p>
+              </div>
             </div>
 
             {Object.keys(pageTexts).length > 0 && (
